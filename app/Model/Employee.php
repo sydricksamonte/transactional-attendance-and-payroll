@@ -80,24 +80,24 @@ class Employee extends AppModel{
                                       ));
 
               return $netEngCount;
-      }
-      function getAllEmployeeBySubGroup($id)
-      {
-              $emp = $this->find('list',array('fields' => array('Employee.id'),
-                                      'conditions' => array(array( 'Employee.subgroup_id' => $id))
-                                      ));
-              return $emp;
-      }
- function getAllEmployeeInfoBySubGroup($id)
-      {
-              $emp = $this->find('all',array('conditions' => array( array('Employee.subgroup_id' => $id)),
+        }
+        function getAllEmployeeBySubGroup($id)
+        {
+            $emp = $this->find('list',array('fields' => array('Employee.id'),
+                'conditions' => array(array( 'Employee.subgroup_id' => $id))
+                ));
+                return $emp;
+        }
+        function getAllEmployeeInfoBySubGroup($id)
+        {
+            $emp = $this->find('all',array('conditions' => array( array('Employee.subgroup_id' => $id)),
                                       'order' => array('employed DESC', 'Employee.last_name', 'Employee.first_name')
                                       ));
               return $emp;
-      }
-      function getEmployeeSchedulePrf($id,$sched_id){
-              $employee = $this->find('first',array(
-                                      'fields' => array(
+        }
+        function getEmployeeSchedulePrf($id,$sched_id){
+            $employee = $this->find('first',array(
+                                        'fields' => array(
                                               'Employee.id',
                                               'Employee.first_name',
                                               'Employee.last_name',
@@ -129,25 +129,224 @@ class Employee extends AppModel{
                                                               'Schedule.order_schedules' => $sched_id
                                                               )
                                                       ));
-              return $employee;
-      }
-		  public function findEmployeeName($id)
-			{
-							$employee = $this->find('first',array(
-																			'fields' => array('first_name', 'last_name'),
-																			'conditions' => array('id' => $id)
-																			));
-							return $employee['Employee']['last_name'] . ', '.$employee['Employee']['first_name'];
-			}
-			public function getEmployeeNoLog($id)
-      {
-              $employee = $this->find('count',array(
+        return $employee;
+        }
+        public function findEmployeeName($id)
+        {
+            $employee = $this->find('first',array(
+                'fields' => array('first_name', 'last_name'),
+                'conditions' => array('id' => $id)
+                ));
+                return $employee['Employee']['last_name'] . ', '.$employee['Employee']['first_name'];
+        }
+        public function getEmployeeNoLog($id)
+        {
+            $employee = $this->find('count',array(
                                       'conditions' => array('subgroup_id' => '15', 'id' => $id )
                                       ));
               return $employee;
-      }
-
-			public $validate = array(
+        }
+        public function getHistor($id)
+        {
+            $histor = $this->find('all',array(
+                'fields' => array(
+                  'Employee.id',
+                  'EmpSched.id',
+                  'EmpSched.week_id',
+                  'Week.id',
+                  'Week.start_date',
+                  'Week.end_date',
+                  'Schedule.rd',
+                  'Schedule.time_in',
+                  'Schedule.time_out',
+                ),
+                'joins' => array(
+                    array(
+                    'type' => 'left',
+                    'table' => 'emp_scheds',
+                    'alias' => 'EmpSched',
+                        'conditions' => array(
+                         'Employee.id = EmpSched.emp_id'
+                      )
+                     ),
+                 array(
+                    'type' => 'left',
+                    'table' => 'weeks',
+                    'alias' => 'Week',
+                        'conditions' => array(
+                            'EmpSched.week_id = Week.id'
+                        )
+                    ),
+                array(
+                    'type' => 'left',
+                    'table' => 'schedules',
+                    'alias' => 'Schedule',
+                    'conditions' => array(
+                        'EmpSched.sched_id = Schedule.order_schedules'
+                        )
+                    ),
+                ),
+                'conditions' => array(
+                    'Employee.id' => $id
+                )
+            ));
+            return $histor;
+        }
+        public function findGp($id)
+        {
+            $gp = $this->find('first',array(
+                                    'fields' => array(
+                                            'Employee.id',
+                                            'Employee.first_name',
+                                            'Employee.last_name',
+									    	'Employee.monthly',                                          
+                                            'Employee.subgroup_id',
+                                            'Group.id',
+                                            'Group.name',
+                                            ),
+                                    'joins' => array(
+                                            array(
+                                                'type' => 'left',
+                                                'table' => 'sub_groups',
+                                                'alias' => 'SubGroup',
+                                                'conditions' => array(
+                                                    'Employee.subgroup_id = SubGroup.id'
+                                                    )),
+                                            array(
+                                                'type' => 'left',
+                                                'table' => 'groups',
+                                                'alias' => 'Group',
+                                                'conditions' => array(
+                                                    'SubGroup.group_id = Group.id'
+                                                ))
+                                            ),
+                                    'conditions' => array(
+                                             'Employee.id' => $id
+                                            )
+                                ));
+                                return $gp;
+        }
+        public function getStartIn($id)
+        {
+              $startin = $this->find('first',array(
+                'fields' => array(
+                    'Schedule.time_in',
+                    'Schedule.time_out',
+                    'Schedule.id',
+                    'EmpSched.week_id',
+                    'EmpSched.sched_id',
+                    'Week.week_no',
+                    'Week.start_date',
+                    'Week.end_date'
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'left',
+                        'table' => 'groups',
+                        'alias' => 'Group',
+                        'conditions' => array(
+                            'Employee.subgroup_id = Group.id'
+                            )
+                        ),
+                    array(
+                        'type' => 'left',
+                        'table' => 'emp_scheds',
+                        'alias' => 'EmpSched',
+                    'conditions' => array(
+                        'Employee.id = EmpSched.emp_id'
+                    )
+                ),
+            array(
+                'type' => 'left',
+                'table' => 'weeks',
+                'alias' => 'Week',
+                'conditions' => array(
+                'Week.week_no=EmpSched.week_id'
+                )
+            ),
+            array(
+                'type' => 'left',
+                'table' => 'schedules',
+                'alias' => 'Schedule',
+                'conditions' => array(
+                    'EmpSched.sched_id=Schedule.order_schedules'
+                    )
+                )
+            ),
+            'conditions' => array(
+                'Employee.id' => $id
+                ),
+            'order' => array(
+                'EmpSched.week_id DESC'
+                )
+            ));
+        }
+        public function getEmployee($id)
+        {
+            $employee = $this->find('first',array(
+	            'fields' => array(
+                  'Employee.id',
+                    'Employee.userinfo_id',
+                    'Employee.monthly',
+                    'Employee.tax_status',																						
+                    'Employee.first_name',
+                    'Employee.last_name',
+                    'Employee.employed',
+                    'SubGroup.name',
+                    'Schedule.time_in',
+                    'Schedule.time_out',
+                    'Schedule.id',
+                    'EmpSched.week_id',
+                    'EmpSched.sched_id',
+                    'Week.week_no',
+                    'Week.start_date',
+                    'Week.end_date'
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'left',
+                        'table' => 'sub_groups',
+                        'alias' => 'SubGroup',
+                        'conditions' => array(
+                        'Employee.subgroup_id =SubGroup.id'
+                        )
+                    ),
+                    array(
+                        'type' => 'left',
+                        'table' => 'emp_scheds',
+                        'alias' => 'EmpSched',
+                        'conditions' => array(
+                        'Employee.id = EmpSched.emp_id'
+                        )
+                    ),
+                    array(
+                        'type' => 'left',
+                        'table' => 'weeks',
+                        'alias' => 'Week',
+                            'conditions' => array(
+                                'Week.week_no=EmpSched.week_id'
+                                )
+                    ),
+                    array(
+                        'type' => 'left',
+                        'table' => 'schedules',
+                        'alias' => 'Schedule',
+                        'conditions' => array(
+                        'EmpSched.sched_id=Schedule.order_schedules'
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'Employee.id' => $id
+                ),
+                'order' => array(
+                    'EmpSched.week_id DESC'
+                )
+            ));
+              
+            return $employee;
+        }
+        public $validate = array(
                       'first_name' => array(
                               'alphaNumeric' => array(
                                         'rule'     => '/^[^%#\/*@!1234567890.]+$/',

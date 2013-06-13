@@ -491,48 +491,7 @@ class EmployeesController extends AppController{
 
             $cutoffLoan=$this->Cutoff->find('first',array('conditions'=>array('Cutoff.id'=>$cutDropDown)));
             $this->set(compact('cutoffLoan'));
-            $histor = $this->Employee->find('all',array(
-                'fields' => array(
-                  'Employee.id',
-                  'EmpSched.id',
-                  'EmpSched.week_id',
-                  'Week.id',
-                  'Week.start_date',
-                  'Week.end_date',
-                  'Schedule.rd',
-                  'Schedule.time_in',
-                  'Schedule.time_out',
-                ),
-                'joins' => array(
-                    array(
-                    'type' => 'left',
-                    'table' => 'emp_scheds',
-                    'alias' => 'EmpSched',
-                        'conditions' => array(
-                         'Employee.id = EmpSched.emp_id'
-                      )
-                     ),
-                 array(
-                    'type' => 'left',
-                    'table' => 'weeks',
-                    'alias' => 'Week',
-                        'conditions' => array(
-                            'EmpSched.week_id = Week.id'
-                        )
-                    ),
-                array(
-                    'type' => 'left',
-                    'table' => 'schedules',
-                    'alias' => 'Schedule',
-                    'conditions' => array(
-                        'EmpSched.sched_id = Schedule.order_schedules'
-                        )
-                    ),
-                ),
-                'conditions' => array(
-                    'Employee.id' => $id
-                )
-            ));
+            $histor = $this->Employee->getHistor($id);
             $this->set(compact('histor'));
 
             $empLoans = $this->Loan->find('all',array(
@@ -555,126 +514,14 @@ class EmployeesController extends AppController{
             $no_log = $this->Employee->getEmployeeNoLog($id);
             $this->set(compact('no_log'));
 
-            $employee = $this->Employee->find('first',array(
-	            'fields' => array(
-                  'Employee.id',
-                    'Employee.userinfo_id',
-                    'Employee.monthly',
-                    'Employee.tax_status',																						
-                    'Employee.first_name',
-                    'Employee.last_name',
-                    'Employee.employed',
-                    'SubGroup.name',
-                    'Schedule.time_in',
-                    'Schedule.time_out',
-                    'Schedule.id',
-                    'EmpSched.week_id',
-                    'EmpSched.sched_id',
-                    'Week.week_no',
-                    'Week.start_date',
-                    'Week.end_date'
-                ),
-                'joins' => array(
-                    array(
-                        'type' => 'left',
-                        'table' => 'sub_groups',
-                        'alias' => 'SubGroup',
-                        'conditions' => array(
-                        'Employee.subgroup_id =SubGroup.id'
-                        )
-                    ),
-                    array(
-                        'type' => 'left',
-                        'table' => 'emp_scheds',
-                        'alias' => 'EmpSched',
-                        'conditions' => array(
-                        'Employee.id = EmpSched.emp_id'
-                        )
-                    ),
-                    array(
-                        'type' => 'left',
-                        'table' => 'weeks',
-                        'alias' => 'Week',
-                            'conditions' => array(
-                                'Week.week_no=EmpSched.week_id'
-                                )
-                    ),
-                    array(
-                        'type' => 'left',
-                        'table' => 'schedules',
-                        'alias' => 'Schedule',
-                        'conditions' => array(
-                        'EmpSched.sched_id=Schedule.order_schedules'
-                        )
-                    )
-                ),
-                'conditions' => array(
-                    'Employee.id' => $id
-                ),
-                'order' => array(
-                    'EmpSched.week_id DESC'
-                )
-            ));
-		
+            $employee = $this->Employee->getEmployee($id);
             $this->set(compact('employee'));
             $schedId = $this->Week->findScheduleId($sdate,$id);
             $this->set(compact('schedId'));
-            $startin = $this->Employee->find('first',array(
-                'fields' => array(
-                    'Schedule.time_in',
-                    'Schedule.time_out',
-                    'Schedule.id',
-                    'EmpSched.week_id',
-                    'EmpSched.sched_id',
-                    'Week.week_no',
-                    'Week.start_date',
-                    'Week.end_date'
-                ),
-                'joins' => array(
-                    array(
-                        'type' => 'left',
-                        'table' => 'groups',
-                        'alias' => 'Group',
-                        'conditions' => array(
-                            'Employee.subgroup_id = Group.id'
-                            )
-                        ),
-                    array(
-                        'type' => 'left',
-                        'table' => 'emp_scheds',
-                        'alias' => 'EmpSched',
-                    'conditions' => array(
-                        'Employee.id = EmpSched.emp_id'
-                    )
-                ),
-            array(
-                'type' => 'left',
-                'table' => 'weeks',
-                'alias' => 'Week',
-                'conditions' => array(
-                'Week.week_no=EmpSched.week_id'
-                )
-            ),
-            array(
-                'type' => 'left',
-                'table' => 'schedules',
-                'alias' => 'Schedule',
-                'conditions' => array(
-                'EmpSched.sched_id=Schedule.order_schedules'
-                )
-            )
-        ),
-        'conditions' => array(
-            'Employee.id' => $id
-            ),
-        'order' => array(
-            'EmpSched.week_id DESC'
-            )
-        ));
-
-        $this->set(compact('startin'));
+            $startin = $this->Employee->getStartIn($id);
+            $this->set(compact('startin'));
      
-        $holidays = $this->Holiday->find('all',array(
+            $holidays = $this->Holiday->find('all',array(
             'fields' => array(
             'Holiday.date', 'Holiday.regular'),
             'conditions' => array('Holiday.authorize' => '1')
@@ -771,37 +618,7 @@ class EmployeesController extends AppController{
             ));
             $this->set(compact('subgroups'));
 
-            $gp = $this->Employee->find('first',array(
-                                    'fields' => array(
-                                            'Employee.id',
-                                            'Employee.first_name',
-                                            'Employee.last_name',
-									    	'Employee.monthly',                                          
-                                            'Employee.subgroup_id',
-                                            'Group.id',
-                                            'Group.name',
-                                            ),
-                                    'joins' => array(
-                                            array(
-                                                'type' => 'left',
-                                                'table' => 'sub_groups',
-                                                'alias' => 'SubGroup',
-                                                'conditions' => array(
-                                                    'Employee.subgroup_id = SubGroup.id'
-                                                    )),
-                                            array(
-                                                'type' => 'left',
-                                                'table' => 'groups',
-                                                'alias' => 'Group',
-                                                'conditions' => array(
-                                                    'SubGroup.group_id = Group.id'
-                                                ))
-                                            ),
-                                    'conditions' => array(
-                                             'Employee.id' => $id
-                                            )
-                                ));
-
+            $gp = $this->Employee->findGp($id);
             $this->set(compact('gp'));
             $decMonthly = $this->Employee->encryptValue($gp['Employee']['monthly']);
             $this->set(compact('decMonthly'));
