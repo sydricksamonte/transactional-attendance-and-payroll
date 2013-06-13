@@ -510,17 +510,7 @@ while ($curr_date <= $yearend_date){
                 {
                     $halfDayCount = $halfDayCount + 1;
                 }
-				if ($curr_date != null)
-				{
-					$temp_cout = $this->requestAction('Employees/getLogOutAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cout != null){
-						$temp_cout = date('H:i:s', strtotime($temp_cout));
-					}
-					$temp_cin = $this->requestAction('Employees/getLogInAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cin != null){
-						$temp_cin = date('H:i:s', strtotime($temp_cin));
-					}
-				}
+
 				$trimDate = substr($curr_date_myd, 0, -6);
 				$trimTempStart = substr($temp_start, 0, -3);
 				$trimTempEnd = substr($temp_end, 0, -3);
@@ -707,22 +697,21 @@ $ot2c = 0;
                                 }
 								else{
 								    echo $trimTempCin;
-                                   
+                                    debug($trimTempCin);
 								};
 								if($temp_cin == null and $remark=='Absent'){
 									echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
 									echo "</td>
 							        <td $bg>";
-								
-								if($temp_cout == null && $remark=='ERROR'){
-									echo $this->Html->link('No out',array('action' => 'error', $employee['Employee']['id'], $curr_date));
-							    }
-								else if($temp_cout != null and $remark=='ERROR'){
-                                     echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
-                                }
-							    else{	
-								    echo $trimTempCout;
-								};
+								        if($temp_cout == null && $remark=='ERROR'){
+									        echo $this->Html->link('No out',array('action' => 'error', $employee['Employee']['id'], $curr_date));
+							            }
+								        else if($temp_cout != null and $remark=='ERROR'){
+                                            echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
+                                        }
+							            else{
+								            echo $trimTempCout;
+								        };
 			if($temp_cout == null && $remark=='Absent'){
 				echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
 	echo "</td>
@@ -802,8 +791,8 @@ echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd3b != 0){echo $this->Html-
 				$nd1 = 0;$nd2 = 0;$nd3 = 0;$nd4 = 0;$nd5 = 0;
 				$hd1 = 0;$hd2 = 0;$hd3 = 0;$hd4 = 0;
 				$ot1b = 0;$ot2b = 0;$ot3b = 0;$ot4b = 0;$ot5b = 0;
-				$nd1b = 0;$nd2b = 0;$nd3b = 0;$nd4b = 0;$nd5b = 0;
-				$hd1b = 0;$hd2b = 0;$hd3b = 0;$hd4b = 0;			
+        $nd1b = 0;$nd2b = 0;$nd3b = 0;$nd4b = 0;$nd5b = 0;
+        $hd1b = 0;$hd2b = 0;$hd3b = 0;$hd4b = 0;			
 				$temp_start = null;
 				$temp_end = null;
 	}

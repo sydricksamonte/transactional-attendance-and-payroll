@@ -5,6 +5,7 @@ class Checkinout extends AppModel{
 	        $dbName = $_SERVER["DOCUMENT_ROOT"] . "/aps/attBackup.mdb";	
             return $dbName;
 	}
+    
 	function findEmployeeLogIn($emp_id, $date)
 	{
 					$empFields = $this->find('all',array(
@@ -31,7 +32,7 @@ class Checkinout extends AppModel{
 					return $empFields;			
 	}
 	 function findEmployeeLogOut($emp_id, $date)
-  {
+    {
           $empFields = $this->find('all',array(
                                   'fields' => array(
                                           'Checkinout.CHECKTIME'

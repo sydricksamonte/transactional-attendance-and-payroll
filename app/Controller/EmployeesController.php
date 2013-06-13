@@ -368,7 +368,51 @@ class EmployeesController extends AppController{
 										}
 						}
 		}
-
+        public function getLogOutAccess($dateLO, $bId)
+        {
+         $curr_date_ymd = date('Y-m-d', $dateLO);
+            $dateAccessFormat = date("n/j/Y", strtotime($curr_date_ymd));
+      
+            $dbName = $this->Checkinout->findAccess();
+                        if (!file_exists($dbName)) {
+                        die("Could not find database file.");
+                        }
+            $db = new PDO("odbc:DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=$dbName; Uid=; Pwd=;");       
+            $sql  = "SELECT TOP 1 CHECKTIME FROM CHECKINOUT WHERE  CHECKTYPE = 'O' AND USERID =".$bId." AND CHECKTIME LIKE "."'$dateAccessFormat%'"." ORDER BY CHECKTIME DESC ";
+            $result = $db->query($sql);
+            $lOut = $result->fetchAll(PDO::FETCH_COLUMN);
+            if ($lOut != null)
+            {
+                return($lOut[0].'');
+            }
+            else
+            {
+                return NULL;
+            }
+        }
+        public function getLogInAccess($dateLO, $bId)
+        {
+            $curr_date_ymd = date('Y-m-d', $dateLO);
+            $dateAccessFormat = date("n/j/Y", strtotime($curr_date_ymd));
+      
+            $dbName = $this->Checkinout->findAccess();
+                        if (!file_exists($dbName)) {
+                        die("Could not find database file.");
+                        }
+            $db = new PDO("odbc:DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=$dbName; Uid=; Pwd=;");       
+            $sql  = "SELECT TOP 1 CHECKTIME FROM CHECKINOUT WHERE  CHECKTYPE = 'I' AND USERID =".$bId." AND CHECKTIME LIKE "."'$dateAccessFormat%'"." ORDER BY CHECKTIME ASC ";
+            $result = $db->query($sql);
+            $lIn = $result->fetchAll(PDO::FETCH_COLUMN);
+             if ($lIn != null)
+            {
+                return($lIn[0].'');
+            }
+            else
+            {
+                return NULL;
+            }
+              
+        }
 		public function view_emp($id=null){
 						$sdate = date("Y-m-d", time());
 						$total = $this->Cutoff->getCutOffAvailable($sdate);

@@ -1,43 +1,51 @@
 <?php
 class Cutoff extends AppModel{
-				function getCutOffAvailable($edate)
-				{ $edate = Date('Y-m-d', strtotime("+0 days"));
+		function getCutOffAvailable($edate)
+		{ 
+            $edate = Date('Y-m-d', strtotime("+0 days"));
 								$cond = $this->find('list',array(
-																				'fields' => array('end_date'),
-																				'conditions' => array('end_date <= ' => $edate),
-																				'order' => array('end_date' => 'DESC')));
+										'fields' => array('end_date'),
+										'conditions' => array('end_date <= ' => $edate),
+										'order' => array('end_date' => 'DESC')));
 								return $cond;
-				}
-				 function getCutOffPeriodStart($id)
+		}
+		
+        function getCutOffPeriodStart($id)
         {
                 $cond = $this->find('first',array(
                                         'conditions' => array('id' => $id)));
 								return $cond['Cutoff']['start_date'];
         }
-				 function getCutOffPeriodEnd($id)
+		
+        function getCutOffPeriodEnd($id)
         {
                 $cond = $this->find('first',array(
                                         'conditions' => array('id' => $id)));
-                return $cond['Cutoff']['end_date'];
+                                return $cond['Cutoff']['end_date'];
         }
-				 function getCutOffRecent($edate)
-        {				 $edate = Date('Y-m-d', strtotime("+10 days"));
-                $cond = $this->find('first',array(
-																				'fields' => array('id'),
-																				'conditions' => array('end_date <= ' => $edate),
-																				'order' => array('end_date' => 'DESC')));
-				 				return $cond['Cutoff']['id'];
+		function getCutOffRecent($edate)
+        {		
+                $edate = Date('Y-m-d', strtotime("+10 days"));
+                    $cond = $this->find('first',array(
+				    'fields' => array('id'),
+				    'conditions' => array('end_date <= ' => $edate),
+				    'order' => array('end_date' => 'DESC')));
+				 		        return $cond['Cutoff']['id'];
         }
-				function getCutOffRecentEnd($edate)
-        {				 $edate = Date('Y-m-d', strtotime("+10 days"));
+		
+        function getCutOffRecentEnd($edate)
+        {				 
+                $edate = Date('Y-m-d', strtotime("+10 days"));
                 $cond = $this->find('first',array(
                                         'fields' => array('id'),
                                         'conditions' => array('end_date <= ' => $edate),
                                         'order' => array('end_date' => 'DESC')));
                 return $cond['Cutoff']['end_date'];
         }
-				function getCutOffRecentStart($edate)
-        {				 $edate = Date('Y-m-d', strtotime("+10 days"));
+		
+        function getCutOffRecentStart($edate)
+        {		
+                $edate = Date('Y-m-d', strtotime("+10 days"));
                 $cond = $this->find('first',array(
                                         'fields' => array('id'),
                                         'conditions' => array('end_date <= ' => $edate),
@@ -50,5 +58,5 @@ class Cutoff extends AppModel{
                                 'rule'    => 'isUnique',
                                 )
                         );	
-}
+        }
 ?>

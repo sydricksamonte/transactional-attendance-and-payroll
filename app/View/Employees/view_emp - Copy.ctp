@@ -177,15 +177,12 @@ if (($holidays[0]['Holiday']['date']!=null)) {
 				$temp[$holiday_type."-holiday"] = $holiday_type;
 				$temp[date('M d, Y', strtotime($holiday['Holiday']['date'])).'type_of_holiday'] = $holiday['Holiday']['regular'];
 				endforeach;
-                
 }
 foreach($exs as $ex2):
-
 				$os[$ex2['Schedule']['id']]['start'] = $ex2['Schedule']['time_in'];
 				$os[$ex2['Schedule']['id']]['end'] = $ex2['Schedule']['time_out'];
 				endforeach;
 				foreach($excemptions as $excemption):
-             
 								$excemption_date = date('M d, Y', strtotime($excemption['Scheduleoverride']['start_date']));
 								$excemp_to=$excemption['Scheduleoverride']['time_out'];
 								$excemp_ti=$excemption['Scheduleoverride']['time_in'];
@@ -210,7 +207,8 @@ foreach($exs as $ex2):
 
 if($couts!=null){
 				foreach($couts as $cout):
-				$cout_start_date = date('M d, Y', strtotime($cout));
+           
+								$cout_start_date = date('M d, Y', strtotime($cout));
 				$cout_start_time = date('H:i:s', strtotime($cout));
 				$cout_all[$cout_start_date] = $cout_start_time;
 				endforeach;
@@ -218,7 +216,7 @@ if($couts!=null){
 
 if($cout_reverses!=null){
 				foreach($cout_reverses as $cout_reverse): 
-				$cout_reverse_start_date = date('M d, Y', strtotime($cout_reverse));
+								$cout_reverse_start_date = date('M d, Y', strtotime($cout_reverse));
 				$cout_reverse_start_time = date('H:i:s', strtotime($cout_reverse));
 				$cout_reverse_all[$cout_reverse_start_date] = $cout_reverse_start_time;
 				endforeach;
@@ -226,8 +224,9 @@ if($cout_reverses!=null){
 $cin_start_date_coder = null;
 if($cins!=null){
 				foreach($cins as $cin):
-				$cin_start_date = date('M d, Y', strtotime($cin));
-				$cin_start_time = date('H:i:s', strtotime($cin));	
+								$cin_start_date = date('M d, Y', strtotime($cin));
+				$cin_start_time = date('H:i:s', strtotime($cin));
+# $cin_start_date_coder = date('Y-M-d', strtotime($cin));	
 				$temp[$cin_start_date."-starttime"] = $cin_start_time;
 				$temp[$cin_start_date."-endtime"] = isset($cout_all[$cin_start_date]) ? $cout_all[$cin_start_date] : null;
 				if (isset($cout_reverse_all[$cin_start_date]) && $cout_reverse_all[$cin_start_date] < $temp[$cin_start_date."-starttime"]){
@@ -287,7 +286,7 @@ while ($curr_date <= $yearend_date){
 				}else{
 								$temp_start = isset($temp[$curr_date_myd."-start"]) ? $temp[$curr_date_myd."-start"] : null;
 								$temp_end = isset($temp[$curr_date_myd."-end"]) ? $temp[$curr_date_myd."-end"] : null;
-	            }
+	}
 				$cin_start_date_coder = isset($temp[$curr_date_myd."-startdate"]) ? $temp[$curr_date_myd."-startdate"] : null; 
 				$temp_cin = isset($temp[$curr_date_myd."-starttime"]) ? $temp[$curr_date_myd."-starttime"] : null;
 				$temp_cout = isset($temp[$curr_date_myd."-endtime"]) ? $temp[$curr_date_myd."-endtime"] : null;
@@ -321,6 +320,7 @@ while ($curr_date <= $yearend_date){
 								$under = '0';
 				}
 				if (isset($alt_cout[$curr_date_myd])){
+		####						$under = '0';
 				}
 				if ($temp_start==null && $temp_end==null && $temp_cin == null && $temp_cout == null){
 								$remark = null;
@@ -329,11 +329,17 @@ while ($curr_date <= $yearend_date){
 				} 
 				else if($temp_cin == null or $temp_cout == null){
 								$remark = 'ERROR';
+								/*if($temp_cin == null){
+									$temp_cin='NO IN';
+									}else if($temp_cout == null){
+									$temp_cout='NO OUT';
+									}*/
 				}
 				$tempOt = 0;
 				if (isset($temp[$curr_date_myd."-type_name"])){
 								{
-								}            
+#debug($temp[$curr_date_myd."-type_name"]);
+								}               # $bg = "bgcolor = #D6FFC2";
 				}
 
 				if ($temp_start!=null && $temp_end!=null && $temp_cin == null && $temp_cout == null){
@@ -371,7 +377,15 @@ while ($curr_date <= $yearend_date){
 
 				if (isset($temp[$curr_date_myd."-type_name"])){
 								$remark = $temp[$curr_date_myd."-type_name"];
-                }		
+        }
+				/*			if ($remark == 'Overtime')
+								{
+												$ot_remark = 'Y';
+												$remark = null;
+											$ot_time =	$this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot1'.'/' );
+debug($ot_time);/
+								} */
+					
 				if ($remark == "Rest Day"){
 								$rd="yes";
 								$bg = "bgcolor = #D6FFC2";
@@ -380,9 +394,10 @@ while ($curr_date <= $yearend_date){
 				{
 					if ($remark == "No pay")
 					{
-                        $bg = "bgcolor = #CCCCCC";
-       		        }
+                $bg = "bgcolor = #CCCCCC";
+       		}
 				}
+#echo( $temp[$curr_date_myd."-type_name"]);
 				if(isset($temp[$curr_date_myd."-holiday"])){
 								if ( isset($temp[$curr_date_myd."type_of_holiday"]))
 								{
@@ -399,9 +414,15 @@ while ($curr_date <= $yearend_date){
 																}
 												}
 								}
+#if ($employee['Group']['name'] != 'Network Engineer'){
+#}
 				}
 				$late_total += $late;
 				$under_total += $under;
+#		if(isset($temp[$curr_date_myd.'-type_name']) == 'Overtime')	
+#		{
+#						$tempOt = $ot;
+#		}
 				$ot_total += $tempOt;
 				if(isset($temp[$curr_date_myd.'-type_name']) != null){
 								if(($temp[$curr_date_myd.'-type_name'])== 'Excemption')
@@ -411,7 +432,7 @@ while ($curr_date <= $yearend_date){
 				}
 				if(substr($temp_cin, 0, -3) == substr($temp_cout, 0, -3)and $temp_cin != null){
 								$remark = 'ERROR';
-                }
+        }
 
 				if($temp_cin == null and $temp_cout != null){
 								$remark = 'ERROR';
@@ -424,8 +445,7 @@ while ($curr_date <= $yearend_date){
 								$ot_remark = 'N';
 								$otcolor = "style='color:black'";
 				}
-				else
-                {
+				else{
 								$otcolor = "style='font-weight:bold'";
 				}
 
@@ -442,13 +462,13 @@ while ($curr_date <= $yearend_date){
 				else if ($remark == 'Offset')
 				{ 
 								$offSetCount = $offSetCount + 1;
-                                $late_total = $late_total - $late;
+                $late_total = $late_total - $late;
 								$under_total = $under_total - $under;                
 								$late = 0;
-                                $under =0 ;
-                                $bg= "bgcolor = #ADD6FF";
-                                $yesLeave = 1;
-                }
+                $under =0 ;
+                $bg= "bgcolor = #ADD6FF";
+                $yesLeave = 1;
+        }
 
 				else if ($remark == 'Vacation Leave')
 				{
@@ -465,7 +485,7 @@ while ($curr_date <= $yearend_date){
 								$late_total = $late_total - $late;	
 								$under_total = $under_total - $under;							
 								$late = 0;
-                                $under = 0;
+                $under = 0;
 								$halfDayCount = $halfDayCount + 1;
 				}
 
@@ -478,13 +498,14 @@ while ($curr_date <= $yearend_date){
 								$yesLeave = 1;
 				}
 				else if ($remark == 'No pay' and $bg == "bgcolor = #CCCCCC" )
-                {
+        {
 								$under_total = $under_total - $under;
 								$late_total = $late_total - $late;
-                                $late = 0;
-                                $under = 0;
-                                $nopay_total = $nopay_total + 1;
-                }
+                $late = 0;
+                $under = 0;
+                $nopay_total = $nopay_total + 1;
+        }
+
 				else if ($remark == 'ERROR')
 				{
 								$errorCount = $errorCount + 1;
@@ -507,20 +528,10 @@ while ($curr_date <= $yearend_date){
 								$fcolor = "style='color:black'";
 				}	
 				if (($temp_cin != null and $temp_cout == null) or ($temp_cin == null and $temp_cout != null))
-                {
-                    $halfDayCount = $halfDayCount + 1;
-                }
-				if ($curr_date != null)
-				{
-					$temp_cout = $this->requestAction('Employees/getLogOutAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cout != null){
-						$temp_cout = date('H:i:s', strtotime($temp_cout));
-					}
-					$temp_cin = $this->requestAction('Employees/getLogInAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cin != null){
-						$temp_cin = date('H:i:s', strtotime($temp_cin));
-					}
-				}
+        {
+                $halfDayCount = $halfDayCount + 1;
+        }
+
 				$trimDate = substr($curr_date_myd, 0, -6);
 				$trimTempStart = substr($temp_start, 0, -3);
 				$trimTempEnd = substr($temp_end, 0, -3);
@@ -566,6 +577,7 @@ $ot2c = 0;
 								{
 												$ot2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot2'.'/' );
 												$ot2c = $temp_scale;
+						#					$ot2total = $ot2total + $ot2;
 								}
 								else if ( $bg != 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'R Holiday')
 								{
@@ -643,8 +655,10 @@ $ot2c = 0;
 #CODE FOR HOLIDAY
 				if (($temp_cin != null) && ($temp_cout != null))
 				{
-					$tempCinDateHoliday =strtotime($tempCinDate . ' ' . $temp_cin);
-	                $tempCoutDateHoliday = strtotime($tempCoutDate . ' ' . $temp_cout);		
+								$tempCinDateHoliday =strtotime($tempCinDate . ' ' . $temp_cin);
+	$tempCoutDateHoliday = strtotime($tempCoutDate . ' ' . $temp_cout);
+#debug($tempCinDate.' '.$temp_cin);
+#debug($tempCoutDate.' '.$temp_cout);			
 					$diffHoliday =(($tempCoutDateHoliday - $tempCinDateHoliday) / 3600);
 								$holidayHours =  floor($diffHoliday * 2) / 2;
 								if (($bg == 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'S Holiday'))
@@ -689,39 +703,39 @@ $ot2c = 0;
 								$errorCount = $errorCount + 1;
 								$bg= "bgcolor = #FF9999";
 				}
-                
                 echo "<tr>
-                <td $bg>$trimDate </td><td $bg>";echo $trimTempStart;
-                if(($rd != 'yes')and($temp_start!=null and $temp_start!=0 and $temp_cin != '' and $temp_cout != '')){$dayin++;}
-                                if (($rd == 'yes') and ($remark == 'S Holiday' or $remark == 'R Holiday') and ($temp_cin != null and $temp_cout != null))
-                                {
+                <td $bg>$trimDate </td>
+                <td $bg>";echo $trimTempStart;if(($rd != 'yes')and($temp_start!=null and $temp_start!=0 and $temp_cin != '' and $temp_cout != '')){$dayin++;}
+                              if (($rd == 'yes') and ($remark == 'S Holiday' or $remark == 'R Holiday') and ($temp_cin != null and $temp_cout != null))
+                              {
                                     $dayin++;
-                                }
-                echo "</td><td $bg>";echo $trimTempEnd;
+                              }
+                echo "</td>
+								<td $bg>";echo $trimTempEnd;
 				echo "</td><td $bg>";
 								if($temp_cin == null and $remark=='ERROR'){
 									echo $this->Html->link('No in',array('action' => 'error', $employee['Employee']['id'], $curr_date));
 								}
 								else if($temp_cin != null and $remark=='ERROR'){
-                                    echo $this->Html->link($trimTempCin,array('action' => 'error', $employee['Employee']['id'], $curr_date));
-                                }
+                  echo $this->Html->link($trimTempCin,array('action' => 'error', $employee['Employee']['id'], $curr_date));
+                }
+
 								else{
-								    echo $trimTempCin;
-                                   
+								#	echo $this->Html->link($trimTempCin,array('action' => 'error', $employee['Employee']['id'], $curr_date));
+						 echo $trimTempCin;
 								};
 								if($temp_cin == null and $remark=='Absent'){
 									echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
 									echo "</td>
-							        <td $bg>";
-								
+							<td $bg>";
 								if($temp_cout == null && $remark=='ERROR'){
 									echo $this->Html->link('No out',array('action' => 'error', $employee['Employee']['id'], $curr_date));
-							    }
+							}
 								else if($temp_cout != null and $remark=='ERROR'){
-                                     echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
-                                }
-							    else{	
-								    echo $trimTempCout;
+                  echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
+                }
+							else{
+								echo $trimTempCout;
 								};
 			if($temp_cout == null && $remark=='Absent'){
 				echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
@@ -802,8 +816,8 @@ echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd3b != 0){echo $this->Html-
 				$nd1 = 0;$nd2 = 0;$nd3 = 0;$nd4 = 0;$nd5 = 0;
 				$hd1 = 0;$hd2 = 0;$hd3 = 0;$hd4 = 0;
 				$ot1b = 0;$ot2b = 0;$ot3b = 0;$ot4b = 0;$ot5b = 0;
-				$nd1b = 0;$nd2b = 0;$nd3b = 0;$nd4b = 0;$nd5b = 0;
-				$hd1b = 0;$hd2b = 0;$hd3b = 0;$hd4b = 0;			
+        $nd1b = 0;$nd2b = 0;$nd3b = 0;$nd4b = 0;$nd5b = 0;
+        $hd1b = 0;$hd2b = 0;$hd3b = 0;$hd4b = 0;			
 				$temp_start = null;
 				$temp_end = null;
 	}
