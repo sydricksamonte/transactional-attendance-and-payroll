@@ -208,38 +208,9 @@ foreach($exs as $ex2):
 												endforeach;
 								}
 
-if($couts!=null){
-				foreach($couts as $cout):
-				$cout_start_date = date('M d, Y', strtotime($cout));
-				$cout_start_time = date('H:i:s', strtotime($cout));
-				$cout_all[$cout_start_date] = $cout_start_time;
-				endforeach;
-}
 
-if($cout_reverses!=null){
-				foreach($cout_reverses as $cout_reverse): 
-				$cout_reverse_start_date = date('M d, Y', strtotime($cout_reverse));
-				$cout_reverse_start_time = date('H:i:s', strtotime($cout_reverse));
-				$cout_reverse_all[$cout_reverse_start_date] = $cout_reverse_start_time;
-				endforeach;
-}
 $cin_start_date_coder = null;
-if($cins!=null){
-				foreach($cins as $cin):
-				$cin_start_date = date('M d, Y', strtotime($cin));
-				$cin_start_time = date('H:i:s', strtotime($cin));	
-				$temp[$cin_start_date."-starttime"] = $cin_start_time;
-				$temp[$cin_start_date."-endtime"] = isset($cout_all[$cin_start_date]) ? $cout_all[$cin_start_date] : null;
-				if (isset($cout_reverse_all[$cin_start_date]) && $cout_reverse_all[$cin_start_date] < $temp[$cin_start_date."-starttime"]){
-								$cin_minus_one = date('M d, Y', strtotime('-1 day'.$cin_start_date));
-								$alt_cout[$cin_minus_one] = $cout_reverse_all[$cin_start_date];
-								if ($alt_cout[$cin_minus_one] == $temp[$cin_start_date."-endtime"]){
-												$temp[$cin_start_date."-endtime"] = null;
-								} 
-				}
 
-				endforeach;
-}
 $curr_date = mktime(0,0,0,01,01,date("Y"));
 $yearend_date = mktime(23,59,59,12,31,date("Y"));
 

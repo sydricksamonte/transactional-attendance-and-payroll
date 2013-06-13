@@ -370,7 +370,7 @@ class EmployeesController extends AppController{
 		}
         public function getLogOutAccess($dateLO, $bId)
         {
-         $curr_date_ymd = date('Y-m-d', $dateLO);
+            $curr_date_ymd = date('Y-m-d', $dateLO);
             $dateAccessFormat = date("n/j/Y", strtotime($curr_date_ymd));
       
             $dbName = $this->Checkinout->findAccess();
@@ -387,7 +387,27 @@ class EmployeesController extends AppController{
             }
             else
             {
-                return NULL;
+                $couts = $this->Checkinout->find('first',array(
+	                'fields' =>
+					    'Checkinout.CHECKTIME',
+				    'conditions' => array(
+	                    'Checkinout.USERID' => $bId,
+		                'Checkinout.CHECKTYPE' => 'O',
+                        'Checkinout.CHECKTIME LIKE' => $curr_date_ymd.'%'
+				        ),
+				    'order' => array(
+					    'Checkinout.CHECKTIME DESC',
+					    ),
+			    ));
+              
+                if ($couts != null)
+                {
+                    return $couts['Checkinout']['CHECKTIME'];
+                }
+                else
+                {
+                    return NULL;
+                }
             }
         }
         public function getLogInAccess($dateLO, $bId)
@@ -409,7 +429,26 @@ class EmployeesController extends AppController{
             }
             else
             {
-                return NULL;
+                 $cins = $this->Checkinout->find('first',array(
+	                'fields' =>
+					    'Checkinout.CHECKTIME',
+				    'conditions' => array(
+	                    'Checkinout.USERID' => $bId,
+		                'Checkinout.CHECKTYPE' => 'I',
+                        'Checkinout.CHECKTIME LIKE' => $curr_date_ymd.'%'
+				        ),
+				    'order' => array(
+					    'Checkinout.CHECKTIME DESC',
+					    ),
+			    ));
+                if ($cins != null)
+                {
+                    return $cins['Checkinout']['CHECKTIME'];
+                }
+                else
+                {
+                    return NULL;
+                }
             }
               
         }
