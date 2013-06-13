@@ -273,6 +273,18 @@ $yearend_date = mktime(23,59,59,$e_month,$e_day,$e_year);
 
 
 while ($curr_date <= $yearend_date){
+				if ($curr_date != null)
+				{
+					$temp_cout = $this->requestAction('Employees/getLogOutAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
+					if ($temp_cout != null){
+						$temp_cout = date('H:i:s', strtotime($temp_cout));
+					}
+					$temp_cin = $this->requestAction('Employees/getLogInAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
+					if ($temp_cin != null){
+						$temp_cin = date('H:i:s', strtotime($temp_cin));
+					}
+				}
+				
 				$excemp = 0;
 				$remark = null;
 				$ot_remark = null;
@@ -289,9 +301,7 @@ while ($curr_date <= $yearend_date){
 								$temp_end = isset($temp[$curr_date_myd."-end"]) ? $temp[$curr_date_myd."-end"] : null;
 	            }
 				$cin_start_date_coder = isset($temp[$curr_date_myd."-startdate"]) ? $temp[$curr_date_myd."-startdate"] : null; 
-				$temp_cin = isset($temp[$curr_date_myd."-starttime"]) ? $temp[$curr_date_myd."-starttime"] : null;
-				$temp_cout = isset($temp[$curr_date_myd."-endtime"]) ? $temp[$curr_date_myd."-endtime"] : null;
-				$temp_cout = isset($alt_cout[$curr_date_myd]) ? $alt_cout[$curr_date_myd] : $temp_cout;
+			
 				$cin_time = strtotime($curr_date_myd. " ". $temp_cin);
 				$shift_time = strtotime($curr_date_myd. " ". $temp_start);
 				$ndCounter = 0;
@@ -510,17 +520,7 @@ while ($curr_date <= $yearend_date){
                 {
                     $halfDayCount = $halfDayCount + 1;
                 }
-				if ($curr_date != null)
-				{
-					$temp_cout = $this->requestAction('Employees/getLogOutAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cout != null){
-						$temp_cout = date('H:i:s', strtotime($temp_cout));
-					}
-					$temp_cin = $this->requestAction('Employees/getLogInAccess/'.$curr_date . '/' .$employee['Employee']['userinfo_id'].'/'  );
-					if ($temp_cin != null){
-						$temp_cin = date('H:i:s', strtotime($temp_cin));
-					}
-				}
+				
 				$trimDate = substr($curr_date_myd, 0, -6);
 				$trimTempStart = substr($temp_start, 0, -3);
 				$trimTempEnd = substr($temp_end, 0, -3);
