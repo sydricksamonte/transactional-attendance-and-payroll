@@ -525,8 +525,8 @@ $ot2c = 0;
 					{
 							$allcode = ($nds['Transaction']['fetch_rule']) . $allcode;	
 					}
-					 endforeach;
-					 eval($allcode);			
+					endforeach;
+					eval($allcode);			
 				}
 #CODE FOR HOLIDAY
 				if (($temp_cin != null) && ($temp_cout != null))
@@ -534,43 +534,29 @@ $ot2c = 0;
 					$tempCinDateHoliday =strtotime($tempCinDate . ' ' . $temp_cin);
 	                $tempCoutDateHoliday = strtotime($tempCoutDate . ' ' . $temp_cout);		
 					$diffHoliday =(($tempCoutDateHoliday - $tempCinDateHoliday) / 3600);
-								$holidayHours =  floor($diffHoliday * 2) / 2;
-								if (($bg == 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'S Holiday'))
-								{
-								#			$ot2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot2'.'/' );
-								#			$ot2b = $holidayHours;
-								#			$ot2total = $ot2total + $ot2;
-								}
-												if ($holidayHours >= 8){
-																$holidayHours  = 8;
-												}
-
-												if (($bg == 'bgcolor = #D6FFC2' and $remark == 'S Holiday'))
-												{$hd2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'hd2'.'/' );
-																$hd2b = $holidayHours;
-																$hd2total = $hd2total + $hd2;
-												}
-												else if (($bg != 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
-												{$hd3 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'hd3'.'/' );
-																$hd3b = $holidayHours;
-																$hd3total = $hd3total + $hd3;
-												}
-												else if (($bg == 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
-												{$hd4 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'hd4'.'/' );
-																$hd4b = $holidayHours;
-																$hd4total = $hd4total + $hd4;
-												}
-												else if (($bg != 'bgcolor = #D6FFC2' and $remark == 'S Holiday'))
-												{$hd1 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'hd1'.'/' );
-																$hd1b = $holidayHours;
-																$hd1total = $hd1total + $hd1;
-												}
-												else if (($bg == 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'S Holiday'))
-												{
-																$ot2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot2'.'/' );
-																$ot2b = $holidayHours + $ot2c;
-																$ot2total = $ot2total + $ot2;
-												}
+					
+					$holidayHours =  floor($diffHoliday * 2) / 2;
+					if (($bg == 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'S Holiday'))
+					{}
+					if ($holidayHours >= 8){
+						$holidayHours  = 8;
+					}
+					$interval = night_difference(strtotime($tempCinDate.' '.$temp_cin),strtotime($tempCoutDate.' '.$temp_cout));
+					$ndCounter = floor($interval * 2) / 2;
+					
+					$hdcode = $this->requestAction('Employees/getFetchRules/'. 'H'.'/' );
+					$allcode = null;
+						foreach ($hdcode as $hds):
+						{
+							$allcode = ($hds['Transaction']['fetch_rule']) . $allcode;	
+						}
+						endforeach;
+					eval($allcode);	
+												
+												
+												
+												
+												
 				}
 				if ($trimTempStart == '' and $trimTempEnd == '' and ($trimTempCin != null or $trimTempCout != null))
 				{
