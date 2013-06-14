@@ -452,10 +452,16 @@ class EmployeesController extends AppController{
             }
               
         }
+        public function getFetchRules($type)
+        {
+            $fetch_rule = $this->Transaction->getFetchRule($type);
+            return $fetch_rule;
+        }
 		public function view_emp($id=null)
         {
+            
             $trans = $this->Transaction->getAll();
-            $this->set(compact('total'));
+            $this->set(compact('trans'));
             $sdate = date("Y-m-d", time());
 		    $total = $this->Cutoff->getCutOffAvailable($sdate);
 		    $this->set(compact('total'));

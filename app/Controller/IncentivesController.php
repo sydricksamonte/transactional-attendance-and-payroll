@@ -49,12 +49,15 @@ class IncentivesController extends AppController{
 	{
 					$curr_date_ymd = date('Y-m-d', $dateId);
 					$time = $this->Incentive->find('first', array('fields' => array('hour') ,'conditions' => array('emp_id' => $emp_id,'type' => $type, 'date' => $curr_date_ymd )));
-					if ($time != null)
+					
+                    if ($time != null)
 					{
+                       # debug(0 +$time['Incentive']['hour']);
 									return (0 + $time['Incentive']['hour']);
 					}
 					else
 					{
+                        #debug('aaSSSSSSSSSSSSSSSSSSSS');
 									return 0;
 					}
 	}

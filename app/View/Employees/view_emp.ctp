@@ -94,20 +94,9 @@ $this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'option
 <th >Log-out</th>
 <th >L</th>
 <th >UT</th>
-<th >OT1</th>
-<th >OT2</th>
-<th >OT3</th>
-<th >OT4</th>
-<th >OT5</th>
-<th >N1</th>
-<th >N2</th>
-<th >N3</th>
-<th >N4</th>
-<th >N5</th>
-<th >H1</th>
-<th >H2</th>
-<th >H3</th>
-<th >H4</th>
+<?php foreach($trans as $t): ?>
+<th> <?php echo $t['Transaction']['name']; ?> </th>
+<?php endforeach; ?>
 <th >Remark</th>
 <th >OT</th>
 <th style='text-align:center;height:10px;'>Edit</th>
@@ -515,35 +504,15 @@ $ot2c = 0;
 				}
 				if (($temp_cin != null) && ($temp_cout != null))
 				{
-								if ( ($bg == 'bgcolor = #D6FFC2' and $remark == 'S Holiday'))
-								{
-												$ot3 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot3'.'/' );
-												$ot3b = $temp_scale;
-												$ot3total = $ot3total + $ot3;
-								}
-								else if (  ($bg != 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
-								{
-												$ot4 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot4'.'/' );
-												$ot4b = $temp_scale;
-												$ot4total = $ot4total + $ot4;
-								}
-								else if (  ($bg == 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
-								{
-												$ot5 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot5'.'/' );
-												$ot5b = $temp_scale;
-												$ot5total = $ot5total + $ot5;
-								}
-								else if ( ($bg == 'bgcolor = #D6FFC2' or $remark == 'S Holiday'))
-								{
-												$ot2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot2'.'/' );
-												$ot2c = $temp_scale;
-								}
-								else if ( $bg != 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'R Holiday')
-								{
-											$ot1 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'ot1'.'/' );
-											$ot1b = $temp_scale;
-											$ot1total = $ot1total + $ot1;
-								}
+					$otcode = $this->requestAction('Employees/getFetchRules/'. 'OT'.'/' );
+					$allcode = null;
+					foreach ($otcode as $ots):
+					{
+							$allcode = ($ots['Transaction']['fetch_rule']) . $allcode;	
+					}
+					 endforeach;
+					 $codeForEval = "'".$allcode."'";
+					 eval($allcode);
 				}
 
 #CODE FOR NIGHT DIFF
@@ -551,10 +520,11 @@ $ot2c = 0;
 				{	
 								$interval = night_difference(strtotime($tempCinDate.' '.$temp_cin),strtotime($tempCoutDate.' '.$temp_cout));
 								$ndCounter = floor($interval * 2) / 2;
-								if (($bg == 'bgcolor = #D6FFC2' and $remark == 'S Holiday'))
+								
+								if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))
 								{
-												if ($temp_start != '21:00:00'){
-																$nd3 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'nd3'.'/' );
+												if ($temp_start != "21:00:00"){
+																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );
 												}
 												else
 												{
@@ -563,10 +533,10 @@ $ot2c = 0;
 												$nd3b = $ndCounter;
 												$nd3total = $nd3total + $nd3;
 								}
-								else if (($bg != 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
+								else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))
 								{
-												if ($temp_start != '21:00:00'){
-																$nd4  =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'nd4'.'/' );
+												if ($temp_start != "21:00:00"){
+																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );
 												}
 												else
 												{
@@ -575,10 +545,10 @@ $ot2c = 0;
 												$nd4b = $ndCounter;
 												$nd4total = $nd4total + $nd4;
 								}
-								else if (($bg == 'bgcolor = #D6FFC2' and $remark == 'R Holiday'))
+								else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))
 								{
-												if ($temp_start != '21:00:00'){
-																$nd5 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'nd5'.'/' );
+												if ($temp_start != "21:00:00"){
+																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );
 												}
 												else
 												{								
@@ -587,10 +557,10 @@ $ot2c = 0;
 												$nd5b = $ndCounter;
 												$nd5total = $nd5total + $nd5;
 								}
-								else if (($bg == 'bgcolor = #D6FFC2' or $remark == 'S Holiday'))
+								else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))
 								{ 
-												if ($temp_start != '21:00:00'){
-																$nd2 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'nd2'.'/' );
+												if ($temp_start != "21:00:00"){
+																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );
 												}							
 												else{		
 																$nd2 = $ndCounter;
@@ -598,10 +568,10 @@ $ot2c = 0;
 												$nd2b = $ndCounter;
 												$nd2total = $nd2total + $nd2;
 								}
-								else if ($bg != 'bgcolor = #D6FFC2' and $remark != 'S Holiday' and $remark != 'R Holiday')
+								else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")
 								{
-												if ($temp_start != '21:00:00'){
-																$nd1 =  $this->requestAction('Incentives/getOverTime/'. $employee['Employee']['id'] .'/'. $curr_date .'/'. 'nd1'.'/' );
+												if ($temp_start != "21:00:00"){
+																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );
 												}										
 												else
 												{
