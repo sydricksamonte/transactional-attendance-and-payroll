@@ -511,75 +511,22 @@ $ot2c = 0;
 							$allcode = ($ots['Transaction']['fetch_rule']) . $allcode;	
 					}
 					 endforeach;
-					 $codeForEval = "'".$allcode."'";
 					 eval($allcode);
 				}
 
 #CODE FOR NIGHT DIFF
 				if (($temp_cin != null) && ($temp_cout != null))
 				{	
-								$interval = night_difference(strtotime($tempCinDate.' '.$temp_cin),strtotime($tempCoutDate.' '.$temp_cout));
-								$ndCounter = floor($interval * 2) / 2;
-								
-								if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))
-								{
-												if ($temp_start != "21:00:00"){
-																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );
-												}
-												else
-												{
-																$nd3 = $ndCounter;
-												}
-												$nd3b = $ndCounter;
-												$nd3total = $nd3total + $nd3;
-								}
-								else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))
-								{
-												if ($temp_start != "21:00:00"){
-																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );
-												}
-												else
-												{
-																$nd4 = $ndCounter;
-												}
-												$nd4b = $ndCounter;
-												$nd4total = $nd4total + $nd4;
-								}
-								else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))
-								{
-												if ($temp_start != "21:00:00"){
-																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );
-												}
-												else
-												{								
-																$nd5 = $ndCounter;				
-												}								
-												$nd5b = $ndCounter;
-												$nd5total = $nd5total + $nd5;
-								}
-								else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))
-								{ 
-												if ($temp_start != "21:00:00"){
-																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );
-												}							
-												else{		
-																$nd2 = $ndCounter;
-												}										
-												$nd2b = $ndCounter;
-												$nd2total = $nd2total + $nd2;
-								}
-								else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")
-								{
-												if ($temp_start != "21:00:00"){
-																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );
-												}										
-												else
-												{
-																$nd1 = $ndCounter;
-												}											
-												$nd1b = $ndCounter;
-												$nd1total = $nd1total + $nd1;
-								}
+					$interval = night_difference(strtotime($tempCinDate.' '.$temp_cin),strtotime($tempCoutDate.' '.$temp_cout));
+					$ndCounter = floor($interval * 2) / 2;
+					$ndcode = $this->requestAction('Employees/getFetchRules/'. 'ND'.'/' );
+					$allcode = null;
+					foreach ($ndcode as $nds):
+					{
+							$allcode = ($nds['Transaction']['fetch_rule']) . $allcode;	
+					}
+					 endforeach;
+					 eval($allcode);			
 				}
 #CODE FOR HOLIDAY
 				if (($temp_cin != null) && ($temp_cout != null))
