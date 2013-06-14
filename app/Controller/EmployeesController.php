@@ -15,7 +15,7 @@ class EmployeesController extends AppController{
 		'Scheduleoverride',
 		'Scheduleoverride_type',
 		'Historytype',
-
+        'Transaction',
 		'User',
 		'Checkinout',
 		'Holiday',
@@ -454,6 +454,8 @@ class EmployeesController extends AppController{
         }
 		public function view_emp($id=null)
         {
+            $trans = $this->Transaction->getAll();
+            $this->set(compact('total'));
             $sdate = date("Y-m-d", time());
 		    $total = $this->Cutoff->getCutOffAvailable($sdate);
 		    $this->set(compact('total'));
