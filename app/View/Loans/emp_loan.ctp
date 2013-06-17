@@ -4,8 +4,6 @@
 	echo $this->Form->input('emp_id', array('class' => 'input-medium search-query', 'label' => 'Search', 'type' => 'text'));
 	echo $this->Form->end('Search');
 ?>
-
-
 <div class="span3">
   <table>
     <thead>
@@ -42,6 +40,6 @@
 </td>
     </tr>
 		</tbody>
-    <? endforeach;?>
+    <?php endforeach;?>
   </table>
 </div>

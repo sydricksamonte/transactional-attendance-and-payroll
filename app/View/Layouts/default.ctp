@@ -31,132 +31,60 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
 
 		echo $this->Html->css('cake.generic');
 		echo $this->Html->css('bootstrap');
+		echo $this->Html->script('bootstrap-dropdown');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+
 </head>
 <body>
-&nbsp;&nbsp;
-
-<?php echo $this->Html->image('logo.jpg',array('alt'=>'CAKEPHP'))?>
-<font face="Brush Script MT" size=6></font>
-	<div id="container">
-		<div class="colorwhite" align="right">
-        <?php echo $this->Html->image('out.png',array('url'=>array('controller' => 'Users', 'action' => 'logout')));?>
-    	<?php echo $this->Html->link('Logout',array('controller' => 'Users', 'action' => 'logout'))?>
-   	</div>
-
-<center>
-		<div id="header">
-			<!--h1>
-			<?php //echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1-->
+	<div class="progress">
+		<div class="bar" style="padding:12px;width: 100%;margin-top:0;text-align:left"><?php echo $this->Html->image('logo.png',array('alt'=>'CAKEPHP'))?>
 		</div>
-<table><tr><td style="padding:30px;">
-		<div class="colorw">
-			<h2>Menu</h2>
-			<!--div class="btn btn-primary">
-			<?php #echo $this->Html->image('user--plus.png');?>
-			<?php #echo $this->Html->link('Add new employees',array('controller' => 'Employees','action' => 'add_employee'))?>
-			</div-->
-			
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('users.png');?>
-				<?php echo $this->Html->link('Employees',array('controller'=>'Employees','action' => 'index'))?>
-			</div>
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('calendar-search-result.png');?>
-				<?php #echo $this->Html->link('Shifts',array('controller' => 'Shifts', 'action' => 'index'))?>
-				<?php echo $this->Html->link('Shifts',array('controller' => 'Schedules', 'action' => 'index'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('clipboard--plus.png');?>
-				<?php echo $this->Html->link('Holidays',array('controller'=>'Holidays','action'=>'index'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('application-search-result.png');?>
-				<?php echo $this->Html->link('Groups',array('controller' => 'Groups', 'action' => 'index'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('users.png');?>
-				<?php echo $this->Html->link('Users', array('controller'=>'Users', 'action'=>'index'))?>
-			</div>
-      <div class="btn btn-primary">
-        <?php echo $this->Html->image('calendar.png');?>
-        <?php echo $this->Html->link('Cutoffs', array('controller'=>'Cutoffs', 'action'=>'view'))?>
-      </div>
-
-            <br>
-      		<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('address-book--plus.png');?>
-				<?php echo $this->Html->link('Update Logsheet',array('controller'=>'Employees','action'=>'upload'))?>
-			</div>
-
-			<!--br>
-				<div class="btn btn-primary">
-				<?php# echo $this->Html->image('ui-search-field.png');?>
-				<?php# echo $this->Html->link('History',array('controller' => 'Histories','action' => 'searchall'))?>
-			</div-->
-
-			<!--br>
-			<div class="btn btn-primary">
-				<?php #echo $this->Html->image('calendar--plus.png');?>
-				<?php #echo $this->Html->link('Add Shift',array('controller' => 'Shifts', 'action' => 'add'))?>
-			</div-->
-		
-      <div class="btn btn-primary">
-      <?php echo $this->Html->image('user--plus.png');?>
-      <?php echo $this->Html->link('Add Employee',array('controller' => 'Employees','action' => 'add_employee'))?>
-      </div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('clipboard-search-result.png');?>
-				<?php echo $this->Html->link('Add Holiday', array('controller'=>'Holidays', 'action'=>'add'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('address-book--plus.png');?>
-				<?php echo $this->Html->link('Add Group',array('controller' => 'Groups', 'action' => 'add'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('address-book.png');?>
-				<?php echo $this->Html->link('Add Loan', array('controller'=>'Loans', 'action'=>'emp_loan'))?>
-			</div>
-
-			<br>
-			<div class="btn btn-primary">
-				<?php echo $this->Html->image('user--plus.png');?>
-				<?php echo $this->Html->link('Add User', array('controller'=>'Users', 'action'=>'add'))?>
-			</div>
-
-      <div class="btn btn-primary">
-        <?php echo $this->Html->image('calendar-search-result.png');?>
-        <?php echo $this->Html->link('Payslip',array('controller' => 'Totals', 'action' => 'gotopayslip'))?>
-      </div>
-
-		</div>
-</td><td>
-		<div id="content">
-			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->fetch('content'); ?>
-		</div>
-</td></tr></table>
-		<div id="footer">
-			<?php /*echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+	</div>
+	
+	<div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav">
+                  <li><div style="padding:10px;"><?php echo $this->Html->image('users.png')."  ";?><?php echo $this->Html->link('Employees',array('controller'=>'Employees','action' => 'index'))?>
+				  <ul>
+					<li><?php echo $this->Html->link('Add Employee',array('controller' => 'Employees','action' => 'add_employee'))?></li>
+				  </ul>
+					</div></li>
+				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('calendar-search-result.png')."  ";?><?php echo $this->Html->link('Shifts',array('controller' => 'Schedules', 'action' => 'index'))?></div></li>
+                  <li><div style="padding:10px;"><?php echo $this->Html->image('clipboard--plus.png')."  ";?><?php echo $this->Html->link('Holidays',array('controller'=>'Holidays','action'=>'index'))?>
+				  <ul>
+					<li><?php echo $this->Html->link('Add Holiday', array('controller'=>'Holidays', 'action'=>'add'))?></li>
+				  </ul>
+					</div></li>
+                  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('application-search-result.png')."  ";?><?php echo $this->Html->link('Groups',array('controller' => 'Groups', 'action' => 'index'))?>
+				  <ul>
+					<li><?php echo $this->Html->link('Add Group',array('controller' => 'Groups', 'action' => 'add'))?></li>
+				  </ul>
+					</div></li>
+                  <li><div style="padding:10px;"><?php echo $this->Html->image('users.png')."  ";?><?php echo $this->Html->link('Users', array('controller'=>'Users', 'action'=>'index'))?>
+				  <ul>
+					<li><?php echo $this->Html->link('Add User', array('controller'=>'Users', 'action'=>'add'))?></li>
+				  </ul>
+					</div></li>
+                  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('calendar.png')."  ";?><?php echo $this->Html->link('Cutoffs', array('controller'=>'Cutoffs', 'action'=>'view'))?></div></li>
+				  <li><div style="padding:10px;"><?php echo $this->Html->image('address-book--plus.png')."  ";?><?php echo $this->Html->link('Update Logsheet',array('controller'=>'Employees','action'=>'upload'))?></div></li>
+				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('address-book.png')."  ";?><?php echo $this->Html->link('Loan', array('controller'=>'Loans', 'action'=>'emp_loan'))?></div></li>
+				  <li><div style="padding:10px;"><?php echo $this->Html->image('payslip.png')."  ";?><?php echo $this->Html->link('Payslip',array('controller' => 'Totals', 'action' => 'gotopayslip'))?></div></li>
+				  <li class="divider-vertical"><div style="padding:10px;"></div></li>
+			</ul>
+			<div style="padding:10px;" align="right"><?php echo $this->Html->image('out.png',array('url'=>array('controller' => 'Users', 'action' => 'logout')))."  ";?><?php echo $this->Html->link('Logout',array('controller' => 'Users', 'action' => 'logout'))?></div>
+        </div>
+    </div>
+	<div id="content" style="width:100%;">
+		<?php echo $this->Session->flash(); ?>
+		<?php echo $this->fetch('content'); ?>
+	</div>
+	<div id="footer">
+		<?php /*echo $this->Html->link(
+			$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
 					'http://www.cakephp.org/',
 					array('target' => '_blank', 'escape' => false)
 				);
