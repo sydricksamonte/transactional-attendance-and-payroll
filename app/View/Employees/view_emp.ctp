@@ -597,72 +597,26 @@ $ot2c = 0;
 							    else{	
 								    echo $trimTempCout;
 								};
-			if($temp_cout == null && $remark=='Absent'){
-				echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
-	echo "</td>
-				<td $bg>".$late.
-				"</td>
-        <td $bg>".$under.
-        "</td>";
+				if($temp_cout == null && $remark=='Absent'){
+					echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));
+				}
+				echo "</td><td $bg>".$late."</td><td $bg>".$under."</td>";
 				$bg1 = $bg;
-				if($ot1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($ot1 > 0 ){$bg1= $bg;}
-				echo  "<td $bg1>";if( $bg1== 'bgcolor = #CCB2FF' or $ot1b != 0) { echo $this->Html->link($ot1,array('controller' => 'Incentives', 'action' => 'ot', $employee['Employee']['id'], $curr_date, 'ot1',$ot1b));$bg1 = $bg;}else{echo $ot1;}
-				echo "</td>";
 				
-				if($ot2b!=0  and ($temp_start != null and $temp_end != null  and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($ot2 > 0){$bg1= $bg;} 
-				echo "<td $bg1>";if( $bg1== 'bgcolor = #CCB2FF' or $ot2b != 0){ echo $this->Html->link($ot2,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'ot2',$ot2b)); $bg1 = $bg;}else{echo $ot2;}
-       	echo "</td>";
+				$tagging = $this->requestAction('Employees/getTaggingRules/' );
+					$allcode = null;
+					
+						foreach ($tagging as $tcode):
+						{
+							$allcode = ($tcode['Transaction']['tagging_rule']) . $allcode;	
+						}
+						endforeach;
+					eval($allcode);	
 				
-				if($ot3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($ot3 > 0){$bg1= $bg;}
-       	echo "<td $bg1>";if($bg1== 'bgcolor = #CCB2FF' or $ot3b != 0){ echo $this->Html->link($ot3,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'ot3',$ot3b));$bg1 = $bg;}else{echo $ot3;}
-        echo "</td>";
-			 
-				if($ot4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= 'bgcolor = #CCB2FF';}if($ot4 > 0){$bg1= $bg;}	
-        echo "<td $bg1>";if($bg1== 'bgcolor = #CCB2FF' or $ot4b != 0){echo $this->Html->link($ot4,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'ot4',$ot4b)); $bg1 = $bg;}else{echo $ot4;}
-        echo "</td>";
-
-				if ($ot5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= 'bgcolor = #CCB2FF';}if($ot5 > 0){$bg1= $bg;}        
-				echo "<td $bg1>";if($bg1== 'bgcolor = #CCB2FF' or $ot5b != 0){echo $this->Html->link($ot5,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'ot5',$ot5b)); $bg1 = $bg;}else{echo $ot5;}
-        echo "</td>";
-
-
-				if($nd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($nd1 > 0){$bg1= $bg;}
-        echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd1b != 0){echo $this->Html->link($nd1,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'nd1',$nd1b)); $bg1 = $bg;}else{echo $nd1;}
-        echo "</td>";
-
-				if($nd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= 'bgcolor = #CCB2FF';}if($nd2 > 0){$bg1= $bg;}       
-echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd2b != 0){echo $this->Html->link($nd2,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'nd2',$nd2b)); $bg1 = $bg;}else{echo $nd2;}
-        echo "</td>";
-
-				if($nd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';} if($nd3 > 0){$bg1= $bg;}       
-echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd3b != 0){echo $this->Html->link($nd3,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'nd3',$nd3b)); $bg1 = $bg;}else{echo $nd3;}
-        echo "</td>";
-
-				if($nd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($nd4 > 0){$bg1= $bg;}
-        echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd4b != 0){echo $this->Html->link($nd4,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'nd4',$nd4b)); $bg1 = $bg;}else{echo $nd4;}
-        echo "</td>";
-
-				if($nd5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($nd5 > 0){$bg1= $bg;}
-        echo "<td $bg1>";if($bg1 == 'bgcolor = #CCB2FF' or $nd5b != 0){echo $this->Html->link($nd5,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'nd5',$nd5b));$bg1 = $bg;}else{echo $nd5;}
-        echo "</td>";
-
-				if($hd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($hd1 > 0){$bg1= $bg;}
-        echo "<td $bg1>";if($bg1== 'bgcolor = #CCB2FF' or $hd1b != 0){echo $this->Html->link($hd1,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'hd1',$hd1b));$bg1 = $bg;}else{echo $hd1;}
-        echo "</td>";
-        
-				if($hd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($hd2 > 0){$bg1= $bg;}
-				echo "<td $bg1>";if($hd2b != 0 or $bg1== 'bgcolor = #CCB2FF'){echo $this->Html->link($hd2,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'hd2',$hd2b));$bg1 = $bg;}else{echo $hd2;}
-        echo "</td>";
-       
-				if($hd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($hd3 > 0){$bg1= $bg;}
-				echo "<td $bg1>";if($hd3b != 0 or $bg1== 'bgcolor = #CCB2FF'){echo $this->Html->link($hd3,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'hd3',$hd3b));$bg1 = $bg;}else{echo $hd3;}
-        echo "</td>";
-       
-				if($hd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= 'bgcolor = #CCB2FF';}if($hd4 > 0){$bg1= $bg;} 
-				echo "<td $bg1>";if($hd4b != 0 or $bg1== 'bgcolor = #CCB2FF'){echo $this->Html->link($hd4,array('controller' => 'Incentives','action' => 'ot', $employee['Employee']['id'], $curr_date, 'hd4',$hd4b));$bg1 = $bg;}else{echo $hd4;}
-        echo "</td>
-
-        <td  $bg $fcolor>".$remark.
+	
+########################
+echo $ot1b;
+        echo "<td  $bg $fcolor>".$remark.
 				"</td>
 				<td $bg $otcolor>".$ot_remark.
 				"</td>

@@ -14,5 +14,13 @@ class Transaction extends AppModel{
             return ($rule);
         
     }
+    function getTaggingRule()
+    {
+            $rule = $this->find('all', array(
+			'conditions' => array ('execute' => '1','show' => '1' ),
+			'order' => 'id DESC')); 
+            return ($rule);
+        
+    }
 }
 ?>

@@ -457,6 +457,11 @@ class EmployeesController extends AppController{
             $fetch_rule = $this->Transaction->getFetchRule($type);
             return $fetch_rule;
         }
+        public function getTaggingRules()
+        {
+            $tag_rule = $this->Transaction->getTaggingRule();
+            return $tag_rule;
+        }
 		public function view_emp($id=null)
         {
             
@@ -469,15 +474,16 @@ class EmployeesController extends AppController{
 			    if ($this->data['Emp']['cut_off'] == null)
 			    {
 			        $dayCutOff = date('d');
-                    if (($dayCutOff >= '16') && ($dayCutOff <= '30'))
-                    {
-					    $sdates =  date('Y').'-'.date('m').'-11';
-                        $edates =  date('Y').'-'.date('m').'-25';
+                    if (($dayCutOff >= '11') && ($dayCutOff <= '25'))
+                    { 
+                        $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
+                        $edates =  date('Y').'-'.date('m').'-10';
+					   
                     }
                     else 
                     {
-						    $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
-                            $edates =  date('Y').'-'.date('m').'-10';
+					    $sdates =  date('Y').'-'.date('m').'-11';
+                        $edates =  date('Y').'-'.date('m').'-25';
                     }	
                 }
 				else
