@@ -95,7 +95,7 @@ $this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'option
 <th >L</th>
 <th >UT</th>
 <?php foreach($trans as $t): ?>
-<th> <?php echo $t['Transaction']['name']; ?> </th>
+<th> <?php echo $t['CompAdvanceRule']['name']; ?> </th>
 <?php endforeach; ?>
 <th >Remark</th>
 <th >OT</th>
@@ -508,7 +508,7 @@ $ot2c = 0;
 					$allcode = null;
 					foreach ($otcode as $ots):
 					{
-							$allcode = ($ots['Transaction']['fetch_rule']) . $allcode;	
+							$allcode = ($ots['CompAdvanceRule']['fetch_rule']) . $allcode;	
 					}
 					 endforeach;
 					 eval($allcode);
@@ -523,7 +523,7 @@ $ot2c = 0;
 					$allcode = null;
 					foreach ($ndcode as $nds):
 					{
-							$allcode = ($nds['Transaction']['fetch_rule']) . $allcode;	
+							$allcode = ($nds['CompAdvanceRule']['fetch_rule']) . $allcode;	
 					}
 					endforeach;
 					eval($allcode);			
@@ -548,7 +548,7 @@ $ot2c = 0;
 					$allcode = null;
 						foreach ($hdcode as $hds):
 						{
-							$allcode = ($hds['Transaction']['fetch_rule']) . $allcode;	
+							$allcode = ($hds['CompAdvanceRule']['fetch_rule']) . $allcode;	
 						}
 						endforeach;
 					eval($allcode);	
@@ -608,14 +608,14 @@ $ot2c = 0;
 					
 						foreach ($tagging as $tcode):
 						{
-							$allcode = ($tcode['Transaction']['tagging_rule']) . $allcode;	
+							$allcode = ($tcode['CompAdvanceRule']['tagging_rule']) . $allcode;	
 						}
 						endforeach;
 					eval($allcode);	
 				
 	
 ########################
-echo $ot1b;
+
         echo "<td  $bg $fcolor>".$remark.
 				"</td>
 				<td $bg $otcolor>".$ot_remark.
@@ -659,39 +659,31 @@ function formatAmount($amount)
 <th>Total (in hours)</th>
 <th>Amount</th>
 </tr> 
-<tr>
-<td>Regular days: </td>
-<td><?php echo $ot1total;?></td>
-<td><?php $ot1_amount = ((($h_rate * .25))* $ot1total); echo formatAmount($ot1_amount);  ?></td>
-</tr>
-<tr>
-<td>Special holiday or restday</td>
-<td><?php echo $ot2total ?></td>
-<td><?php $ot2_amount = ((($h_rate * .3))* $ot2total);echo formatAmount($ot2_amount); ?></td>
-</tr>
-<tr>
-<td>Special holiday & restday</td>
-<td><?php echo $ot3total ?></td>
-<td><?php $ot3_amount =((($h_rate * .5))* $ot3total); echo formatAmount($ot3_amount);?></td>
-</tr>
-<tr>
-<td>Regular holiday:</td>
-<td><?php echo $ot4total ?></td>
-<td><?php  $ot4_amount =((($h_rate * 1))* $ot4total);echo formatAmount($ot4_amount); ?></td>
-</tr>
-<tr>
-<td>Regular holiday & restday:</td>
-<td><?php echo $ot5total ?></td>
-<td><?php  $ot5_amount = ((($h_rate * 1.6))* $ot5total);echo formatAmount($ot5_amount); ?></td>
-</tr>
+<?php $tagging = $this->requestAction('Employees/getComputations/'. 'OT'.'/'  );
+		$otinittotal = 0;
+		$otalltotal = 0;
+		$otinitamount = 0;
+		$otamount = 0;
+						foreach ($tagging as $tcode):
+						{
+							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+										eval('$otinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+										$otalltotal = $otinittotal + $otalltotal; ?></td><?php
+							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+										eval('$otinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+										$otamount = $otinitamount + $otamount; ?></td></tr><?php
+						}
+						endforeach;
+?>
 <tr>
 <td>Total Overtime</td>
-<td><?php echo $ot1total + $ot2total + $ot3total + $ot4total + $ot5total; ?></td>
-<td><?php echo $otamount = formatAmount($ot1_amount + $ot2_amount + $ot3_amount + $ot4_amount + $ot5_amount);  ?></td>
+<td><?php echo $otalltotal; ?></td>
+<td><?php echo formatAmount($otamount);  ?></td>
 </tr>
 <tr>
 <td>Over Time with deductions</td>
-<?php $ottotals=($ot1_amount + $ot2_amount + $ot3_amount + $ot4_amount + $ot5_amount);?>
+<?php $ottotals=($otalltotal);?>
 <td colspan=2><center><?php echo formatAmount($deduc=$ottotals - ($ottotals * 0.10)); $otamount=$deduc;?></td>
 </tr>
 </table>
@@ -702,35 +694,27 @@ function formatAmount($amount)
 <th>Total (in hours)</th>
 <th>Amount</th>
 </tr>
-<tr>
-<td>Regular days: </td>
-<td><?php echo $nd1total;?></td>
-<td><?php  $nd1_amount =  ((($h_rate * .1))* $nd1total);echo formatAmount($nd1_amount);  ?></td>  
-</tr>
-<tr>
-<td>Special holiday or restday</td>
-<td><?php echo $nd2total ?></td>
-<td><?php  $nd2_amount = ((($h_rate * .3))* $nd2total); echo formatAmount($nd2_amount); ?></td>
-</tr>
-<tr>
-<td>Special holiday & restday</td>
-<td><?php echo $nd3total ?></td>
-<td><?php  $nd3_amount = ((($h_rate * .5))* $nd3total); echo formatAmount($nd3_amount); ?></td>
-</tr>
-<tr>
-<td>Regular holiday:</td>
-<td><?php echo $nd4total ?></td>
-<td><?php $nd4_amount = ((($h_rate * 1))* $nd4total); echo formatAmount($nd4_amount);?></td>
-</tr>
-<tr>
-<td>Regular holiday & restday:</td>
-<td><?php echo $nd5total ?></td>
-<td><?php $nd5_amount =((($h_rate * 1.6))* $nd5total); echo formatAmount($nd5_amount); ?></td>
-</tr>
+<?php $tagging = $this->requestAction('Employees/getComputations/'. 'ND'.'/'  );
+		$ndinittotal = 0;
+		$ndalltotal = 0;
+		$ndinitamount = 0;
+		$ndamount = 0;
+						foreach ($tagging as $tcode):
+						{
+							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+										eval('$ndinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+										$ndalltotal = $ndinittotal + $ndalltotal; ?></td><?php
+							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+										eval('$ndinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+										$ndamount = $ndinitamount + $ndamount; ?></td></tr><?php
+						}
+						endforeach;
+?>
 <tr>
 <td>Total Night Differential</td>
-<td><?php echo $nd1total + $nd2total + $nd3total + $nd4total + $nd5total; ?></td>
-<td><?php $ndamount = ($nd1_amount + $nd2_amount + $nd3_amount + $nd4_amount + $nd5_amount); echo formatAmount($ndamount); ?></td>
+<td><?php echo $ndalltotal; ?></td>
+<td><?php echo formatAmount($ndamount);  ?></td>
 </tr>
 
 </table>
@@ -742,32 +726,28 @@ function formatAmount($amount)
 <th>Total (in hours)</th>
 <th>Amount</th>
 </tr>
+<?php $tagging = $this->requestAction('Employees/getComputations/'. 'H'.'/'  );
+		$hdinittotal = 0;
+		$hdalltotal = 0;
+		$hdinitamount = 0;
+		$hdamount = 0;
+						foreach ($tagging as $tcode):
+						{
+							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+										eval('$hdinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+										$hdalltotal = $hdinittotal + $hdalltotal; ?></td><?php
+							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+										eval('$hdinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+										$hdamount = $hdinitamount + $hdamount; ?></td></tr><?php
+						}
+						endforeach;
+?>
 <tr>
-<td>Special holiday</td>
-<td><?php echo $hd1total ?></td>
-<td><?php  $hd1_amount = ((($h_rate * .3))* $hd1total); echo formatAmount($hd1_amount)?></td>
+<td>Total Night Differential</td>
+<td><?php echo $hdalltotal; ?></td>
+<td><?php echo formatAmount($hdamount);  ?></td>
 </tr>
-<tr>
-<td>Special holiday & restday</td>
-<td><?php echo $hd2total ?></td>
-<td><?php $hd2_amount = ((($h_rate * .5))* $hd2total); echo formatAmount($hd2_amount)?></td>
-</tr>
-<tr>
-<td>Regular holiday:</td>
-<td><?php echo $hd3total ?></td>
-<td><?php  $hd3_amount = ((($h_rate * 1))* $hd3total); echo formatAmount($hd3_amount)?></td>
-</tr>
-<tr>
-<td>Regular holiday & restday:</td>
-<td><?php echo $hd4total ?></td>
-<td><?php  $hd4_amount = ((($h_rate * 1.6))* $hd4total); echo formatAmount($hd4_amount)?></td>
-</tr>
-<tr>
-<td>Total Holiday pay</td>
-<td><?php echo $hd1total + $hd2total + $hd3total + $hd4total; ?></td>
-<td><?php $hdamount = ($hd1_amount + $hd2_amount + $hd3_amount + $hd4_amount); echo formatAmount($hdamount); ?></td>
-</tr>
-
 </table>
 </td></tr><tr><td>
 <table label="Salary" class="table table-bordered">
@@ -809,37 +789,28 @@ function formatAmount($amount)
 	$errorCount = 0;
 	}
 ?>
-<td>Lates: (in minutes)</td>
-<td><?php echo $late_total;?></td>
-<td><?php $late_amount = $late_total * $m_rate; echo number_format($late_amount, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Under times: (in minutes)</td>
-<td><?php echo $under_total ?></td>
-<td><?php $under_amount = $under_total * $m_rate; echo number_format($under_amount, 2, '.', ',');?></td>
-
-</tr>
-<tr>
-<td>Absents: (in days)</td>
-<td><?php echo $absent_total ?></td>
-<td><?php $absent_amount = $absent_total * $d_rate; echo number_format($absent_amount, 2, '.', ',');?></td>
-</tr>
-
-<tr>
-<td>No pay: (in days))</td>
-<td><?php echo $nopay_total ?></td>
-<td><?php $nopay_amount = $nopay_total * $d_rate; echo number_format($nopay_amount, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Half Days: (in days)</td>
-<td><?php echo $halfDayCount ?></td>
-<td><?php $half_day_amount = $halfDayCount * ($d_rate/2); echo number_format($half_day_amount, 2, '.', ',');?></td>
-</tr>
+<?php $tagging = $this->requestAction('Employees/fetchDeductions/'  );
+		$dedinittotal = 0;
+		$dedalltotal = 0;
+		$dedinitamount = 0;
+		$deduction_amount = 0;
+						foreach ($tagging as $tcode):
+						{
+							?><tr><td><?php echo($tcode['DeductionsRule']['desc']);?></td><?php
+							?><td><?php eval("echo " .$tcode['DeductionsRule']['var']. ";");
+										eval('$dedinittotal =  '.$tcode["DeductionsRule"]["var"]. ";");
+										$dedalltotal = $dedinittotal + $dedalltotal; ?></td><?php
+							?><td><?php eval("echo formatAmount(" .$tcode["DeductionsRule"]["computation_rule"]. ");");
+										eval('$dedinitamount =  '.$tcode["DeductionsRule"]["computation_rule"]. ";");
+										$deduction_amount = $dedinitamount + $deduction_amount; ?></td></tr><?php
+						}
+						endforeach;
+?>
 
 <tr>
 <td>Total Amount</td>
 <td><?php echo null ?></td>
-<td><?php $deduction_amount =$half_day_amount + $absent_amount + $nopay_amount + $late_amount + $under_amount; echo number_format($deduction_amount, 2, '.', ',');?></td>
+<td><?php echo number_format($deduction_amount, 2, '.', ',');?></td>
 </tr>
 
 </table>
