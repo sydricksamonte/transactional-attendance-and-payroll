@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2013 at 05:45 AM
+-- Generation Time: Jun 18, 2013 at 09:37 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -46,6 +46,48 @@ CREATE TABLE IF NOT EXISTS `checkinouts` (
 INSERT INTO `checkinouts` (`id`, `USERID`, `CHECKTIME`, `CHECKTYPE`, `VERIFYCODE`, `SENSORID`, `WorkCode`, `sn`, `UserExtFmt`) VALUES
 (17, 9, '2013-04-29 08:53:00', 'I', NULL, NULL, NULL, NULL, NULL),
 (18, 9, '2013-04-29 18:28:00', 'O', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comp_advance_rules`
+--
+
+CREATE TABLE IF NOT EXISTS `comp_advance_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `grouping` int(1) NOT NULL,
+  `var_total` varchar(45) NOT NULL,
+  `fetch_rule` varchar(999) NOT NULL,
+  `tagging_rule` varchar(999) NOT NULL,
+  `computation_rule` varchar(300) NOT NULL,
+  `show` tinyint(1) NOT NULL,
+  `execute` tinyint(4) NOT NULL,
+  `statement_sort` int(2) NOT NULL,
+  `desc` varchar(300) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `comp_advance_rules`
+--
+
+INSERT INTO `comp_advance_rules` (`id`, `name`, `grouping`, `var_total`, `fetch_rule`, `tagging_rule`, `computation_rule`, `show`, `execute`, `statement_sort`, `desc`) VALUES
+(1, 'OT1', 0, '$ot1total', 'else if ( $bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday") 								{ 											$ot1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot1"."/" ); 											$ot1b = $temp_scale; 											$ot1total = $ot1total + $ot1; 								}', 'if($ot1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot1 > 0 )\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n				\n				if($bg1== "bgcolor = #9966ff" or $ot1b != 0) \n				{ \n					echo $this->Html->link($ot1,array("controller" => "Incentives", "action" => "ot", $employee["Employee"]["id"], $curr_date, "ot1",$ot1b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot1;\n				}\n				echo "</td>";', ' $ot1_amount = ((($h_rate * .25))* $ot1total)', 1, 1, 5, 'Regular days'),
+(2, 'OT2', 0, '$ot2total', 'else if ( ($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday")) 								{\n											$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" ); 												$ot2c = $temp_scale; \n							}', 'if(($ot2b!=0 or $ot2c!= 0)  and ($temp_start != null and $temp_end != null  and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot2 > 0)\n				{\n					$bg1 = $bg;\n				} \n				echo "<td $bg1>";\n				\n				if( $bg1== "bgcolor = #9966ff" or ($ot2b != 0 or $ot2c != 0))\n				{ \nif ($ot2b == 0)\n{ $ot2b = $ot2c; }\n					echo $this->Html->link($ot2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot2",$ot2b)); \n					$bg1 = $bg;\n				}\n                                \n				else\n				{\n					echo $ot2;\n				}\n				\n				echo "</td>";', '$ot2_amount = ((($h_rate * .3))* $ot2total)', 1, 1, 4, 'Special holiday or restday'),
+(3, 'OT3', 0, '$ot3total', 'if(($bg == "bgcolor = #D6FFC2") and ($remark=="S Holiday")) 								 								{ 												$ot3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot3"."/" ); 												$ot3b = $temp_scale; 												$ot3total = $ot3total + $ot3; 								}', 'if($ot3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot3 > 0)\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot3b != 0)\n				{ \n					echo $this->Html->link($ot3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot3",$ot3b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot3;\n				}\n        \n				echo "</td>";', '$ot3_amount =((($h_rate * .5))* $ot3total)', 1, 1, 1, 'Special holiday & restday'),
+(4, 'OT4', 0, '$ot4total', 'else if (  ($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot4"."/" ); 												$ot4b = $temp_scale; 												$ot4total = $ot4total + $ot4; 								}', 'if($ot4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot4 > 0)\n				{\n					$bg1= $bg;\n				}	\n        \n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot4b != 0)\n				{\n					echo $this->Html->link($ot4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot4",$ot4b)); \n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot4;\n				}\n        \n				echo "</td>";', '$ot4_amount =((($h_rate * 1))* $ot4total)', 1, 1, 2, 'Regular holiday'),
+(5, 'OT5', 0, '$ot5total', 'else if (  ($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot5"."/" ); 												$ot5b = $temp_scale; 												$ot5total = $ot5total + $ot5; 								}', 'if ($ot5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n				$bg1= "bgcolor = #9966ff";\n				}\n				if($ot5 > 0)\n				{\n				$bg1= $bg;\n				}        \n				\n				echo "<td $bg1>";\n				if($bg1== "bgcolor = #9966ff" or $ot5b != 0)\n				{\n				echo $this->Html->link($ot5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot5",$ot5b));\n				$bg1 = $bg;\n				}\n				else\n				{\n				echo $ot5;\n				}\n				\n				echo "</td>";', '  $ot5_amount = ((($h_rate * 1.6))* $ot5total)', 1, 1, 3, 'Regular holiday & restday'),
+(6, 'ND1', 0, '$nd1total', 'else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")\n								{\n												if ($temp_start != "21:00:00"){\n																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );\n												}										\n												else\n												{\n																$nd1 = $ndCounter;\n												}											\n												$nd1b = $ndCounter;\n												$nd1total = $nd1total + $nd1;\n								}', '	if($nd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n		{\n			$bg1= "bgcolor = #9966ff";\n		}\n		if($nd1 > 0)\n		{\n			$bg1= $bg;\n		}\n        \n		echo "<td $bg1>";\n		\n		if($bg1 == "bgcolor = #9966ff" or $nd1b != 0)\n		{\n			echo $this->Html->link($nd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd1",$nd1b)); \n			$bg1 = $bg;\n		}\n		else\n		{\n			echo $nd1;\n		}\n		\n        echo "</td>";', '$nd1_amount =  ((($h_rate * .1))* $nd1total)', 1, 1, 5, 'Regular days'),
+(7, 'ND2', 0, '$nd2total', 'else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))\n								{ \n												if ($temp_start != "21:00:00"){\n																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );\n												}							\n												else{		\n																$nd2 = $ndCounter;\n												}										\n												$nd2b = $ndCounter;\n												$nd2total = $nd2total + $nd2;\n								}', 'if($nd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= "bgcolor = #9966ff";}if($nd2 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd2b != 0){echo $this->Html->link($nd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd2",$nd2b)); $bg1 = $bg;}else{echo $nd2;}\n        echo "</td>";', '$nd2_amount = ((($h_rate * .3))* $nd2total)', 1, 1, 4, 'Special holiday or restday'),
+(8, 'ND3', 0, '$nd3total', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );\n												}\n												else\n												{\n																$nd3 = $ndCounter;\n												}\n												$nd3b = $ndCounter;\n												$nd3total = $nd3total + $nd3;\n								}', 'if($nd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";} if($nd3 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd3b != 0){echo $this->Html->link($nd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd3",$nd3b)); $bg1 = $bg;}else{echo $nd3;}\n        echo "</td>";', '  $nd3_amount = ((($h_rate * .5))* $nd3total)', 1, 1, 1, 'Special holiday & restday'),
+(9, 'ND4', 0, '$nd4total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );\n												}\n												else\n												{\n																$nd4 = $ndCounter;\n												}\n												$nd4b = $ndCounter;\n												$nd4total = $nd4total + $nd4;\n								}', 'if($nd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd4 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd4b != 0){echo $this->Html->link($nd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd4",$nd4b)); $bg1 = $bg;}else{echo $nd4;}\n        echo "</td>";', '$nd4_amount = ((($h_rate * 1))* $nd4total)', 1, 1, 2, 'Regular holiday'),
+(10, 'ND5', 0, '$nd5total', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );\n												}\n												else\n												{								\n																$nd5 = $ndCounter;				\n												}								\n												$nd5b = $ndCounter;\n												$nd5total = $nd5total + $nd5;\n								}', 'if($nd5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd5 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd5b != 0){echo $this->Html->link($nd5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd5",$nd5b));$bg1 = $bg;}else{echo $nd5;}\n        echo "</td>";', '$nd5_amount =((($h_rate * 1.6))* $nd5total)', 1, 1, 3, 'Regular holiday & restday'),
+(11, 'H1', 0, '$hd1total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd1"."/" );\n																$hd1b = $holidayHours;\n																$hd1total = $hd1total + $hd1;\n												}\n\n', 'if($hd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n{$bg1= "bgcolor = #9966ff";}\nif($hd1 > 0){$bg1= $bg;}\n        echo "<td $bg1>";\n\nif($bg1== "bgcolor = #9966ff" or $hd1b != 0){echo $this->Html->link($hd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd1",$hd1b));$bg1 = $bg;}\nelse{echo $hd1;}\n        echo "</td>";', '$hd1_amount = ((($h_rate * .3))* $hd1total)', 1, 1, 4, 'Special holiday'),
+(12, 'H2', 0, '$hd2total', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd2"."/" );\n																$hd2b = $holidayHours;\n																$hd2total = $hd2total + $hd2;\n												}', 'if($hd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd2 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd2b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd2",$hd2b));$bg1 = $bg;}else{echo $hd2;}\n        echo "</td>";', '$hd2_amount = ((($h_rate * .5))* $hd2total)', 1, 1, 1, 'Special holiday & restday'),
+(13, 'H3', 0, '$hd3total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd3"."/" );\n																$hd3b = $holidayHours;\n																$hd3total = $hd3total + $hd3;\n												}', 'if($hd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd3 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd3b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd3",$hd3b));$bg1 = $bg;}else{echo $hd3;}\n        echo "</td>";', ' $hd3_amount = ((($h_rate * 1))* $hd3total)', 1, 1, 2, 'Regular holiday'),
+(14, 'H4', 0, '$hd4total', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd4"."/" );\n																$hd4b = $holidayHours;\n																$hd4total = $hd4total + $hd4;\n												}', 'if($hd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd4 > 0){$bg1= $bg;} \n				echo "<td $bg1>";if($hd4b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd4",$hd4b));$bg1 = $bg;}else{echo $hd4;}\n        echo "</td>";', '$hd4_amount = ((($h_rate * 1.6))* $hd4total)', 1, 1, 3, 'Regular holiday & restday'),
+(15, 'H1B', 0, '', 'else if (($bg == "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "S Holiday"))\n												{															$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" );\n																$ot2b = $holidayHours + $ot2c;\n																$ot2total = $ot2total + $ot2;\n											}	', '', '', 0, 1, 5, '');
 
 -- --------------------------------------------------------
 
@@ -136,6 +178,33 @@ CREATE TABLE IF NOT EXISTS `deductions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `deductions_rules`
+--
+
+CREATE TABLE IF NOT EXISTS `deductions_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `var` varchar(45) NOT NULL,
+  `desc` varchar(300) NOT NULL,
+  `computation_rule` varchar(999) NOT NULL,
+  `show` tinyint(6) NOT NULL,
+  `execute` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `deductions_rules`
+--
+
+INSERT INTO `deductions_rules` (`id`, `var`, `desc`, `computation_rule`, `show`, `execute`) VALUES
+(1, '$late_total', 'Lates: (in minutes)', '$late_total * $m_rate', 1, 1),
+(2, '$under_total', 'Under times: (in minutes)', '$under_total * $m_rate', 1, 1),
+(3, '$absent_total', 'Absents: (in days)', '$absent_total * $d_rate', 1, 1),
+(4, '$nopay_total', 'No pay: (in days)', ' $nopay_total * $d_rate', 1, 1),
+(5, '$halfDayCount', 'Half Days: (in days)', '$halfDayCount * ($d_rate/2)', 1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employees`
 --
 
@@ -182,7 +251,7 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (21, 90, 3, ' Randell', 'Dagami', '0', 1, '#zýBÀ', 1),
 (22, 91, 4, ' Fredrick', 'Rojas', '0', 1, '"', 1),
 (23, 93, 1, ' Vhilly', 'Santiago', '0', 1, '"', 1),
-(24, 94, 2, ' Noelyn', 'Gusi', '0', 1, '"', 1),
+(24, 94, 2, ' Noelyn', 'Gusi', '0', 1, ' ýBÀ', 1),
 (25, 95, 1, ' Chey', 'Luna', '0', 1, '"', 1),
 (26, 96, 1, ' Adrian', 'Sosa', '0', 1, '"', 1),
 (27, 98, 1, ' Juzen Khay', 'Tanga', '0', 1, '"', 1),
@@ -208,7 +277,7 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (47, 122, 4, ' Geoffrey Kim', 'Caringal', '0', 1, '"', 0),
 (48, 123, 4, ' Jose Jewel', 'Morales', '0', 1, '"', 1),
 (49, 124, 4, ' Kristian', 'Marin', '0', 1, '"', 1),
-(50, 125, 2, ' Neil', 'Cabug-os', '000034355345', 0, '#výBÀ', 1),
+(50, 125, 2, ' Neil', 'Cabug-os', '000034355345', 0, '#ýBÀO', 1),
 (51, 126, 4, ' Mary Ann', 'Mallari', '0', 1, '"', 1),
 (52, 127, 4, ' Maria Joanna', 'Sabeniano', '0', 1, '"', 0),
 (53, 128, 4, ' Philip', 'Tizon', '0', 1, '"', 0),
@@ -234,7 +303,7 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (73, 149, 4, ' Edd Julius', 'Tortoles', '0', 1, '"', 0),
 (74, 150, 4, ' Danica', 'Domingo', '0', 1, '"', 1),
 (75, 151, 7, ' Leandro', 'Sibal', '0', 1, '"', 1),
-(76, 152, 7, 'Ryouhei', 'Morita', '0', 0, '"', 1),
+(76, 152, 7, 'Ryouhei', 'Morita', '0', 0, ' ýBÀ', 1),
 (77, 154, 11, ' Gary', 'Mapa', '0', 0, '"', 1),
 (78, 157, 3, ' Manuel Luis', 'Nepomuceno', '0', 1, '"', 1),
 (79, 153, 4, 'Caluna', 'Casimiro', '0', 0, '"', 1),
@@ -285,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `emp_scheds` (
   KEY `emp_id` (`emp_id`),
   KEY `sched_id` (`sched_id`),
   KEY `week_id` (`week_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2300 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2434 ;
 
 --
 -- Dumping data for table `emp_scheds`
@@ -1459,7 +1528,141 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2296, -1, 77, 37),
 (2297, -1, 77, 38),
 (2298, -1, 77, 39),
-(2299, -1, 77, 40);
+(2299, -1, 77, 40),
+(2300, -1, 32, 11),
+(2301, -1, 32, 12),
+(2302, -1, 32, 13),
+(2303, -1, 32, 14),
+(2304, -1, 32, 15),
+(2305, -1, 32, 16),
+(2306, -1, 32, 17),
+(2307, -1, 32, 18),
+(2308, -1, 32, 19),
+(2309, -1, 32, 20),
+(2310, -1, 32, 21),
+(2311, -1, 32, 22),
+(2312, -1, 32, 23),
+(2313, -1, 32, 24),
+(2314, -1, 32, 25),
+(2315, -1, 32, 26),
+(2316, -1, 32, 27),
+(2317, -1, 32, 28),
+(2318, -1, 32, 29),
+(2319, -1, 32, 30),
+(2320, -1, 32, 31),
+(2321, -1, 32, 32),
+(2322, -1, 32, 33),
+(2323, -1, 32, 34),
+(2324, -1, 32, 35),
+(2325, -1, 32, 36),
+(2326, -1, 32, 37),
+(2327, -1, 32, 38),
+(2328, -1, 32, 39),
+(2329, -1, 32, 40),
+(2330, -1, 37, 11),
+(2331, -1, 37, 12),
+(2332, -1, 37, 13),
+(2333, -1, 37, 14),
+(2334, -1, 37, 15),
+(2335, -1, 37, 16),
+(2336, -1, 37, 17),
+(2337, -1, 37, 18),
+(2338, -1, 37, 19),
+(2339, -1, 37, 20),
+(2340, -1, 37, 21),
+(2341, -1, 37, 22),
+(2342, -1, 37, 23),
+(2343, -1, 37, 24),
+(2344, -1, 37, 25),
+(2345, -1, 37, 26),
+(2346, -1, 37, 27),
+(2347, -1, 37, 28),
+(2348, -1, 37, 29),
+(2349, -1, 37, 30),
+(2350, -1, 37, 31),
+(2351, -1, 37, 32),
+(2352, -1, 37, 33),
+(2353, -1, 37, 34),
+(2354, -1, 37, 35),
+(2355, -1, 37, 36),
+(2356, -1, 37, 37),
+(2357, -1, 37, 38),
+(2358, -1, 37, 39),
+(2359, -1, 37, 40),
+(2360, -1, 75, 42),
+(2361, -1, 75, 41),
+(2362, -1, 75, 6),
+(2363, -1, 75, 7),
+(2364, -1, 75, 8),
+(2365, -1, 75, 9),
+(2366, -1, 75, 10),
+(2367, -1, 75, 11),
+(2368, -1, 75, 12),
+(2369, -1, 75, 13),
+(2370, -1, 75, 14),
+(2371, -1, 75, 15),
+(2372, -1, 75, 16),
+(2373, -1, 75, 17),
+(2374, -1, 75, 18),
+(2375, -1, 75, 19),
+(2376, -1, 75, 20),
+(2377, -1, 75, 21),
+(2378, -1, 75, 22),
+(2379, -1, 75, 23),
+(2380, -1, 75, 24),
+(2381, -1, 75, 25),
+(2382, -1, 75, 26),
+(2383, -1, 75, 27),
+(2384, -1, 75, 28),
+(2385, -1, 75, 29),
+(2386, -1, 75, 30),
+(2387, -1, 75, 31),
+(2388, -1, 75, 32),
+(2389, -1, 75, 33),
+(2390, -1, 75, 34),
+(2391, -1, 75, 35),
+(2392, -1, 75, 36),
+(2393, -1, 75, 37),
+(2394, -1, 75, 38),
+(2395, -1, 75, 39),
+(2396, -1, 75, 40),
+(2397, -1, 76, 42),
+(2398, -1, 76, 41),
+(2399, -1, 76, 6),
+(2400, -1, 76, 7),
+(2401, -1, 76, 8),
+(2402, -1, 76, 9),
+(2403, -1, 76, 10),
+(2404, -1, 76, 11),
+(2405, -1, 76, 12),
+(2406, -1, 76, 13),
+(2407, -1, 76, 14),
+(2408, -1, 76, 15),
+(2409, -1, 76, 16),
+(2410, -1, 76, 17),
+(2411, -1, 76, 18),
+(2412, -1, 76, 19),
+(2413, -1, 76, 20),
+(2414, -1, 76, 21),
+(2415, -1, 76, 22),
+(2416, -1, 76, 23),
+(2417, -1, 76, 24),
+(2418, -1, 76, 25),
+(2419, -1, 76, 26),
+(2420, -1, 76, 27),
+(2421, -1, 76, 28),
+(2422, -1, 76, 29),
+(2423, -1, 76, 30),
+(2424, -1, 76, 31),
+(2425, -1, 76, 32),
+(2426, -1, 76, 33),
+(2427, -1, 76, 34),
+(2428, -1, 76, 35),
+(2429, -1, 76, 36),
+(2430, -1, 76, 37),
+(2431, -1, 76, 38),
+(2432, -1, 76, 39),
+(2433, -1, 76, 40);
 
 -- --------------------------------------------------------
 
@@ -2439,7 +2642,7 @@ CREATE TABLE IF NOT EXISTS `histories` (
   KEY `sched_id` (`sched_id`),
   KEY `create_by` (`create_by`),
   KEY `scheduleoverride_id` (`scheduleoverride_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=223 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=224 ;
 
 --
 -- Dumping data for table `histories`
@@ -2667,7 +2870,8 @@ INSERT INTO `histories` (`id`, `history_type_id`, `emp_id`, `sched_id`, `schedul
 (219, 4, 39, NULL, 199, '2013-05-17', '2013-05-17', '2013-06-07 10:00:01', 2),
 (220, 4, 39, NULL, 201, '2013-05-15', '2013-05-15', '2013-06-10 04:42:28', 2),
 (221, 4, 50, NULL, 202, '2013-05-14', '2013-05-14', '2013-06-10 04:46:15', 2),
-(222, 4, 50, NULL, 203, '2013-05-14', '2013-05-14', '2013-06-10 04:47:50', 2);
+(222, 4, 50, NULL, 203, '2013-05-14', '2013-05-14', '2013-06-10 04:47:50', 2),
+(223, 4, 76, NULL, 201, '2013-06-06', '2013-06-06', '2013-06-17 10:48:01', 2);
 
 -- --------------------------------------------------------
 
@@ -2731,7 +2935,7 @@ INSERT INTO `holidays` (`id`, `date`, `name`, `regular`, `authorize`) VALUES
 (12, '2013-05-01', 'Labor Day', 1, 1),
 (13, '2013-05-13', 'Elections', 0, 1),
 (14, '2013-06-05', 'Labor Day', 1, 1),
-(15, '2013-05-24', 'Independence Day', 0, 1);
+(15, '2013-05-24', 'Independence Day', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2746,7 +2950,7 @@ CREATE TABLE IF NOT EXISTS `incentives` (
   `date` date NOT NULL,
   `hour` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `incentives`
@@ -2777,7 +2981,11 @@ INSERT INTO `incentives` (`id`, `emp_id`, `type`, `date`, `hour`) VALUES
 (26, 88, 'ot2', '2013-05-14', '0'),
 (27, 39, 'ot1', '2013-05-24', '0'),
 (29, 39, 'hd1', '2013-05-24', '8'),
-(31, 39, 'ot2', '2013-05-24', '1');
+(31, 39, 'ot2', '2013-05-24', '1'),
+(32, 76, 'ot1', '2013-05-27', '1'),
+(33, 50, 'ot1', '2013-05-27', '1'),
+(34, 50, 'ot1', '2013-05-30', '2'),
+(36, 50, 'ot4', '2013-06-05', '0');
 
 -- --------------------------------------------------------
 
@@ -3295,7 +3503,7 @@ CREATE TABLE IF NOT EXISTS `scheduleoverrides` (
   KEY `change_by` (`change_by`),
   KEY `emp_id` (`emp_id`),
   KEY `scheduleoverride_type_id` (`scheduleoverride_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=201 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=202 ;
 
 --
 -- Dumping data for table `scheduleoverrides`
@@ -3469,7 +3677,8 @@ INSERT INTO `scheduleoverrides` (`id`, `emp_id`, `time_in`, `time_out`, `start_d
 (197, 14, '21:00:00', '18:00:00', '2013-04-28', '2013-04-28', 0, '2013-05-14 13:52:14', 1, 1),
 (198, 39, '09:00:00', '18:00:00', '2013-05-16', '2013-05-16', 0, '2013-05-21 08:19:36', 3, 1),
 (199, 39, '09:00:00', '18:00:00', '2013-05-17', '2013-05-17', 0, '2013-06-07 09:59:57', 3, 2),
-(200, 77, '06:00:00', '15:00:00', '2013-05-18', '2013-05-18', 0, '2013-05-22 08:13:20', 7, 2);
+(200, 77, '06:00:00', '15:00:00', '2013-05-18', '2013-05-18', 0, '2013-05-22 08:13:20', 7, 2),
+(201, 76, '09:00:00', '18:00:00', '2013-06-06', '2013-06-06', 0, '2013-06-17 10:47:51', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -3779,44 +3988,6 @@ INSERT INTO `totals` (`id`, `cutoff_id`, `emp_id`, `monthly`, `account_number`, 
 (90, 10, '37', '"', '0', 0, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '0', '1'),
 (91, 10, '99', '"', '0000-0000-0000', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '0', '1'),
 (92, 10, '135', '"', '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, '0', '1');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `transactions`
---
-
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `fetch_rule` varchar(999) NOT NULL,
-  `tagging_rule` varchar(999) NOT NULL,
-  `show` tinyint(1) NOT NULL,
-  `execute` tinyint(4) NOT NULL,
-  `statement_sort` int(2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `name`, `fetch_rule`, `tagging_rule`, `show`, `execute`, `statement_sort`) VALUES
-(1, 'OT1', 'else if ( $bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday") 								{ 											$ot1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot1"."/" ); 											$ot1b = $temp_scale; 											$ot1total = $ot1total + $ot1; 								}', 'if($ot1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot1 > 0 )\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n				\n				if($bg1== "bgcolor = #9966ff" or $ot1b != 0) \n				{ \n					echo $this->Html->link($ot1,array("controller" => "Incentives", "action" => "ot", $employee["Employee"]["id"], $curr_date, "ot1",$ot1b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot1;\n				}\n				echo "</td>";', 1, 1, 5),
-(2, 'OT2', 'else if ( ($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday")) 								{\n											$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" ); 												$ot2c = $temp_scale; \n							}', 'if(($ot2b!=0 or $ot2c!= 0)  and ($temp_start != null and $temp_end != null  and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot2 > 0)\n				{\n					$bg1 = $bg;\n				} \n				echo "<td $bg1>";\n				\n				if( $bg1== "bgcolor = #9966ff" or ($ot2b != 0 or $ot2c != 0))\n				{ \nif ($ot2b == 0)\n{ $ot2b = $ot2c; }\n					echo $this->Html->link($ot2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot2",$ot2b)); \n					$bg1 = $bg;\n				}\n                                \n				else\n				{\n					echo $ot2;\n				}\n				\n				echo "</td>";', 1, 1, 4),
-(3, 'OT3', 'if(($bg == "bgcolor = #D6FFC2") and ($remark=="S Holiday")) 								 								{ 												$ot3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot3"."/" ); 												$ot3b = $temp_scale; 												$ot3total = $ot3total + $ot3; 								}', 'if($ot3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot3 > 0)\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot3b != 0)\n				{ \n					echo $this->Html->link($ot3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot3",$ot3b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot3;\n				}\n        \n				echo "</td>";', 1, 1, 1),
-(4, 'OT4', 'else if (  ($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot4"."/" ); 												$ot4b = $temp_scale; 												$ot4total = $ot4total + $ot4; 								}', 'if($ot4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot4 > 0)\n				{\n					$bg1= $bg;\n				}	\n        \n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot4b != 0)\n				{\n					echo $this->Html->link($ot4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot4",$ot4b)); \n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot4;\n				}\n        \n				echo "</td>";', 1, 1, 2),
-(5, 'OT5', 'else if (  ($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot5"."/" ); 												$ot5b = $temp_scale; 												$ot5total = $ot5total + $ot5; 								}', 'if ($ot5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n				$bg1= "bgcolor = #9966ff";\n				}\n				if($ot5 > 0)\n				{\n				$bg1= $bg;\n				}        \n				\n				echo "<td $bg1>";\n				if($bg1== "bgcolor = #9966ff" or $ot5b != 0)\n				{\n				echo $this->Html->link($ot5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot5",$ot5b));\n				$bg1 = $bg;\n				}\n				else\n				{\n				echo $ot5;\n				}\n				\n				echo "</td>";', 1, 1, 3),
-(6, 'ND1', 'else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")\n								{\n												if ($temp_start != "21:00:00"){\n																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );\n												}										\n												else\n												{\n																$nd1 = $ndCounter;\n												}											\n												$nd1b = $ndCounter;\n												$nd1total = $nd1total + $nd1;\n								}', '	if($nd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n		{\n			$bg1= "bgcolor = #9966ff";\n		}\n		if($nd1 > 0)\n		{\n			$bg1= $bg;\n		}\n        \n		echo "<td $bg1>";\n		\n		if($bg1 == "bgcolor = #9966ff" or $nd1b != 0)\n		{\n			echo $this->Html->link($nd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd1",$nd1b)); \n			$bg1 = $bg;\n		}\n		else\n		{\n			echo $nd1;\n		}\n		\n        echo "</td>";', 1, 1, 5),
-(7, 'ND2', 'else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))\n								{ \n												if ($temp_start != "21:00:00"){\n																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );\n												}							\n												else{		\n																$nd2 = $ndCounter;\n												}										\n												$nd2b = $ndCounter;\n												$nd2total = $nd2total + $nd2;\n								}', 'if($nd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= "bgcolor = #9966ff";}if($nd2 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd2b != 0){echo $this->Html->link($nd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd2",$nd2b)); $bg1 = $bg;}else{echo $nd2;}\n        echo "</td>";', 1, 1, 4),
-(8, 'ND3', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );\n												}\n												else\n												{\n																$nd3 = $ndCounter;\n												}\n												$nd3b = $ndCounter;\n												$nd3total = $nd3total + $nd3;\n								}', 'if($nd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";} if($nd3 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd3b != 0){echo $this->Html->link($nd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd3",$nd3b)); $bg1 = $bg;}else{echo $nd3;}\n        echo "</td>";', 1, 1, 1),
-(9, 'ND4', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );\n												}\n												else\n												{\n																$nd4 = $ndCounter;\n												}\n												$nd4b = $ndCounter;\n												$nd4total = $nd4total + $nd4;\n								}', 'if($nd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd4 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd4b != 0){echo $this->Html->link($nd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd4",$nd4b)); $bg1 = $bg;}else{echo $nd4;}\n        echo "</td>";', 1, 1, 2),
-(10, 'ND5', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );\n												}\n												else\n												{								\n																$nd5 = $ndCounter;				\n												}								\n												$nd5b = $ndCounter;\n												$nd5total = $nd5total + $nd5;\n								}', 'if($nd5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd5 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd5b != 0){echo $this->Html->link($nd5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd5",$nd5b));$bg1 = $bg;}else{echo $nd5;}\n        echo "</td>";', 1, 1, 3),
-(11, 'H1', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd1"."/" );\n																$hd1b = $holidayHours;\n																$hd1total = $hd1total + $hd1;\n												}\n\n', 'if($hd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n{$bg1= "bgcolor = #9966ff";}\nif($hd1 > 0){$bg1= $bg;}\n        echo "<td $bg1>";\n\nif($bg1== "bgcolor = #9966ff" or $hd1b != 0){echo $this->Html->link($hd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd1",$hd1b));$bg1 = $bg;}\nelse{echo $hd1;}\n        echo "</td>";', 1, 1, 4),
-(12, 'H2', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd2"."/" );\n																$hd2b = $holidayHours;\n																$hd2total = $hd2total + $hd2;\n												}', 'if($hd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd2 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd2b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd2",$hd2b));$bg1 = $bg;}else{echo $hd2;}\n        echo "</td>";', 1, 1, 1),
-(13, 'H3', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd3"."/" );\n																$hd3b = $holidayHours;\n																$hd3total = $hd3total + $hd3;\n												}', 'if($hd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd3 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd3b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd3",$hd3b));$bg1 = $bg;}else{echo $hd3;}\n        echo "</td>";', 1, 1, 2),
-(14, 'H4', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd4"."/" );\n																$hd4b = $holidayHours;\n																$hd4total = $hd4total + $hd4;\n												}', 'if($hd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd4 > 0){$bg1= $bg;} \n				echo "<td $bg1>";if($hd4b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd4",$hd4b));$bg1 = $bg;}else{echo $hd4;}\n        echo "</td>";', 1, 1, 3),
-(15, 'H1B', 'else if (($bg == "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "S Holiday"))\n												{															$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" );\n																$ot2b = $holidayHours + $ot2c;\n																$ot2total = $ot2total + $ot2;\n											}	', '', 0, 1, 5);
 
 -- --------------------------------------------------------
 

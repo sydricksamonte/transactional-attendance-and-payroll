@@ -15,7 +15,7 @@ class EmployeesController extends AppController{
 		'Scheduleoverride',
 		'Scheduleoverride_type',
 		'Historytype',
-        'Transaction',
+        'CompAdvanceRule',
 		'User',
 		'Checkinout',
 		'Holiday',
@@ -28,7 +28,8 @@ class EmployeesController extends AppController{
 		'Total',
 		'Cutoff',
 		'Retro',
-		'Loan'
+		'Loan',
+        'DeductionsRule'
 	);
 	
 	public $helpers = array('Html','Form');
@@ -455,18 +456,33 @@ class EmployeesController extends AppController{
         }
         public function getFetchRules($type)
         {
-            $fetch_rule = $this->Transaction->getFetchRule($type);
+            $fetch_rule = $this->CompAdvanceRule->getFetchRule($type);
+            return $fetch_rule;
+        }
+        public function getComputations($type)
+        {
+            $fetch_rule = $this->CompAdvanceRule->getComputations($type);
             return $fetch_rule;
         }
         public function getTaggingRules()
         {
-            $tag_rule = $this->Transaction->getTaggingRule();
+            $tag_rule = $this->CompAdvanceRule->getTaggingRule();
             return $tag_rule;
+        }
+        public function getDesc($type)
+        {
+            $desc = $this->CompAdvanceRule->getDesc($type);
+            return $desc;
+        }
+        public function fetchDeductions()
+        {
+            $desc = $this->DeductionsRule->getAll();
+            return $desc;
         }
 		public function view_emp($id=null)
         {
             
-            $trans = $this->Transaction->getAll();
+            $trans = $this->CompAdvanceRule->getAll();
             $this->set(compact('trans'));
             $sdate = date("Y-m-d", time());
 		    $total = $this->Cutoff->getCutOffAvailable($sdate);
