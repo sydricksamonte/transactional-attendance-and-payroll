@@ -1,5 +1,6 @@
-<div class="span13">
-<h2>New Group</h2>
+<h3>New Group</h3>
+<div class="formstyle">
+
 <?php
 echo $this->Form->create('Group');
 echo $this->Form->input('name');

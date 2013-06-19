@@ -1,10 +1,9 @@
-<div class="span13">
+<h3>Employee Profile</h3>
+<div class="formstyle">
 <?php //debug($groups);
 $gName =($gp['Employee']['subgroup_id']);
 $statuslist=array('','Single','Married');
  ?>
-
-  <h2>Employee Profile</h2>
 <?php
   echo $this->Form->create('Employee',array('action' => 'edit'));
   echo $this->Form->input('id');
@@ -20,6 +19,7 @@ $statuslist=array('','Single','Married');
   echo $this->Form->input('account_id',array('label'=> 'AUB account', 'type'=>'text'));
 
   echo $this->Form->input('employed', array('label' => 'Employed'));
+  echo "<br><br><center>";
   echo $this->Form->end('Save');
 ?>
 </div>

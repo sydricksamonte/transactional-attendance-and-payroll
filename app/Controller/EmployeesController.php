@@ -53,6 +53,7 @@ class EmployeesController extends AppController{
                     $this->Session->setFlash('Logsheet has been updated');
                 }else{
                     $this->Session->setFlash('Failed to upload');
+					
                 }
             }
             else

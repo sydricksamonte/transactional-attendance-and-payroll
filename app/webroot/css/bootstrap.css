@@ -364,7 +364,7 @@ div .span13 {
 
 
 div .span3 {
-	width: 1500px;
+	width: 98%;
 }
 
 .span2 {
@@ -2035,6 +2035,7 @@ table {
   background-color: white;
   border-collapse: collapse;
   border-spacing: 0;
+  color:black;
 }
 
 .table {

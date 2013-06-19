@@ -48,7 +48,7 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
 			<!--h1>
 			<?php //echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1-->
 		</div>
-		<div id="content"  style="margin-left:30%;width:30%;">
+		<div id="content" >
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
 		</div>

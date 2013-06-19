@@ -1,5 +1,5 @@
-<div class="span13">
-<h1>SubGroup</h1>
+<h3>SubGroup</h3>
+<div class="formstyle">
 <?php
     echo $this->Form->create('SubGroup', array('action' => 'edit'));
 		echo $this->Form->input('name');

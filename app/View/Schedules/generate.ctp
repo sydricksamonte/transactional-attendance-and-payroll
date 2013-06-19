@@ -6,14 +6,16 @@
 <?php echo $this->Html->link("Reshuffle", array('action' => 'generate', $netType)); ?>
 </div>
 <div class="btn btn-primary" style='width:40px'><?php echo $this->Html->link("Save", array('action' => 'save')); ?></div>
-<div><table class="table-bordered"><thead><tr><th>
-<?php if ($unable != null) { echo 'Unable to generate schedule(s) for: '; ?> </th></tr></thead><br><tbody><tr><td>
+<div>
+<br><br>
+
+<?php if ($unable != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: '; ?> </th></tr></thead><br><tbody><tr><td>
 <?php foreach ($names as $u): 
 			 ?><?php {	echo $u;  ?><br><?php }
 		endforeach;}
  ?>
-</td></tr></tbody></table></div></div><br>
-<table class="table-bordered">
+</td></tr></tbody></table></div></div>
+<table class="table-bordered" style="width:98%">
   <thead>
     <tr>
       <th>Employee</th>

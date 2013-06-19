@@ -44,13 +44,13 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 	<td>Night Differential</td><td><?php echo formatAmount($empS['Total']['night_diff']);?></td>
 </tr>
 <tr>
-	<td>Over Time</td><td><?php echo formatAmount($empS['Total']['OT'])?></td>
+	<td>Over Time</td><td><?php echo formatAmount($empS['Total']['OT']);?></td>
 </tr>
 <tr>
-	<td>Attendance Bonus</td><td><?php echo formatAmount($empS['Total']['att_bonus'])?></td>
+	<td>Attendance Bonus</td><td><?php echo formatAmount($empS['Total']['att_bonus']);?></td>
 </tr>
 <tr>
-	<td>Holiday Pay</td><td><?php echo  formatAmount($empS['Total']['holiday'])?></td>
+	<td>Holiday Pay</td><td><?php echo  formatAmount($empS['Total']['holiday']);?></td>
 </tr>
 	</table>
 </td><td>
@@ -95,4 +95,4 @@ echo  formatAmount($tard1 + $tard2);
 </table>
 </center>
 <hr>
-<? endforeach; ?>
+<?php endforeach; ?>

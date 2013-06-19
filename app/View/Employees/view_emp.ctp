@@ -42,45 +42,33 @@ else {
 <a href="javascript:window.history.back()"><--Back</a>
 </div>
 <div class="sp1">
-<h2>Employee Profile</h2>
-<table class='table table-striped'>
-<tr>
-<td>Employee ID:</td>
-<td><?php echo $employee['Employee']['id']; ?></td>
-</tr>
-<tr>
-<td>Name:</td>
-<td><?php echo $employee['Employee']['last_name'].', '.$employee['Employee']['first_name']; ?></td>
-</tr>
-<tr>
-<td>Group:</td>
-<td><?php echo $employee['SubGroup']['name']; ?></td>
-</tr>
-<tr>
+<h3>Employee Profile</h3>
+	<div class="formstyle" style="width:68%;">
+		Employee ID: &nbsp;&nbsp;&nbsp;
+			<b><?php echo $employee['Employee']['id']; ?></b>
+		<br><br>Name: &nbsp;&nbsp;&nbsp;
+			<b><?php echo $employee['Employee']['last_name'].', '.$employee['Employee']['first_name']; ?></b>
+		<br><br>Group: &nbsp;&nbsp;&nbsp;
+			<b><?php echo $employee['SubGroup']['name']; ?></b>
+		<br><br>Status: &nbsp;&nbsp;&nbsp;
+			<b><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></b>
 
-<tr>
-<td>Status:</td>
-<td><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></td>
-</tr>
-<tr>
-<td><?php if ($empAuth == 1){ echo 'Shift Schedule';}?></td>
-<td class='colow'><?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:170px">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?></td>
-</tr>
-<tr>
-<td><?php if($empAuth == 1){echo 'Cut-off End Date'; }  ?></td>
-<td><?php echo
-$this->Form->create('Emp',array('method' => 'post')).
-'<table><tr><td>'.
-$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).
-'</td></tr></table>'.
-
-'<br>'.$this->Form->end('View schedule');
-
-?>
-</td>
-</tr>
-</table>
-</div>
+	<table style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;">
+	<tr>
+		<td style="vertical-align:middle"><b><?php if ($empAuth == 1){ echo 'Shift Schedule:';}?></b></td>
+		<td><?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:170px">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?></td>
+	</tr>
+	<tr>
+	  <td><b><?php if($empAuth == 1){echo 'Cut-off End Date:'; }?></b></td>
+	  <td><?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).'</td>
+	</tr>
+	<tr>
+		<td colspan=2 style="text-align:center">'.$this->Form->end('View schedule');?></td>
+	</tr>
+	</table>
+	</div>
+	<br>
+	
 <h2>Schedule</h2>
 <div class="span3" style='height:700px'>
 
@@ -649,6 +637,7 @@ function formatAmount($amount)
 	return number_format($amount, 2, '.', ',');  
 }
 ?>
+
 <h2>Total Computation</h2>
 <div class="spantable">
 <table >

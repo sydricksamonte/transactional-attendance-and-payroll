@@ -95,8 +95,30 @@ class LoansController extends AppController {
     }
 	}
 	public function edit_emp_loan($emp_id) {
-					$empname=$this->Employee->find('first',array('fields'=>array('Employee.id','Employee.first_name','Employee.last_name'),'conditions'=>array('Employee.id'=>$emp_id)));
-					$this->set(compact('empname'));
+			$empname = $this->Employee->find('first',array(
+	            'fields' => array(
+                    'Employee.id',
+                    'Employee.first_name',
+                    'Employee.last_name',
+                    'Employee.employed',
+                    'SubGroup.name',
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'left',
+                        'table' => 'sub_groups',
+                        'alias' => 'SubGroup',
+                        'conditions' => array(
+                        'Employee.subgroup_id =SubGroup.id'
+                        )
+                    ),
+                ),
+                'conditions' => array(
+                    'Employee.id' => $emp_id
+                ),
+            ));
+              
+			$this->set(compact('empname'));
 
 					$emploans=$this->Loan->find('all',array('conditions' => array('Loan.emp_id'=>$emp_id)));
 					$this->set(compact('emploans'));

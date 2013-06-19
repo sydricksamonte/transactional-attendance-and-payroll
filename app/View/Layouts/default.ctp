@@ -79,7 +79,7 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
         </div>
     </div>
 	<div id="content" style="width:100%;">
-		<?php echo $this->Session->flash(); ?>
+		<div style="width:70%"><?php echo $this->Session->flash(); ?></div>
 		<?php echo $this->fetch('content'); ?>
 	</div>
 	<div id="footer">

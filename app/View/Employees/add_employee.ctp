@@ -1,3 +1,5 @@
+<h3>Add Employee</h3>
+<div class="formstyle">
 <?php
 echo $this->Form->create('Employee');
 echo $this->Form->input('subgroup_id');
@@ -10,6 +12,7 @@ echo $this->Form->input('account_id',array('label'=> 'AUB account', 'type'=>'tex
 
 echo $this->Form->input('Employee.employed', array('value' => '1', 'type' => 'hidden'));
 echo $this->Form->input('Employee.id', array('value' => null, 'type' => 'hidden'));
+echo "<br><br><center>";
 echo $this->Form->end("Add Employee");
 ?>
-
+</div>

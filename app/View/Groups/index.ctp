@@ -7,7 +7,7 @@
 ?>    
 </div>
 <div class="sp1">
- <table width=1080 class="table table-striped">
+ <table style="width:50%;margin-left:30px;" class="bordered">
 	<thead>    
 	<tr>
       <th style="text-align:center" width=153>Group ID</th>
