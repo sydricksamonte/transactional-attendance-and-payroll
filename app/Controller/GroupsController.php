@@ -38,7 +38,7 @@ class GroupsController extends AppController {
 												$this->data = $this->Group->read();
 								} else {
 												if ($this->Group->save($this->data)) {
-																$this->Session->setFlash('The group has been updated.');
+																$this->Session->setFlash('The group has been updated.','success');
 																$this->redirect(array('action' => 'index'));
 												}
 								}
@@ -46,14 +46,14 @@ class GroupsController extends AppController {
 
 				function delete($id) {
 								if ($this->Group->delete($id)) {
-												$this->Session->setFlash('The group with id: ' . $id . ' has been deleted.');
+												$this->Session->setFlash('The group with id: ' . $id . ' has been deleted.','success');
 												$this->redirect(array('action' => 'index'));
 								}
 				}
 				function add() {
 								if (!empty($this->data)) {
 												if ($this->Group->save($this->data)) {
-																$this->Session->setFlash('The group has been saved.');
+																$this->Session->setFlash('The group has been saved.','success');
 																$this->redirect(array('action' => 'index'));
 												}
 								}

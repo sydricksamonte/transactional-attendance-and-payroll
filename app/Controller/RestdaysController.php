@@ -18,21 +18,21 @@
         $this->data = $this->Restday->read();
     } else {
         if ($this->Restday->save($this->data)) {
-            $this->Session->setFlash('Restday has been updated.');
+            $this->Session->setFlash('Restday has been updated.','success');
             $this->redirect(array('action' => 'index'));
         }
     }
     }
        function delete($id) {
     if ($this->Restday->delete($id)) {
-        $this->Session->setFlash('Restday with id: ' . $id . ' has been deleted.');
+        $this->Session->setFlash('Restday with id: ' . $id . ' has been deleted.','success');
         $this->redirect(array('action' => 'index'));
     }
     }
         function add() {
         if (!empty($this->data)) {
             if ($this->Restday->save($this->data)) {
-                $this->Session->setFlash('Restday has been saved.');
+                $this->Session->setFlash('Restday has been saved.','success');
                 $this->redirect(array('action' => 'index'));
             }
         }

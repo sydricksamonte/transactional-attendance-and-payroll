@@ -1,4 +1,4 @@
-<?php echo $this->Session->flash('auth'); ?>
+<?php #echo $this->Session->flash('auth'); ?>
 <div class="formstyle" style="width:28%;margin-left:275px;">
 <?php echo $this->Form->create('User'); ?>
     <fieldset>

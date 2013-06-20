@@ -9,7 +9,7 @@ class HolidaysController extends AppController{
 	public function add(){
 		if (!empty($this->data)){
 			if ($this->Holiday->save($this->data)){
-				$this->Session->setFlash('Holiday saved.');
+				$this->Session->setFlash('Holiday saved.','success');
 				$this->redirect(array('action'=>'index'));
 			}
 		}	
@@ -17,7 +17,7 @@ class HolidaysController extends AppController{
 
 	public function view($id=null){
 		if(!$id){
-			$this->Session->setFlash('Invalid Holiday');
+			$this->Session->setFlash('Invalid Holiday','failed');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('holiday',$this->Holiday->findById($id));
@@ -30,7 +30,7 @@ class HolidaysController extends AppController{
 			$this->data = $this->Holiday->read();
 		} else {
 			if ($this->Holiday->save($this->data)){
-				$this->Session->setFlash('Holiday has been updated.');
+				$this->Session->setFlash('Holiday has been updated.','success');
 				$this->redirect(array('action'=>'index'));
 			}
 		}

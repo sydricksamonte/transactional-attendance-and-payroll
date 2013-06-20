@@ -51,15 +51,15 @@ class EmployeesController extends AppController{
                 $dbName = $_SERVER["DOCUMENT_ROOT"] ."/aps/". $file['name'];
                 $uploading = move_uploaded_file($file['tmp_name'], $dbName);
                 if($uploading){
-                    $this->Session->setFlash('Logsheet has been updated');
+                    $this->Session->setFlash('Logsheet has been updated','success');
                 }else{
-                    $this->Session->setFlash('Failed to upload');
+                    $this->Session->setFlash('Failed to upload','failed');
 					
                 }
             }
             else
             {
-                $this->Session->setFlash('Invalid file');
+                $this->Session->setFlash('Invalid file','failed');
             }
         }
 	}
@@ -142,7 +142,7 @@ class EmployeesController extends AppController{
 
 		function delete($id){
 						if($this->Employee->delete($id)){
-										$this->Session->setFlash('Employee has been deleted.');
+										$this->Session->setFlash('Employee has been deleted.','success');
 										$this->redirect(array('action' => 'index'));
 						}
 		}
@@ -236,12 +236,12 @@ class EmployeesController extends AppController{
 																			 $this->set(compact('existingId'));																			 
 																			 if ($existingId == null){
 																							 $this->EmpSched->save($this->request->data);
-																							 $this->Session->setFlash('Schedule has been successfully added');
+																							 $this->Session->setFlash('Schedule has been successfully added','success');
 																			 }
 																			 else{
 																							 $this->request->data['EmpSched']['id'] = $existingId['EmpSched']['id'];
 																							 $this->EmpSched->save($this->request->data);
-																							 $this->Session->setFlash('Schedule has been updated');
+																							 $this->Session->setFlash('Schedule has been updated','success');
 																			 }
 															 }
 															 endforeach;
@@ -338,12 +338,12 @@ class EmployeesController extends AppController{
 						$condEndDate = $this->Schedule->findExSched($reqEDate,$id,$schedId);
 
 						if (($condStartDate == true)&&($this->data['action_taken'] == $hisType)){
-										$this->Session->setFlash('Target start date exists on this employees schedule.');
+										$this->Session->setFlash('Target start date exists on this employees schedule.','failed');
 						} else if (($condEndDate == true)&&($this->data['action_taken'] == $hisType)){
-										$this->Session->setFlash('Target end date exists on this employees schedule.');
+										$this->Session->setFlash('Target end date exists on this employees schedule.','failed');
 						}
 						else if ($reqSDate > $reqEDate){
-										$this->Session->setFlash('Invalid date range');
+										$this->Session->setFlash('Invalid date range','failed');
 						} else {
 										if (empty($this->data)) {
 														$this->data = $this->Schedule->read();
@@ -364,7 +364,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['sched_id']  = $schedId;
 																		$this->request->data['id'] = null;
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('The schedule has been updated.');
+																		$this->Session->setFlash('The schedule has been updated.','success');
 																		$this->redirect(array('action' => 'view_emp',$id));
 														}
 										}
@@ -661,7 +661,7 @@ class EmployeesController extends AppController{
             {
                 $eData['Employee']['monthly']  =$this->Employee->encryptValue($this->data['Employee']['monthly']);
                 if ($this->Employee->save($eData)) {
-                    $this->Session->setFlash('Employee information has been updated.');
+                    $this->Session->setFlash('Employee information has been updated.','success');
                     $this->redirect(array( 'controller' => 'Employees',
                     'action' => 'view_emp', $id));
                 }
@@ -717,7 +717,7 @@ class EmployeesController extends AppController{
 														$this->request->data['Employee']['monthly'] = $secretMonthly;										
 														$this->request->data['Employee']['id'] =$this->Employee->getLastInsertID();
 														$this->Employee->save($this->request->data);													
-														$this->Session->setFlash('New Employee Saved!');
+														$this->Session->setFlash('New Employee Saved!','success');
 														$this->redirect(array('action' => 'index'));
 										}
 						}
@@ -768,7 +768,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);																	
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully marked as restday.');
+																		$this->Session->setFlash('Schedule successfully marked as restday.','success');
 														}
 										}
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '4') {
@@ -779,7 +779,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);																	
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully marked as sick leave.');
+																		$this->Session->setFlash('Schedule successfully marked as sick leave.','success');
 														}
 										}
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '3') {
@@ -790,7 +790,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);																	
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully marked as vacation leave.');
+																		$this->Session->setFlash('Schedule successfully marked as vacation leave.','success');
 														}
 										}
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '5') {
@@ -801,7 +801,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully marked as half day.');
+																		$this->Session->setFlash('Schedule successfully marked as half day.','success');
 														}
 										}
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '1') {
@@ -812,7 +812,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);															
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully changed.');
+																		$this->Session->setFlash('Schedule successfully changed.','success');
 														}
 										}
                                         	else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '2') {
@@ -823,7 +823,7 @@ class EmployeesController extends AppController{
 																		$this->request->data['id'] = null;
 																		$this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);															
 																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('Schedule successfully changed.');
+																		$this->Session->setFlash('Schedule successfully changed.','success');
 														}
 										}
 										 else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '6') {
@@ -834,7 +834,7 @@ class EmployeesController extends AppController{
                                     $this->request->data['id'] = null;
                                     $this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);
                                     $this->History->save($this->request->data);
-                                    $this->Session->setFlash('Schedule marked as leave with no pay.');
+                                    $this->Session->setFlash('Schedule marked as leave with no pay.','success');
                             }
                     }
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '7') {
@@ -845,12 +845,12 @@ class EmployeesController extends AppController{
                                     $this->request->data['id'] = null;
                                     $this->request->data['scheduleoverride_id'] = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd);
                                     $this->History->save($this->request->data);
-                                    $this->Session->setFlash('Schedule successfully marked as offset.');
+                                    $this->Session->setFlash('Schedule successfully marked as offset.','success');
                             }
                     }
 										else if ($this->data['Scheduleoverride']['scheduleoverride_type_id'] == '9') {
 														$this->Scheduleoverride->delete($this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd));
-														$this->Session->setFlash('Excemption successfully removed.');
+														$this->Session->setFlash('Excemption successfully removed.','success');
                             
                     }
 
@@ -1003,13 +1003,13 @@ class EmployeesController extends AppController{
                    if($this->Checkinout->save($this->data))
                    {
                        
-                           $this->Session->setFlash('Log Entry Saved!');
+                           $this->Session->setFlash('Log Entry Saved!','success');
                            $this->request->data['Checkinout']['USERID'] = $employee['Employee']['userinfo_id'];
                            $this->request->data['Checkinout']['CHECKTIME'] = $this->data['Checkinout']['CHECKTIME2'];
                            $this->request->data['Checkinout']['CHECKTYPE'] = 'O';
                            $this->request->data['Checkinout']['id'] = NULL;
                            $this->Checkinout->save($this->request->data);
-                           $this->Session->setFlash('Log Entry Saved!');
+                           $this->Session->setFlash('Log Entry Saved!','success');
                            $this->redirect(array('action' => 'view_emp', $id));
                    }
            }

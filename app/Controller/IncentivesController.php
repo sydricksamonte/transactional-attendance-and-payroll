@@ -40,7 +40,7 @@ class IncentivesController extends AppController{
 								$this->Incentive->delete($ids);
 								if($this->Incentive->save($this->data))
 								{
-												$this->Session->setFlash('Log Entry Saved!');
+												$this->Session->setFlash('Log Entry Saved!','success');
 												$this->redirect(array('controller' => 'Employees', 'action' => 'view_emp', $emp_id));
 								}
 				}

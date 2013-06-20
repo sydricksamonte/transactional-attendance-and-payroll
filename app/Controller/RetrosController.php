@@ -67,9 +67,9 @@ class RetrosController extends AppController{
 													$this->Retro->set('retropay',$this->data['Retro']['Retro Pay']);
 													$this->Retro->set('cutoff_id',$cutoff);
 													if ($this->Retro->save($this->request->data)) {
-																	$this->Session->setFlash('Retro pay has been updated.');
+																	$this->Session->setFlash('Retro pay has been updated.','success');
 													} else {
-																	$this->Session->setFlash('Unable to update.');
+																	$this->Session->setFlash('Unable to update.','failed');
 													}
 									}
 
@@ -81,9 +81,9 @@ class RetrosController extends AppController{
 													$this->Retro->set('retropay',$this->data['Retro']['Retro Pay']);
 													$this->Retro->set('cutoff_id',$cutoff);
 													if ($this->Retro->save($this->request->data)) {
-																	$this->Session->setFlash('Employee\' Retro pay has been saved.');
+																	$this->Session->setFlash('Employee\' Retro pay has been saved.','success');
 													} else {
-																	$this->Session->setFlash('Unable to Save.');
+																	$this->Session->setFlash('Unable to Save.','failed');
 													}
 									}
 
