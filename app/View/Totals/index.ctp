@@ -1,5 +1,7 @@
+
 <style type="text/css">
-table {width:100%;}
+table {width:100%;border-width:1px;}
+table,td{border:1px solid black;}
 thead { background-color:#0e90d2;color:#FFFFFF;text-align:center; position:fixed; top:0px; }
 thead th { height:50px;}
 tbody {background-color:#cccccc;color:#000000;text-align:center; overflow: scroll; margin:0px; }
@@ -65,7 +67,7 @@ function formatAmount($amount)
       <?php foreach ($total as $t): ?>
 <tr>
 
-<?php if ($t['Total']['error'] > 0){ $bg = "style='background-color:white;border:1px;'";}else { $bg = ''; } ?>
+<?php if ($t['Total']['error'] > 0){ $bg = "style='background-color:white;'";}else { $bg = ''; } ?>
 				<?php $decBasic = Security::cipher($t['Total']['monthly'], 'my_key');?>
 
  <?php echo "<td $bg width=300>". $this->Html->link( $t['Emp']['last_name'].', '.$t['Emp']['first_name'], array('controller'=>'Employees','action' => 'view_emp', $t['Total']['emp_id']))."</td>" ?>
@@ -79,7 +81,7 @@ function formatAmount($amount)
 				
 <?php echo "<td $bg width=100>". $t['Total']['absents']."</td>" ?>
 				<?php echo "<td $bg width=100>". $t['Total']['lates']."</td>" ?>
-        <?php echo "<td $bg width=100>".  formatAmount($t['Total']['deductions'])."</td>" ?>
+        <?php echo "<td $bg width=100>".  formatAmount(($t['Total']['deductions'])*-1)."</td>" ?>
 
 				<?php echo "<td $bg width=100>". formatAmount($t['Total']['att_bonus'])."</td>" ?>
 				<?php echo "<td $bg width=100>". formatAmount($t['Total']['sss'])."</td>" ?>
@@ -97,4 +99,3 @@ function formatAmount($amount)
 				</tr>
       <?php endforeach; ?>
     </tbody></table></div>
-

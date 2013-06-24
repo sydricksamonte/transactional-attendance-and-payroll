@@ -673,7 +673,7 @@ function formatAmount($amount)
 <tr>
 <td>Over Time with deductions</td>
 <?php $ottotals=($otalltotal);?>
-<td colspan=2><center><?php echo formatAmount($deduc=$ottotals - ($ottotals * 0.10)); $otamount=$deduc;?></td>
+<td colspan=2><center><?php echo formatAmount($deduc=$otamount - ($otamount * 0.10)); $otamount=$deduc;?></td>
 </tr>
 </table>
 </td><td>

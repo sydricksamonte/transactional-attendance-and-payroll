@@ -25,40 +25,41 @@ class TotalsController extends AppController{
 		'Loan'
   );
 
-		function saveInfo($date,$id,$basic,$account_id,$absent,$late,$deduc,$att, $sss, $ph, $pag,$tax, $ot,$nd,$hd,$net,$error,$hmdf,$sssL )
+#		function saveInfo($date,$id,$basic,$account_id,$absent,$late,$deduc,$att, $sss, $ph, $pag,$tax, $ot,$nd,$hd,$net,$error,$hmdf,$sssL )
+		function saveInfo($dateId,$employeeID,$basic,$account_id,$absent_total,$late,$deduct_amnt,$attbonus,$sss,$philhealth,$pagibig,$tax,$otamount,$ndamount,$hdamount,$net_pay,$errorCount,$hmdfLoan,$ssLoan)
 		{
            
-						if ($this->Total->findCutOff($date, $id) == null){
+						if ($this->Total->findCutOff($dateId, $employeeID) == null){
 										$Total['id'] = null; 
 						}
 						else
 						{
-										$existEmp = $this->Total->findCutOff($date, $id);
+										$existEmp = $this->Total->findCutOff($dateId, $employeeID);
 										$Total['id'] = $existEmp;
 						}
-                        if ($net < 1)
-                            {$error= $error+1;
+                        if ($net_pay < 1)
+                            {$error= $errorCount+1;
                             }
-                            echo $net;
-						$Total['cutoff_id'] = $date;	 
-						$Total['emp_id'] = $id;
+                            echo $net_pay;
+						$Total['cutoff_id'] = $dateId;	 
+						$Total['emp_id'] = $employeeID;
 						$Total['monthly'] = $basic;
 						$Total['account_number'] = $account_id;
-						$Total['absents'] = $absent;
+						$Total['absents'] = $absent_total;
 						$Total['lates'] = $late;
-						$Total['deductions'] = $deduc;
-						$Total['att_bonus'] = $att;
+						$Total['deductions'] = $deduct_amnt;
+						$Total['att_bonus'] = $attbonus;
 						$Total['sss'] = $sss;
-						$Total['phil_health'] = $ph;
-						$Total['pagibig'] = $pag;
+						$Total['phil_health'] = $philhealth;
+						$Total['pagibig'] = $pagibig;
 						$Total['tax'] = $tax;
-						$Total['OT'] =number_format($ot, 2, '.', ''); 
-						$Total['night_diff'] =number_format($nd, 2, '.', '');
-						$Total['holiday'] =number_format($hd, 2, '.', '');
-						$Total['net_pay'] = $net;
-						$Total['error'] = $error;
-						$Total['hmdf_loan'] = $hmdf;
-                        $Total['sss_loan'] = $sssL;
+						$Total['OT'] =number_format($otamount, 2, '.', ''); 
+						$Total['night_diff'] =number_format($ndamount, 2, '.', '');
+						$Total['holiday'] =number_format($hdamount, 2, '.', '');
+						$Total['net_pay'] = $net_pay;
+						$Total['error'] = $errorCount;
+						$Total['hmdf_loan'] = $hmdfLoan;
+                        $Total['sss_loan'] = $ssLoan;
 						$this->Total->save($Total);	
                         
 		}
@@ -151,7 +152,7 @@ class TotalsController extends AppController{
 		public function index($id)
 		{
 						$this->layout='payslip';
-						$total = $this->Total->fetchEmployeesOfCutOff(10);
+						$total = $this->Total->fetchEmployeesOfCutOff($id);
 						$this->set(compact('total'));
 		}
 
