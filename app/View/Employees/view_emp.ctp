@@ -16,6 +16,7 @@ $under_total = 0;
 $absent_total = 0;
 $nopay_total = 0;
 $attbonus=0;
+$ot_total =0;
 $ot_amount = 0; $ot1_amount = 0; $ot2_amount = 0; $ot3_amount = 0; $ot4_amount = 0; $ot5_amount = 0;
 $nd_amount = 0; $nd1_amount = 0; $nd2_amount = 0; $nd3_amount = 0; $nd4_amount = 0; $nd5_amount = 0;
 $hd1_amount = 0; $hd2_amount = 0; $hd3_amount = 0; $hd4_amount = 0;
@@ -23,10 +24,9 @@ $late_amount = 0;
 $under_amount = 0;
 $absent_amount = 0;
 $nopay_amount = 0;
+$half_day_amount = 0;
 $gov_mandated = 0;
-$otamount = 0; 
-$ndamount = 0; 
-$hdamount = 0;
+$otamount = 0; $ndamount = 0; $hdamount = 0;
 $dayCutOff = date('d');
 if (($dayCutOff >= '1') && ($dayCutOff <= '15'))
 {
@@ -53,7 +53,7 @@ else {
 		<br><br>Status: &nbsp;&nbsp;&nbsp;
 			<b><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></b>
 
-	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;">
+	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;border-bottom:1px solid rgb(149, 211, 240);">
 	<b><?php if ($empAuth == 1){ echo '';}?></b>
 		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?>
 	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
@@ -132,17 +132,12 @@ function night_difference($start_work,$end_work)
 }
 ?>
 <?php
-				{
-						$tagging = $this->requestAction('Employees/getInitValues/'  );
-	
-						foreach ($tagging as $tcode):
-						{
-							 eval($tcode["CompAdvanceRule"]["var_total"]."=0;");
-									
-						}
-						endforeach;
-				}
+$ot1total = 0; $ot2total = 0; $ot3total = 0; $ot4total = 0; $ot5total = 0;
+$nd1total = 0; $nd2total = 0; $nd3total = 0; $nd4total = 0; $nd5total = 0;
+$hd1total = 0; $hd2total = 0; $hd3total = 0; $hd4total = 0;
 $errorCount = 0 ; $restDayCount = 0; $vacationLeaveCount = 0; $offSetCount = 0 ; $sickLeaveCount = 0; $absentCount = 0; $halfDayCount = 0;
+$nd1 = 0; $nd2 = 0; $nd3 = 0; $nd4 = 0; $nd5 = 0;
+$hd1 = 0; $hd2 = 0; $hd3 = 0; $hd4 = 0;
 
 $temp_scale =0;
 $holiday_type = 0; 
@@ -192,17 +187,10 @@ $curr_date = mktime(0,0,0,01,01,date("Y"));
 $yearend_date = mktime(23,59,59,12,31,date("Y"));
 
 while ($curr_date <= $yearend_date){
-{
-				$tagging = $this->requestAction('Employees/getInitValues/'  );
-	
-						foreach ($tagging as $tcode):
-						{
-							 eval($tcode["CompAdvanceRule"]["var_showing"]."=0;");
-							 eval($tcode["CompAdvanceRule"]["var_actual"]."=0;");
-									
-						}
-						endforeach;
-				}
+$ot1b = 0; $ot2b = 0; $ot3b = 0; $ot4b = 0; $ot5b = 0;
+$ot1 = 0; $ot2 = 0; $ot3 = 0; $ot4 = 0; $ot5 = 0;
+$nd1b = 0; $nd2b = 0; $nd3b = 0; $nd4b = 0; $nd5b = 0;
+$hd1b = 0; $hd2b = 0; $hd3b = 0; $hd4b = 0; $hd5b = 0;
 				$curr_date_myd = date('M d, Y', $curr_date);
 				if (!isset($temp[$curr_date_myd."-starttime"]) && isset($cout_all[$curr_date_myd])){
 								$curr_date_myd_minus_one = date('M d, Y', strtotime('-1 day'.$curr_date_myd));
@@ -483,7 +471,7 @@ while ($curr_date <= $yearend_date){
 				$trimTempCout = substr($temp_cout, 0, -3);
 				$tempCinDate = date('Y-m-d',strtotime($curr_date_myd));
 				$tempCoutDate = (strtotime($trimTempCin) > strtotime($trimTempCout)) ? date('Y-m-d',strtotime($curr_date_myd.'+1 day')) : date('Y-m-d',strtotime($curr_date_myd));
-
+$ot2c = 0;
 #CODE FOR OT	
 				if ($cout_time != null and $cin_time != null) {
 								if ($bg != "bgcolor = #D6FFC2"){
@@ -620,21 +608,13 @@ while ($curr_date <= $yearend_date){
 				"</td>
 				</tr>";
 				$curr_date += 86400;
+				$ot1 = 0;$ot2 = 0;$ot3 = 0;$ot4 = 0;$ot5 = 0;
 				$temp_scale = 0;
-				{
-				$tagging = $this->requestAction('Employees/getInitValues/'  );
-				$vShowing = null;
-				$vActual = null;
-						foreach ($tagging as $tcode):
-						{
-							$vShowing = ($tcode["CompAdvanceRule"]["var_showing"].'=0; ') . $vShowing;
-							$vActual = ($tcode["CompAdvanceRule"]["var_actual"].'=0; ') . $vActual;
-						
-						}
-						endforeach;
-						eval($vShowing);
-						eval($vActual);
-				}			
+				$nd1 = 0;$nd2 = 0;$nd3 = 0;$nd4 = 0;$nd5 = 0;
+				$hd1 = 0;$hd2 = 0;$hd3 = 0;$hd4 = 0;
+				$ot1b = 0;$ot2b = 0;$ot3b = 0;$ot4b = 0;$ot5b = 0;
+				$nd1b = 0;$nd2b = 0;$nd3b = 0;$nd4b = 0;$nd5b = 0;
+				$hd1b = 0;$hd2b = 0;$hd3b = 0;$hd4b = 0;			
 				$temp_start = null;
 				$temp_end = null;
 	}
