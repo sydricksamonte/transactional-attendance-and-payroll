@@ -233,6 +233,12 @@ table tr td {
 	padding: 6px;
 	text-align: left;
 	vertical-align: top;
+	border-bottom:1px solid #ddd;
+}
+.noborder table tr td {
+	padding: 6px;
+	text-align: left;
+	vertical-align: top;
 	/*border-bottom:1px solid #ddd;*/
 }
 table tr:nth-child(even) {

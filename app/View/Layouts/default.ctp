@@ -53,7 +53,11 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
 					<li><?php echo $this->Html->link('Add Employee',array('controller' => 'Employees','action' => 'add_employee'))?></li>
 				  </ul>
 					</div></li>
-				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('calendar-search-result.png')."  ";?><?php echo $this->Html->link('Shifts',array('controller' => 'Schedules', 'action' => 'index'))?></div></li>
+				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('calendar-search-result.png')."  ";?><?php echo $this->Html->link('Shifts',array('controller' => 'Schedules', 'action' => 'index'))?>
+				  				  <ul>
+					<li><?php echo $this->Html->link('Shifting Rules',array('controller' => 'Schedules','action' => 'rule'))?></li>
+				  </ul>
+				  </div></li>
                   <li><div style="padding:10px;"><?php echo $this->Html->image('clipboard--plus.png')."  ";?><?php echo $this->Html->link('Holidays',array('controller'=>'Holidays','action'=>'index'))?>
 				  <ul>
 					<li><?php echo $this->Html->link('Add Holiday', array('controller'=>'Holidays', 'action'=>'add'))?></li>
