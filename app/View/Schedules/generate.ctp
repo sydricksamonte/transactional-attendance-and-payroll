@@ -14,6 +14,13 @@
 			 ?><?php {	echo $u;  ?><br><?php }
 		endforeach;}
  ?>
+ <?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
+<?php foreach ($empNoSched as $en): 
+			 ?><?php {	echo $en['Employee']['last_name'].', '.$en['Employee']['first_name'];  
+						echo $this->Html->link('Add Schedule', array('controller'=>'Employees','action' => 'view_emp', $en['Employee']['id']));?>
+			 <br><?php }
+		endforeach;}
+ ?>
 </td></tr></tbody></table></div></div>
 <table class="table-bordered" style="width:98%">
   <thead>
