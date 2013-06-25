@@ -39,6 +39,13 @@ class CompAdvanceRule extends AppModel{
             return ($rule);
         
     }
+    function getInitValues()
+    {
+            $rule = $this->find('all', array(
+			'conditions' => array ('execute' => '1')));
+            return ($rule);
+        
+    }
  
 }
 ?>

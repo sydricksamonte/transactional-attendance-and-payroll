@@ -201,50 +201,103 @@ class Schedule extends AppModel{
     return $empFields;
 	}
 	 function getTempData(){
-    $tempFields = $this->find('all',array(
-      'fields' => array(
-        'Employee.id',
-        'Employee.first_name',
-        'Employee.last_name',
-        'Employee.subgroup_id',
-        'Schedule.time_in',
-        'Schedule.time_out',
-        'Schedule.days',
-      ),
-      'joins' => array(
-        array(
-          'type' => 'inner',
-          'table' => 'temp_emp_scheds',
-          'alias' => 'TempEmpSched',
-          'conditions' => array(
-          'TempEmpSched.sched_id =Schedule.order_schedules'
-          )
+        $tempFields = $this->find('all',array(
+            'fields' => array(
+            'Employee.id',
+            'Employee.first_name',
+            'Employee.last_name',
+            'Employee.subgroup_id',
+            'Schedule.time_in',
+            'Schedule.time_out',
+            'Schedule.days',
         ),
-         array(
-          'type' => 'inner',
-          'table' => 'employees',
-          'alias' => 'Employee',
-          'conditions' => array(
-            'TempEmpSched.emp_id = Employee.id'
-          )
+        'joins' => array(
+            array(
+                'type' => 'inner',
+                'table' => 'temp_emp_scheds',
+                'alias' => 'TempEmpSched',
+                'conditions' => array(
+                    'TempEmpSched.sched_id =Schedule.order_schedules'
+                )
+            ),
+            array(
+                'type' => 'inner',
+                'table' => 'employees',
+                'alias' => 'Employee',
+                'conditions' => array(
+                'TempEmpSched.emp_id = Employee.id'
+                )
+            )
+        ),
+        'order' => array(
+            'Schedule.time_in',
+            'Schedule.days'
         )
-      ),
-      'order' => array(
-         'Schedule.time_in',
-         'Schedule.days'
-      )
-    ));
-		return $tempFields;
-	 }
-	 function findTimeInCheck($id)
-	 {
-					 $timeIn = $this->find('first', array('fields' => array ('time_in'),'conditions' => array('order_schedules' => $id)));
-					 return($timeIn['Schedule']['time_in']);
-	 }
-	 function findTimeOutCheck($id)
-   {
-           $timeIn = $this->find('first', array('fields' => array ('time_out'),'conditions' => array('order_schedules' => $id)));
-           return($timeIn['Schedule']['time_out']);
-   }
+        ));
+        return $tempFields;
+    }
+    function findTimeInCheck($id)
+    {
+        $timeIn = $this->find('first', array('fields' => array ('time_in'),'conditions' => array('order_schedules' => $id)));
+        return($timeIn['Schedule']['time_in']);
+    }
+    function findTimeOutCheck($id)
+    {
+        $timeIn = $this->find('first', array('fields' => array ('time_out'),'conditions' => array('order_schedules' => $id)));
+        return($timeIn['Schedule']['time_out']);
+    }
+    function getExistingSchedDesc($desc){
+        $rule = $this->find('first', array
+            ('conditions' => array(
+            'descrip' => $desc)));
+                if ($rule == null)
+                {return FALSE;}
+                else{return TRUE;}
+                    
+    }
+    function getLastOrderSched($type){
+            if ($type == 1){
+                $rule = $this->find('first', array(
+                'conditions' => array('regular' => $type),
+                'order' => 'order_schedules DESC'));
+            }
+            else{
+                $rule = $this->find('first', array(
+                'conditions' => array('regular' => $type),
+                'order' => 'order_schedules ASC'));
+            }
+
+        
+            if ($rule['Schedule']['regular'] == 1){
+                return $rule['Schedule']['order_schedules'] + 1;
+            }
+            else{
+              
+               return $rule['Schedule']['order_schedules'] - 1; 
+            }
+                    
+    }
+    function groupShifts(){
+        $shifts = array(
+            'Regular Shift (Non Network Engineer shift)',
+            'Early Morning (Network Engineer shift)',
+            'Morning (Network Engineer shift)',
+            'Midday (Network Engineer shift)',
+            'Afternoon (Network Engineer shift)',
+            'Evening (Network Engineer shift)');
+        return $shifts;
+    } 
+    function fetchShifts(){
+        $rule = $this->find('all', array(
+                'order' => 'order_schedules DESC'));
+        return $rule;
+    } 
+    function fetchShiftingShifts(){
+        $rule = $this->find('all', array(
+                'conditions' => array(
+                        'group NOT' => '0'),
+                'order' => 'order_schedules ASC'));
+        return $rule;
+    } 
 }
 ?>

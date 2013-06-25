@@ -478,6 +478,11 @@ class EmployeesController extends AppController{
             $desc = $this->DeductionsRule->getAll();
             return $desc;
         }
+        public function getInitValues()
+        {
+            $desc = $this->CompAdvanceRule->getInitValues();
+            return $desc;
+        }
 		public function view_emp($id=null)
         {
             
