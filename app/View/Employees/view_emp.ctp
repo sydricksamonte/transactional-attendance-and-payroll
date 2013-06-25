@@ -53,19 +53,14 @@ else {
 		<br><br>Status: &nbsp;&nbsp;&nbsp;
 			<b><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></b>
 
-	<table style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;">
-	<tr>
-		<td style="vertical-align:middle"><b><?php if ($empAuth == 1){ echo 'Shift Schedule:';}?></b></td>
-		<td><?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:170px">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?></td>
-	</tr>
-	<tr>
-	  <td><b><?php if($empAuth == 1){echo 'Cut-off End Date:'; }?></b></td>
-	  <td><?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).'</td>
-	</tr>
-	<tr>
-		<td colspan=2 style="text-align:center">'.$this->Form->end('View schedule');?></td>
-	</tr>
-	</table>
+	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;">
+	<b><?php if ($empAuth == 1){ echo '';}?></b>
+		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?>
+	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
+	  <?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).
+			$this->Form->end('View schedule');?>
+	
+	</div>
 	</div>
 	<br>
 	

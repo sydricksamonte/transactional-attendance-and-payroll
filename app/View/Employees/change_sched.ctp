@@ -17,40 +17,28 @@
 */	?>
 <div align="right"><a href="javascript:window.history.back()"><--Back</a></div>
 	<h2>Employee Profile</h2>
-	<div class="span3">
-		<table class="table table-bordered">
-    	<tr>
-				<td>Employee ID:</td>
-	    	<td><?php echo $employee['Employee']['id'];?></td>
-			</tr>
-    	<tr>
-				<td>First Name:</td>
-	    	<td><?php echo $employee['Employee']['first_name'] ;?></td>
-			</tr>
-    	<tr>
-				<td>Last Name:</td>
-	    	<td><?php echo $employee['Employee']['last_name'] ;?></td>
-			<tr>
-    	<tr>
-				<td>Group:</td>
-	    	<td><?php echo $employee['SubGroup']['name'] ; ?></td>
-			</tr>
-			<tr>
-				<td>Schedule:</td>
-				<td><?php echo $this->Form->input('scheds',array('label' => false,'type' => 'select','options' =>$shifts )); ?></td>
-			</tr>
-				<td>Start date:</td>
-		  	<td><?php  echo $this->Form->input('start',array('label' => false, 
+	<div class="formstyle" style="width:68%;">
+	Employee ID: <b><?php echo $employee['Employee']['id'];?></b>
+	<br><br>
+	First Name: <b><?php echo $employee['Employee']['first_name'] ;?></b>
+	<br><br>
+	Last Name: <b><?php echo $employee['Employee']['last_name'] ;?></b>
+	<br><br>
+	Group: <b><?php echo $employee['SubGroup']['name'] ; ?></b>
+	<br><br>
+	Schedule: <b><?php echo $this->Form->input('scheds',array('label' => false,'type' => 'select','options' =>$shifts )); ?></b>
+	<br><br>
+	Start date: <b><?php  echo $this->Form->input('start',array('label' => false, 
 																					'options' => $weekStart, 
-																					'type' => 'select', 'value' => $weekNum )); ?></td>
-			</tr>
-    	<tr>
-				<td>End date:</td>
-		  	<td><?php  echo $this->Form->input('end',array('label' => false, 
+																					'type' => 'select', 'value' => $weekNum )); ?></b>
+	<br><br>
+	End date:<b><?php  echo $this->Form->input('end',array('label' => false, 
 																					'options' => $weekEnd, 
-																					'type' => 'select', 'value' => $weekNum)); ?></td>
-		  	<td style='display:none'><?php  echo $this->Form->input('end_date2',array('label' => false, 'value' => $sDate, 'type' => 'date')); ?></td>
-			</tr>
+																					'type' => 'select', 'value' => $weekNum)); ?></b>
+	<br><br>
+	<b><?php  echo $this->Form->input('end_date2',array('label' => false, 'value' => $sDate, 'type' => 'date')); ?></b>
+
+	
 
 			<?php
 
@@ -70,10 +58,9 @@
 
 			?>
 	
-			</tr>
-				<td><?php echo $this->Form->end('Add Schedule');?></td>
-			</tr>
-	</table>
+	<?php echo $this->Form->end('Add Schedule');?>
+	</div>
+
 </div>
 </div>
 
