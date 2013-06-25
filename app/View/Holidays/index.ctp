@@ -7,18 +7,26 @@
 		echo $this->Form->end("Search");
 		?>
 	</div>
-<div class="sp1">
-		<table width=1080>
+			<table style="width:90%">
+			<tr>
+			<td>
+			<table width=1183>
 			<thead>
-				<tr>
-					<th width=63><font color="white">dd</font>ID</th>
-					<th width=340><font color="white">dd</font>Name</th>
-					<th width=321><font color="white">dd</font>Date</th>
-					<th width=171><font color="white">dd</font>Status</th>	
+			<tr>
+					<th width=63>ID</th>
+					<th width=340>Name</th>
+					<th width=321>Date</th>
+					<th width=171>Status</th>	
 					<th width=185></th>
-				</tr></thead></table>
-	<div class="span3">
-			<table width=1080>
+			</tr>
+			</thead>
+			</table>
+			</td>
+			</tr>
+			<tr>
+			<td>
+			<div class="span3">
+			<table width=1183>
 			<?php foreach ($holi as $h):?>
 			<tbody>
 				<tr>
@@ -28,8 +36,6 @@
 					<td width=321><?php echo date('M d, Y',strtotime($h['Holiday']['date']));?></td>
 				  <td width=171><?php  if  ($h['Holiday']['authorize'] == '1'){echo 'Valid';} else {echo 'Invalid';} ?></td>
 					<td width=185><div class="colorw"><div class="btn btn-info" ><?php echo $this->Html->link('Edit',array('action'=>'edit',$h['Holiday']['id']));?></div></td>
-				</tr>
+				</tr>		</tbody>
 			<?php endforeach;?>
-			</tbody>
-		</table></div>
-</div>
+  </table></div></td></tr></table>

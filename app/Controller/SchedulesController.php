@@ -443,7 +443,7 @@ class SchedulesController extends AppController{
 													$this->request->data['Week']['generated'] = 1;
 													$this->request->data['Week']['id']		= $week;						
 													$this->Week->save($this->data);								
-													$this->Session->setFlash('Schedule(s) saved.');
+													$this->Session->setFlash('Schedule(s) saved.','success');
 									}
 									endforeach;
 									$this->TempEmpSched->deleteAll('1=1');

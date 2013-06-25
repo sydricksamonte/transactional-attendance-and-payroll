@@ -1,9 +1,14 @@
+<div class="formstyle" style="width:20%">
 <?php  echo $this->Form->create('Schedule',array('action' => 'index'));
 echo $this->Form->input('week_id', array('class' => 'input-small search-query', 'label' => 'Week', 'value' => $weekVal,'type' => 'select','options' => $weeks));
-echo $this->Form->input('subgroup_id', array('class' => 'input-large search-query', 'label' => 'Group', 'value' => $subgroup,'type' => 'select'));
+echo $this->Form->input('subgroup_id', array('class' => 'input-large search-query', 'label' => 'Group', 'value' => $subgroup,'type' => 'select','style'=>'width:300px;'));
 echo 'Week range: '. $weekRange;
+echo '<br><br><center>';
 echo $this->Form->end('Search',array('class'=>'btn btn-info'));
-?> </br>
+?>
+</center>
+</div>
+</br>
 <div class="colorw">
 <div class="btn btn-primary">
 <?php echo $this->Html->link("Generate schedule for network engineers (w/ shifting schedule)", array('action' => 'generate','4')); ?>
@@ -17,7 +22,7 @@ echo $this->Form->end('Search',array('class'=>'btn btn-info'));
 
 </div>
 <br><br>
-<table class="bordered">
+<table class="bordered" style="width:98%">
   <thead>
     <tr>
       <th>Employee</th>

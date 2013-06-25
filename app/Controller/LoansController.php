@@ -71,10 +71,10 @@ class LoansController extends AppController {
 					$this->set(compact('employee'));
 					if (!empty($this->data)){
 									if ($this->Loan->save($this->request->data)) {
-													$this->Session->setFlash('Employee\'s Loan pay has been saved.');
+													$this->Session->setFlash('Employee\'s Loan pay has been saved.','success');
 													$this->redirect(array('controller'=>'Employees','action' => 'view_emp/'.$emp_id));
 									} else {
-													$this->Session->setFlash('Unable to Save.');
+													$this->Session->setFlash('Unable to Save.','failed');
 									}
 
 					}
@@ -89,14 +89,36 @@ class LoansController extends AppController {
 									$this->data = $this->Loan->read();
 					} else {
 									if ($this->Loan->save($this->data)) {
-													$this->Session->setFlash('Loan has been updated.');
+													$this->Session->setFlash('Loan has been updated.','success');
 													$this->redirect(array('controller'=>'Employees','action' => 'view_emp/'.$emp_id));
         }
     }
 	}
 	public function edit_emp_loan($emp_id) {
-					$empname=$this->Employee->find('first',array('fields'=>array('Employee.id','Employee.first_name','Employee.last_name'),'conditions'=>array('Employee.id'=>$emp_id)));
-					$this->set(compact('empname'));
+			$empname = $this->Employee->find('first',array(
+	            'fields' => array(
+                    'Employee.id',
+                    'Employee.first_name',
+                    'Employee.last_name',
+                    'Employee.employed',
+                    'SubGroup.name',
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'left',
+                        'table' => 'sub_groups',
+                        'alias' => 'SubGroup',
+                        'conditions' => array(
+                        'Employee.subgroup_id =SubGroup.id'
+                        )
+                    ),
+                ),
+                'conditions' => array(
+                    'Employee.id' => $emp_id
+                ),
+            ));
+              
+			$this->set(compact('empname'));
 
 					$emploans=$this->Loan->find('all',array('conditions' => array('Loan.emp_id'=>$emp_id)));
 					$this->set(compact('emploans'));
@@ -112,7 +134,7 @@ class LoansController extends AppController {
                   $this->data = $this->Loan->read();
           } else {
                   if ($this->Loan->save($this->data)) {
-                          $this->Session->setFlash('Loan has been updated.');
+                          $this->Session->setFlash('Loan has been updated.','success');
                           $this->redirect(array('controller'=>'Loans','action' => 'edit_emp_loan/'.$emp_id));
         }
     }
@@ -124,10 +146,10 @@ class LoansController extends AppController {
           $this->set(compact('employee'));
           if (!empty($this->data)){
                   if ($this->Loan->save($this->request->data)) {
-                          $this->Session->setFlash('Employee\'s Loan pay has been saved.');
+                          $this->Session->setFlash('Employee\'s Loan pay has been saved.','success');
                           $this->redirect(array('controller'=>'Loans','action' => 'edit_emp_loan/'.$emp_id));
                   } else {
-                          $this->Session->setFlash('Unable to Save.');
+                          $this->Session->setFlash('Unable to Save.','failed');
                   }
 
           }

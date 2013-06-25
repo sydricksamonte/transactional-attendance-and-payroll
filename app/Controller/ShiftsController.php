@@ -26,14 +26,14 @@
                                                   debug($this->data);
 
         if ($this->Shift->save($this->data)) {
-            $this->Session->setFlash('The shift has been updated.');
+            $this->Session->setFlash('The shift has been updated.','success');
             $this->redirect(array('action' => 'index'));
         }
     }
     }
        function delete($id) {
     if ($this->Shift->delete($id)) {
-        $this->Session->setFlash('Shift has been deleted.');
+        $this->Session->setFlash('Shift has been deleted.','failed');
         $this->redirect(array('action' => 'index'));
     }
     }
@@ -50,13 +50,13 @@
 					if ($this->Shift->check($shift)==false)
 					{					
 									if ($this->Shift->save($this->data)) {
-										$this->Session->setFlash('The shift has been saved.');
+										$this->Session->setFlash('The shift has been saved.','success');
 										$this->redirect(array('action' => 'index'));
 						}
 					}
 					else
 					{
-									$this->Session->setFlash('The shift exists!');
+									$this->Session->setFlash('The shift exists!','failed');
 									$this->redirect(array('action' => 'add'));
 					}   
    

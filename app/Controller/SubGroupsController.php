@@ -10,7 +10,7 @@ class SubGroupsController extends AppController {
                         $this->data = $this->SubGroup->read();
                 } else {
                         if ($this->SubGroup->save($this->data)) {
-                                $this->Session->setFlash('The subgroup has been updated.');
+                                $this->Session->setFlash('The subgroup has been updated.','success');
 																$dat = $this->SubGroup->read();
 																$redirID = $dat['SubGroup']['group_id'];                            
 																$this->redirect(array('controller' => 'Groups', 'action' => 'edit', $redirID));
@@ -25,7 +25,7 @@ class SubGroupsController extends AppController {
 							 $this->set(compact('group_id'));							 
 							 if (!empty($this->data)) {
 											 if ($this->SubGroup->save($this->data)) {
-															 $this->Session->setFlash('Subgroup has been saved.');
+															 $this->Session->setFlash('Subgroup has been saved.','success');
 															 $dat = $this->SubGroup->read();
 															 $redirID = $dat['SubGroup']['group_id'];        
 															 $this->redirect(array('controller' => 'Groups', 'action' => 'edit', $redirID));
@@ -83,7 +83,7 @@ class SubGroupsController extends AppController {
 												$stDa2 = $this->Week->getWeekOrder($stDa);
 												$enDa2 = $this->Week->getWeekOrder($enDa);
 											if ($stDa2 > $enDa2){
-														$this->Session->setFlash('Invalid date range');
+														$this->Session->setFlash('Invalid date range','failed');
 											}
 											else
  {
@@ -103,12 +103,12 @@ class SubGroupsController extends AppController {
 																													$this->set(compact('existingId'));
 																													if ($existingId == null){
 																																	$this->EmpSched->save($this->request->data);
-																																	$this->Session->setFlash('Shift has been successfully added');
+																																	$this->Session->setFlash('Shift has been successfully added','success');
 																													}
 																													else{
 																																	$this->request->data['EmpSched']['id'] = $existingId['EmpSched']['id'];
 																																	$this->EmpSched->save($this->request->data);
-																																	$this->Session->setFlash('Group`s shift has been updated');
+																																	$this->Session->setFlash('Group`s shift has been updated','success');
 																													}
 																													$j++;
 																									}

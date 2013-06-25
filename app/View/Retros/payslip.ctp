@@ -48,10 +48,11 @@ echo 'From: '.$empS['Cutoff']['start_date'].'<br>To: '.$empS['Cutoff']['end_date
 </td><td>
 	<table border=1>
 <tr>
-	<td>Deduction</td><td><?php echo  formatAmount($empS['Total']['deductions'])?></td>
+	<td>Deduction</td><td><?php echo  formatAmount(($empS['Total']['deductions'])*-1);?></td>
 </tr>
 <tr>
 	<td>Absences / Tardiness</td><td><?php
+
 $tard1= $empS['Total']['absents'];
 $tard2= $empS['Total']['lates'];
 echo  formatAmount($tard1 + $tard2);

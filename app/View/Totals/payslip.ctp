@@ -2,7 +2,7 @@
 <?php
 function formatAmount($amount)
 {
-return number_format($amount, 2, '.', ',');
+	return number_format($amount, 2, '.', '');
 }
 ?>
 <?php foreach($empSal as $empS):?>
@@ -38,19 +38,19 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 	<td colspan=2><center> Salary Details</td>
 </tr>
 <tr>
-	<td>Basic Salary</td><td><?php $basics= Security::cipher($empS['Employee']['monthly'], 'my_key'); echo formatAmount($basics/2)?></td>
+	<td>Basic Salary</td><td><?php $basics= Security::cipher($empS['Employee']['monthly'], 'my_key'); echo formatAmount($basics/2);?></td>
 </tr>
 <tr>
 	<td>Night Differential</td><td><?php echo formatAmount($empS['Total']['night_diff']);?></td>
 </tr>
 <tr>
-	<td>Over Time</td><td><?php echo formatAmount($empS['Total']['OT'])?></td>
+	<td>Over Time</td><td><?php echo formatAmount($empS['Total']['OT']);?></td>
 </tr>
 <tr>
-	<td>Attendance Bonus</td><td><?php echo formatAmount($empS['Total']['att_bonus'])?></td>
+	<td>Attendance Bonus</td><td><?php echo formatAmount($empS['Total']['att_bonus']);?></td>
 </tr>
 <tr>
-	<td>Holiday Pay</td><td><?php echo  formatAmount($empS['Total']['holiday'])?></td>
+	<td>Holiday Pay</td><td><?php echo  formatAmount($empS['Total']['holiday']);?></td>
 </tr>
 	</table>
 </td><td>
@@ -89,10 +89,11 @@ echo  formatAmount($tard1 + $tard2);
 	</table>
 </td></tr>
 <tr>
-<?php $netpay=Security::cipher($empS['Total']['net_pay'], 'my_key');?>
-<td></td><td border=1><u>Net Pay: <?php echo formatAmount($netpay);?><td>
+<?php #debug($empS['Total']['net_pay'], 'my_key');
+		$netpay=$empS['Total']['net_pay']; ?>
+<td></td><td border=1><u>Net Pay: <?php echo formatAmount($netpay); ?><td>
 </tr>
 </table>
 </center>
 <hr>
-<? endforeach; ?>
+<?php endforeach; ?>

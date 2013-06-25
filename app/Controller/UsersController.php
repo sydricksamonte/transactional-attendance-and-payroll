@@ -20,7 +20,7 @@ class UsersController extends AppController{
 						'OR' => array(
 							array('User.first_name LIKE' => '%' .$search['User']['search_id'].'%'),
 							array('User.last_name LIKE' => '%' .$search['User']['search_id'] .'%'),
-							array('User.id LIKE' => '%' .$search['User']['search_id'] .'%'),
+							array('User.username LIKE' => '%' .$search['User']['search_id'] .'%'),
 							)
 						)
 					)
@@ -43,7 +43,8 @@ $this->layout='login';
                     $this->redirect($this->Auth->redirect(array('controller' => 'employees', 'action' => 'index')));
                 }
             } else {
-                    $this->Session->setFlash(__('Invalid username or password, try again'));
+                    #$this->Session->setFlash(__('Invalid username or password, try again'));
+					$this->Session->setFlash('Invalid Username or Password, Please try again.', 'failed');
 
        }
 
@@ -60,17 +61,17 @@ $this->layout='login';
 									$uname = $this->data['User']['username'];
 												if ($this->User->check($uname)==false){
 															if	($this->User->save($this->data))
-															{	$this->Session->setFlash('user created');
+															{	$this->Session->setFlash('User Successfully Created','success');
 																$this->redirect(array('action' => 'index'));}
 												}															
 												else
-												{   $this->Session->setFlash('The username exists!');
+												{   $this->Session->setFlash('The Username Exists!','failed');
 												}
 					}
 	}
 	public function delete($id){
 					if($this->User->delete($id)){
-									$this->Session->setFlash('User successfully deleted');
+									$this->Session->setFlash('User Successfully Deleted','success');
 					}
 					$this->redirect(
 													array(
@@ -88,7 +89,7 @@ $this->layout='login';
 					{
 									$uname = $this->data['User']['username'];
 													if ($this->User->save($this->data)) {
-																	$this->Session->setFlash('The user has been updated.');
+																	$this->Session->setFlash('The User has been Updated.','success');
 																	$this->redirect(array('action' => 'index'));
 													}
 
@@ -97,7 +98,7 @@ $this->layout='login';
 	}
 	function view($id=null){
 					if(!$id){
-									$this->Session->setFlash('Invalid user');
+									$this->Session->setFlash('Invalid User','failed');
 									$this->redirect(array('action' => 'index'));
 					}
 					$this->set('user',$this->User->findById($id));
