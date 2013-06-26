@@ -1,3 +1,4 @@
+  <div class="formstyle" style="width:68%;">
 <?php
 echo $this->Form->create('Schedule');
 echo 'Working days:';
@@ -15,4 +16,5 @@ echo $this->Form->input('Schedule.id', array('value' => null, 'type' => 'hidden'
 echo $this->Form->input('Schedule.authorize', array('value' => '1', 'type' => 'hidden'));
 echo $this->Form->end("Add Schedule");
 ?>
+</div>
 

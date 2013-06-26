@@ -4,22 +4,23 @@
 </div>
 <?php echo $this->Form->create('Employee') ?>
   <h2>Modify date information</h2>
-	<table class="table table-bordered">
+  <div class="formstyle" style="width:68%;">
+	<table style="background-color:transparent">
     <tr>
 			<td>Employee ID:</td>
-    	<td><?php echo $employee['Employee']['id'];?></td>
+    	<td><b><?php echo $employee['Employee']['id'];?></td>
 		</tr>
     <tr>
 			<td>First Name:</td>
-    	<td><?php echo $employee['Employee']['first_name'] ;?></td>
+    	<td><b><?php echo $employee['Employee']['first_name'] ;?></td>
 		</tr>
     <tr>
 			<td>Last Name:</td>
-    	<td><?php echo $employee['Employee']['last_name'] ;?></td>
+    	<td><b><?php echo $employee['Employee']['last_name'] ;?></td>
 		</tr>
 	    <tr>
       <td>Date:</td>
-      <td><?php  echo $curr_date_ymd;?> </td>
+      <td><b><?php  echo $curr_date_ymd;?> </td>
     </tr>
 	 <tr>
       <td>Actions:</td>
@@ -45,5 +46,7 @@ echo $this->Form->input('Scheduleoverride.id', array('value' => $schedTime, 'typ
 
 	</tr>
 </table>
+
 		<?php echo $this->Form->end('Change schedule' );?>
+</div>
 </div>
