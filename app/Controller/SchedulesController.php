@@ -378,48 +378,53 @@ class SchedulesController extends AppController{
 	}
     
     public function generate($netType){
-					$unable = null;
-					$this->set(compact('netType'));
-					$toGenWeek =  $this->Week->getFollowUpWeek();
-					$this->set(compact('toGenWeek')); #'2013-04-01 to 2013-04-07'
-					$this->TempEmpSched->deleteAll('1=1');
-					$weekData = $this->Week->getRecentGenerated(); #week id: 1
-					$netEmp = $this->EmpSched->getAllNetEmpOfWeek($weekData, $netType);
-					foreach ($netEmp as $gen):
-					{
-									$this->request->data['TempEmpSched']['id'] = null;
-									$this->request->data['TempEmpSched']['week_id'] = 0;
-									$exSched = $this->TempEmpSched->fetchTempSched();									
-									$this->request->data['TempEmpSched']['sched_id'] = $this->Rule->getNextSched($gen['EmpSched']['sched_id'], $exSched);
-									$this->request->data['TempEmpSched']['emp_id'] = $gen['EmpSched']['emp_id'];
-									if  ($this->request->data['TempEmpSched']['sched_id'] == null)
-									{
-											$unable =  $gen['EmpSched']['emp_id'] .','.$unable;	
-									}
-									else
-									{	
-													$this->TempEmpSched->save($this->request->data);	
-									}
-					}
-					endforeach;	
-					$tempSched = $this->Schedule->getTempData();
-					$unable = substr($unable,0,-1);
+        $unable = null;
+        $this->set(compact('netType'));
+        $toGenWeek =  $this->Week->getFollowUpWeek();
+        $this->set(compact('toGenWeek')); #'2013-04-01 to 2013-04-07'
+        $this->TempEmpSched->deleteAll('1=1');
+        $weekData = $this->Week->getRecentGenerated(); #week id: 1
+        $netEmp = $this->EmpSched->getAllNetEmpOfWeek($weekData, $netType);
+        foreach ($netEmp as $gen):
+        {
+            $this->request->data['TempEmpSched']['id'] = null;
+            $this->request->data['TempEmpSched']['week_id'] = 0;
+            $exSched = $this->TempEmpSched->fetchTempSched();									
+            $this->request->data['TempEmpSched']['sched_id'] = $this->Rule->getNextSched($gen['EmpSched']['sched_id'], $exSched);
+            $this->request->data['TempEmpSched']['emp_id'] = $gen['EmpSched']['emp_id'];
+                if  ($this->request->data['TempEmpSched']['sched_id'] == null)
+                {
+                    $unable =  $gen['EmpSched']['emp_id'] .','.$unable;	
+                }
+                else
+                {	
+                    $this->TempEmpSched->save($this->request->data);	
+                }
+        }
+        endforeach;	
+        $tempSched = $this->Schedule->getTempData();
+        $unable = substr($unable,0,-1);
 				
-					$unable = explode(',',$unable);				
-					if ($unable[0] == '')
-					{ $unable = null;} 
-					$names= null;	
-					foreach ($unable as $u):
-					{
-						$names = $this->Employee->findEmployeeName($u) . '!' . $names;
-						
-					}
-					endforeach;
-					$names = substr($names,0,-1);
-					$names = explode('!',$names);
-					$this->set(compact('unable'));	
-					$this->set(compact('names'));
-          $this->set(compact('tempSched'));
+        $unable = explode(',',$unable);				
+        if ($unable[0] == '')
+        { 
+            $unable = null;
+        } 
+        $names = null;	
+        foreach ($unable as $u):
+        {
+            $names = $this->Employee->findEmployeeName($u) . '!' . $names;
+        }
+        endforeach;
+        $names = substr($names,0,-1);
+        $names = explode('!',$names);
+        $this->set(compact('unable'));	
+        $this->set(compact('names'));
+        $this->set(compact('tempSched'));
+
+        $empOnWeek = $this->EmpSched->getEmployeeOnSpecWeek($weekData);
+        $empNoSched = $this->Employee->getMissingEmployeeOnSpecWeek($empOnWeek);
+        $this->set(compact('empNoSched'));
 	}
 	public function save(){
 					if ($this->request->data == null)

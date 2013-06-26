@@ -66,7 +66,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'attendance3',
+		'database' => 'attendance',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);

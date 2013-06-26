@@ -17,7 +17,8 @@ class Rule extends AppModel{
                     'AND' => array('Rule.order_schedules' => $sched_id)),
                     'order' =>'rand()'));
                 if ($rule['Rule']['rules'] == null)
-                { $ruleTwo = $this->find('first', array('fields' => array('Rule.rules'),
+                { 
+                    $ruleTwo = $this->find('first', array('fields' => array('Rule.rules'),
                     'conditions' => array('Rule.order_schedules' => $sched_id),
                     'order' =>'rand()'));
                     return $ruleTwo['Rule']['rules'];	
