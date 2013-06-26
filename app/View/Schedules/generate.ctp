@@ -5,7 +5,7 @@
 <div class="btn btn-primary" style='width:70px'>
 <?php echo $this->Html->link("Reshuffle", array('action' => 'generate', $netType)); ?>
 </div>
-<div class="btn btn-primary" style='width:40px'><?php echo $this->Html->link("Save", array('action' => 'save')); ?></div>
+<div class="btn btn-primary" style='width:40px'><?php echo $this->Html->link("Save", array('action' => 'save')); ?></div></div>
 <div>
 <br><br>
 
@@ -17,11 +17,12 @@
  <?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
 <?php foreach ($empNoSched as $en): 
 			 ?><?php {	echo $en['Employee']['last_name'].', '.$en['Employee']['first_name'];  
-						echo $this->Html->link('Add Schedule', array('controller'=>'Employees','action' => 'view_emp', $en['Employee']['id']));?>
+						echo $this->Html->link('Add Schedule', array('controller'=>'Employees','action' => 'change_sched', $en['Employee']['id']));
+						echo $this->Html->link('Edit Employee', array('controller'=>'Employees','action' => 'edit', $en['Employee']['id']));?>
 			 <br><?php }
 		endforeach;}
  ?>
-</td></tr></tbody></table></div></div>
+</td></tr></tbody></table></div>
 <table class="table-bordered" style="width:98%">
   <thead>
     <tr>

@@ -36,7 +36,7 @@
 																					'options' => $weekEnd, 
 																					'type' => 'select', 'value' => $weekNum)); ?></b>
 	<br><br>
-	<b><?php  echo $this->Form->input('end_date2',array('label' => false, 'value' => $sDate, 'type' => 'date')); ?></b>
+	<b><?php   $this->Form->input('end_date2',array('label' => false, 'value' => $sDate, 'type' => 'date')); ?></b>
 
 	
 
