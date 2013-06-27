@@ -650,200 +650,201 @@ function formatAmount($amount)
 	return number_format($amount, 2, '.', ',');  
 }
 ?>
+</div>
 
-<h2>Total Computation</h2>
 <div class="spantable">
+<h2>Total Computation</h2>
 <table >
 <tr><td>
-<table name="Overtime" class="table table-bordered">
-<tr>
-<th>Overtime</th>
-<th>Total (in hours)</th>
-<th>Amount</th>
-</tr> 
-<?php $tagging = $this->requestAction('Employees/getComputations/'. 'OT'.'/'  );
-		$otinittotal = 0;
-		$otalltotal = 0;
-		$otinitamount = 0;
-		$otamount = 0;
-						foreach ($tagging as $tcode):
-						{
-							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
-							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
-										eval('$otinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
-										$otalltotal = $otinittotal + $otalltotal; ?></td><?php
-							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
-										eval('$otinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
-										$otamount = $otinitamount + $otamount; ?></td></tr><?php
-						}
-						endforeach;
-?>
-<tr>
-<td>Total Overtime</td>
-<td><?php echo $otalltotal; ?></td>
-<td><?php echo formatAmount($otamount);  ?></td>
-</tr>
-<tr>
-<td>Over Time with deductions</td>
-<?php $ottotals=($otalltotal);?>
-<td colspan=2><center><?php echo formatAmount($deduc=$otamount - ($otamount * 0.10)); $otamount=$deduc;?></td>
-</tr>
-</table>
+	<table name="Overtime" class="table table-bordered">
+	<tr>
+	<th>Overtime</th>
+	<th>Total (in hours)</th>
+	<th>Amount</th>
+	</tr> 
+	<?php $tagging = $this->requestAction('Employees/getComputations/'. 'OT'.'/'  );
+			$otinittotal = 0;
+			$otalltotal = 0;
+			$otinitamount = 0;
+			$otamount = 0;
+							foreach ($tagging as $tcode):
+							{
+								?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+								?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+											eval('$otinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+											$otalltotal = $otinittotal + $otalltotal; ?></td><?php
+								?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+											eval('$otinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+											$otamount = $otinitamount + $otamount; ?></td></tr><?php
+							}
+							endforeach;
+	?>
+	<tr>
+	<td>Total Overtime</td>
+	<td><?php echo $otalltotal; ?></td>
+	<td><?php echo formatAmount($otamount);  ?></td>
+	</tr>
+	<tr>
+	<td>Over Time with deductions</td>
+	<?php $ottotals=($otalltotal);?>
+	<td colspan=2><center><?php echo formatAmount($deduc=$otamount - ($otamount * 0.10)); $otamount=$deduc;?></td>
+	</tr>
+	</table>
 </td><td>
-<table name="Night" class="table table-bordered">
-<tr>
-<th>Night Differential</th>
-<th>Total (in hours)</th>
-<th>Amount</th>
-</tr>
-<?php $tagging = $this->requestAction('Employees/getComputations/'. 'ND'.'/'  );
-		$ndinittotal = 0;
-		$ndalltotal = 0;
-		$ndinitamount = 0;
-		$ndamount = 0;
-						foreach ($tagging as $tcode):
-						{
-							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
-							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
-										eval('$ndinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
-										$ndalltotal = $ndinittotal + $ndalltotal; ?></td><?php
-							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
-										eval('$ndinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
-										$ndamount = $ndinitamount + $ndamount; ?></td></tr><?php
-						}
-						endforeach;
-?>
-<tr>
-<td>Total Night Differential</td>
-<td><?php echo $ndalltotal; ?></td>
-<td><?php echo formatAmount($ndamount);  ?></td>
-</tr>
+	<table name="Night" class="table table-bordered">
+	<tr>
+	<th>Night Differential</th>
+	<th>Total (in hours)</th>
+	<th>Amount</th>
+	</tr>
+	<?php $tagging = $this->requestAction('Employees/getComputations/'. 'ND'.'/'  );
+			$ndinittotal = 0;
+			$ndalltotal = 0;
+			$ndinitamount = 0;
+			$ndamount = 0;
+							foreach ($tagging as $tcode):
+							{
+								?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+								?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+											eval('$ndinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+											$ndalltotal = $ndinittotal + $ndalltotal; ?></td><?php
+								?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+											eval('$ndinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+											$ndamount = $ndinitamount + $ndamount; ?></td></tr><?php
+							}
+							endforeach;
+	?>
+	<tr>
+	<td>Total Night Differential</td>
+	<td><?php echo $ndalltotal; ?></td>
+	<td><?php echo formatAmount($ndamount);  ?></td>
+	</tr>
 
-</table>
+	</table>
 
 </td><td>
-<table name="Holiday" class="table table-bordered">
-<tr>
-<th>Holiday pay</th>
-<th>Total (in hours)</th>
-<th>Amount</th>
-</tr>
-<?php $tagging = $this->requestAction('Employees/getComputations/'. 'H'.'/'  );
-		$hdinittotal = 0;
-		$hdalltotal = 0;
-		$hdinitamount = 0;
-		$hdamount = 0;
-						foreach ($tagging as $tcode):
-						{
-							?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
-							?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
-										eval('$hdinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
-										$hdalltotal = $hdinittotal + $hdalltotal; ?></td><?php
-							?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
-										eval('$hdinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
-										$hdamount = $hdinitamount + $hdamount; ?></td></tr><?php
-						}
-						endforeach;
-?>
-<tr>
-<td>Total Night Differential</td>
-<td><?php echo $hdalltotal; ?></td>
-<td><?php echo formatAmount($hdamount);  ?></td>
-</tr>
-</table>
+	<table name="Holiday" class="table table-bordered">
+	<tr>
+	<th>Holiday pay</th>
+	<th>Total (in hours)</th>
+	<th>Amount</th>
+	</tr>
+	<?php $tagging = $this->requestAction('Employees/getComputations/'. 'H'.'/'  );
+			$hdinittotal = 0;
+			$hdalltotal = 0;
+			$hdinitamount = 0;
+			$hdamount = 0;
+							foreach ($tagging as $tcode):
+							{
+								?><tr><td><?php echo($tcode['CompAdvanceRule']['desc']);?></td><?php
+								?><td><?php eval("echo " .$tcode['CompAdvanceRule']['var_total']. ";");
+											eval('$hdinittotal =  '.$tcode["CompAdvanceRule"]["var_total"]. ";");
+											$hdalltotal = $hdinittotal + $hdalltotal; ?></td><?php
+								?><td><?php eval("echo formatAmount(" .$tcode["CompAdvanceRule"]["computation_rule"]. ");");
+											eval('$hdinitamount =  '.$tcode["CompAdvanceRule"]["computation_rule"]. ";");
+											$hdamount = $hdinitamount + $hdamount; ?></td></tr><?php
+							}
+							endforeach;
+	?>
+	<tr>
+	<td>Total Night Differential</td>
+	<td><?php echo $hdalltotal; ?></td>
+	<td><?php echo formatAmount($hdamount);  ?></td>
+	</tr>
+	</table>
 </td></tr><tr><td>
-<table label="Salary" class="table table-bordered">
-<tr>
-<th>Salary</th>
-<th>Amount</th>
-</tr>
-<tr>
-<td>Monthly rate</td>
-<td><?php echo $this->Html->link(formatAmount($basic),array('action' => 'edit', $employee['Employee']['id']));?></td>
-</tr>
-<tr>
-<td>Daily Rate</td>
-<td><?php echo formatAmount($d_rate);?></td>
-</tr>
-<tr>
-<td>Hour Rate</td>
-<td><?php echo formatAmount($h_rate);?></td>
-</tr>
-<tr>
-<td>Minute Rate</td>
-<td><?php echo formatAmount($m_rate);?></td>
-</tr>
+	<table label="Salary" class="table table-bordered">
+	<tr>
+	<th>Salary</th>
+	<th>Amount</th>
+	</tr>
+	<tr>
+	<td>Monthly rate</td>
+	<td><?php echo $this->Html->link(formatAmount($basic),array('action' => 'edit', $employee['Employee']['id']));?></td>
+	</tr>
+	<tr>
+	<td>Daily Rate</td>
+	<td><?php echo formatAmount($d_rate);?></td>
+	</tr>
+	<tr>
+	<td>Hour Rate</td>
+	<td><?php echo formatAmount($h_rate);?></td>
+	</tr>
+	<tr>
+	<td>Minute Rate</td>
+	<td><?php echo formatAmount($m_rate);?></td>
+	</tr>
 
-</table>
+	</table>
 
 </td><td>
-<table label="Deductions" class="table table-bordered">
-<tr>
-<th>Deductions</th>
-<th>Total period</th>
-<th>Amount</th>
-</tr>
-<tr>
-<?php if ($no_log > 0){
-	$late_total = 0;
-	$under_total = 0;
-	$absent_total = 0;
-	$errorCount = 0;
-	}
-?>
-<?php $tagging = $this->requestAction('Employees/fetchDeductions/'  );
-		$dedinittotal = 0;
-		$dedalltotal = 0;
-		$dedinitamount = 0;
-		$deduction_amount = 0;
-						foreach ($tagging as $tcode):
-						{
-							?><tr><td><?php echo($tcode['DeductionsRule']['desc']);?></td><?php
-							?><td><?php eval("echo " .$tcode['DeductionsRule']['var']. ";");
-										eval('$dedinittotal =  '.$tcode["DeductionsRule"]["var"]. ";");
-										$dedalltotal = $dedinittotal + $dedalltotal; ?></td><?php
-							?><td><?php eval("echo formatAmount(" .$tcode["DeductionsRule"]["computation_rule"]. ");");
-										eval('$dedinitamount =  '.$tcode["DeductionsRule"]["computation_rule"]. ";");
-										$deduction_amount = $dedinitamount + $deduction_amount; ?></td></tr><?php
-						}
-						endforeach;
-?>
+	<table label="Deductions" class="table table-bordered">
+	<tr>
+	<th>Deductions</th>
+	<th>Total period</th>
+	<th>Amount</th>
+	</tr>
+	<tr>
+	<?php if ($no_log > 0){
+		$late_total = 0;
+		$under_total = 0;
+		$absent_total = 0;
+		$errorCount = 0;
+		}
+	?>
+	<?php $tagging = $this->requestAction('Employees/fetchDeductions/'  );
+			$dedinittotal = 0;
+			$dedalltotal = 0;
+			$dedinitamount = 0;
+			$deduction_amount = 0;
+							foreach ($tagging as $tcode):
+							{
+								?><tr><td><?php echo($tcode['DeductionsRule']['desc']);?></td><?php
+								?><td><?php eval("echo " .$tcode['DeductionsRule']['var']. ";");
+											eval('$dedinittotal =  '.$tcode["DeductionsRule"]["var"]. ";");
+											$dedalltotal = $dedinittotal + $dedalltotal; ?></td><?php
+								?><td><?php eval("echo formatAmount(" .$tcode["DeductionsRule"]["computation_rule"]. ");");
+											eval('$dedinitamount =  '.$tcode["DeductionsRule"]["computation_rule"]. ";");
+											$deduction_amount = $dedinitamount + $deduction_amount; ?></td></tr><?php
+							}
+							endforeach;
+	?>
 
-<tr>
-<td>Total Amount</td>
-<td><?php echo null ?></td>
-<td><?php echo number_format($deduction_amount, 2, '.', ',');?></td>
-</tr>
+	<tr>
+	<td>Total Amount</td>
+	<td><?php echo null ?></td>
+	<td><?php echo number_format($deduction_amount, 2, '.', ',');?></td>
+	</tr>
 
-</table>
+	</table>
 </td><td>
 
-<table label="Government" class="table table-bordered">
-<tr>
-<th>Govt Mandated</th>
-<th>Amount</th>
-</tr>
-<tr>
-<td>SSS</td>
-<td><?php $sss = $govDeduc['Govdeduction']['sss'] / 2; echo number_format($sss, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Philhealth</td>
-<td><?php $philhealth = $govDeduc['Govdeduction']['philhealth'] / 2; echo number_format($philhealth, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Pag-ibig</td>
-<td><?php $pagibig = $govDeduc['Govdeduction']['pagibig'] / 2; echo number_format($pagibig, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Tax</td>
-<td><?php $tax = $govDeduc['Govdeduction']['tax'] / 2; echo number_format($tax, 2, '.', ',');?></td>
-</tr>
-<tr>
-<td>Total Amount</td>
-<td><?php $gov_deductions =$tax + $pagibig + $philhealth + $sss; echo number_format($gov_deductions, 2, '.', ',');?></td>
-</tr>
-</table>
+	<table label="Government" class="table table-bordered">
+	<tr>
+	<th>Govt Mandated</th>
+	<th>Amount</th>
+	</tr>
+	<tr>
+	<td>SSS</td>
+	<td><?php $sss = $govDeduc['Govdeduction']['sss'] / 2; echo number_format($sss, 2, '.', ',');?></td>
+	</tr>
+	<tr>
+	<td>Philhealth</td>
+	<td><?php $philhealth = $govDeduc['Govdeduction']['philhealth'] / 2; echo number_format($philhealth, 2, '.', ',');?></td>
+	</tr>
+	<tr>
+	<td>Pag-ibig</td>
+	<td><?php $pagibig = $govDeduc['Govdeduction']['pagibig'] / 2; echo number_format($pagibig, 2, '.', ',');?></td>
+	</tr>
+	<tr>
+	<td>Tax</td>
+	<td><?php $tax = $govDeduc['Govdeduction']['tax'] / 2; echo number_format($tax, 2, '.', ',');?></td>
+	</tr>
+	<tr>
+	<td>Total Amount</td>
+	<td><?php $gov_deductions =$tax + $pagibig + $philhealth + $sss; echo number_format($gov_deductions, 2, '.', ',');?></td>
+	</tr>
+	</table>
 </td>
 </tr>
 </table>

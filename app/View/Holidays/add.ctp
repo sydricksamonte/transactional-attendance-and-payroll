@@ -1,5 +1,5 @@
-<div class="span13">
 	<h2>New Holiday</h2>
+<div class="formstyle" style="width:25%;">
 	<?php
 	echo $this->Form->create('Holiday');
 	echo $this->Form->input('name');

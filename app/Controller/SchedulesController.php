@@ -344,6 +344,7 @@ class SchedulesController extends AppController{
             return $desc;
     }
     public function rule(){
+		$this->layout='tablescroll';
         $weekData = $this->Rule->fetchDistinctSchedule();
         $this->set(compact('weekData'));
 	}
