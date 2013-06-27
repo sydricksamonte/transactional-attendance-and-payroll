@@ -228,6 +228,7 @@ while ($curr_date <= $yearend_date){
 					}
 				}
 				
+				
 				$excemp = 0;
 				$remark = null;
 				$ot_remark = null;
@@ -248,6 +249,15 @@ while ($curr_date <= $yearend_date){
 				$cin_time = strtotime($curr_date_myd. " ". $temp_cin);
 				$shift_time = strtotime($curr_date_myd. " ". $temp_start);
 				$ndCounter = 0;
+				
+				if ($temp_start >= '20:00:00')
+				{	
+					$temp_cout=$this->requestAction('Employees/getLogOutAccess/'.strtotime('+1 day',$curr_date) . '/' .$employee['Employee']['userinfo_id'].'/'  );
+					if ($temp_cout != null){
+						$temp_cout = date('H:i:s', strtotime($temp_cout));
+					}
+				}
+				echo $temp_cout;
 				if (($temp_cin != null)	&& ($temp_cout != null))
 				{ 
 								$interval = night_difference(strtotime('today '.$temp_cin),strtotime('tomorrow '.$temp_cout));
@@ -273,6 +283,8 @@ while ($curr_date <= $yearend_date){
 				} else {
 								$under = '0';
 				}
+				
+			
 				if (isset($alt_cout[$curr_date_myd])){
 				}
 				if ($temp_start==null && $temp_end==null && $temp_cin == null && $temp_cout == null){
@@ -450,7 +462,7 @@ while ($curr_date <= $yearend_date){
 								}
 								$bg = null;
 				}
-				else if ($bg == "bgcolor = #D6FFC2" or $remark == 'Rest Day')
+				else if ($bg == "bgcolor = #D6FFC2" or $remark == 'Rest Day' or  ($rd == 'yes'))
 				{				$bg = "bgcolor = #D6FFC2";
 								$under_total = $under_total - $under;
 								$late_total = $late_total - $late;
@@ -458,8 +470,14 @@ while ($curr_date <= $yearend_date){
 								$under = 0;
 								$restDayCount = $restDayCount + 1;
 								$fcolor = "style='color:black'";
+								$temp_cin = null;
+								$temp_cout = null;
+								if ($remark == 'ERROR')
+								{
+									$remark = '';
+								}
 				}	
-				if (($temp_cin != null and $temp_cout == null) or ($temp_cin == null and $temp_cout != null))
+				if ((($temp_cin != null and $temp_cout == null) or ($temp_cin == null and $temp_cout != null))and ($rd != 'yes'))
                 {
                     $halfDayCount = $halfDayCount + 1;
                 }
@@ -541,7 +559,7 @@ $ot2c = 0;
 												
 												
 				}
-				if ($trimTempStart == '' and $trimTempEnd == '' and ($trimTempCin != null or $trimTempCout != null))
+				if ($trimTempStart == '' and $trimTempEnd == '' and ($trimTempCin != null or $trimTempCout != null) and ($rd != 'yes'))
 				{
 								$errorCount = $errorCount + 1;
 								$bg= "bgcolor = #FF9999";

@@ -53,7 +53,7 @@ class SchedulesController extends AppController{
 					$generate =	$this->Week->enableGeneration();
 	}
      function getWorkDayNames($days)
-  {
+    {
     if($days == '1-2-3-4-5'){
     $wrkDays = array('Monday','Tuesday','Wednesday','Thursday','Friday');
     }
@@ -63,16 +63,16 @@ class SchedulesController extends AppController{
     else if($days == '3-4-5-6-7'){
     $wrkDays = array('Wednesday','Thursday','Friday','Saturday','Sunday');
     }
-    else if($days == '4-5-6-7-1'){
+    else if($days == '1-4-5-6-7'){
     $wrkDays = array('Thursday','Friday','Saturday','Sunday','Monday');
     }
-    else if($days == '5-6-7-1-2'){
+    else if($days == '1-2-5-6-7'){
     $wrkDays = array('Friday','Saturday','Sunday','Monday','Tuesday');
     }
-    else if($days == '6-7-1-2-3'){
+    else if($days == '1-2-3-6-7'){
     $wrkDays = array('Saturday','Sunday','Monday','Tuesday','Wednesday');
     }
-    else if($days == '7-1-2-3-4'){
+    else if($days == '1-2-3-4-7'){
     $wrkDays = array('Sunday','Monday','Tuesday','Wednesday','Thursday');
     }
     return $wrkDays;

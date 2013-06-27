@@ -9,15 +9,20 @@
 <div>
 <br><br>
 
-<?php if ($unable != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: '; ?> </th></tr></thead><br><tbody><tr><td>
+<?php if ($unable != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No possible matches from previous month) '; ?> </th></tr></thead><br><tbody><tr><td>
+
 <?php foreach ($names as $u): 
-			 ?><?php {	echo $u;  ?><br><?php }
-		endforeach;}
- ?>
- <?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
+?>
+
+<?php {	echo $u;  
+?><br><?php } endforeach;}?>
+</td></tr></tbody></table></div>
+<div>
+<br><br>
+<?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
 <?php foreach ($empNoSched as $en): 
-			 ?><?php {	echo $en['Employee']['last_name'].', '.$en['Employee']['first_name'];  
-						echo $this->Html->link('Add Schedule', array('controller'=>'Employees','action' => 'change_sched', $en['Employee']['id']));
+			 ?><?php {	echo $en['Employee']['last_name'].', '.$en['Employee']['first_name'] . '   ';  
+						echo $this->Html->link('Add Schedule    ', array('controller'=>'Employees','action' => 'change_sched', $en['Employee']['id']));
 						echo $this->Html->link('Edit Employee', array('controller'=>'Employees','action' => 'edit', $en['Employee']['id']));?>
 			 <br><?php }
 		endforeach;}
