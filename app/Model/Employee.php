@@ -151,11 +151,11 @@ class Employee extends AppModel{
         ));
         return $employee;
     }
-    public function getMissingEmployeeOnSpecWeek($id)
+    public function getMissingEmployeeOnSpecWeek($id, $netType)
     {
          $employee = $this->find('all',array(
             'fields' => array('DISTINCT id', 'first_name', 'last_name'),
-            'conditions' => array('id NOT IN' => $id , 'subgroup_id' => '4', 'employed' => '1' ),
+            'conditions' => array('id NOT IN' => $id , 'subgroup_id' => $netType, 'employed' => '1' ),
             'order' => array('last_name' => 'ASC','first_name' => 'ASC')
         ));
         return $employee;

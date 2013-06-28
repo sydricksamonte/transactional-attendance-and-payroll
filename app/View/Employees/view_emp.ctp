@@ -55,7 +55,8 @@ else {
 
 	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;border-bottom:1px solid rgb(149, 211, 240);">
 	<b><?php if ($empAuth == 1){ echo '';}?></b>
-		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?>
+		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div><br>";} ?>
+	<?php { echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Edit Employee Information',array('action' => 'edit', $employee['Employee']['id']))."</div></div>";} ?>
 	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
 	  <?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).
 			$this->Form->end('View schedule');?>
@@ -257,7 +258,7 @@ while ($curr_date <= $yearend_date){
 						$temp_cout = date('H:i:s', strtotime($temp_cout));
 					}
 				}
-				echo $temp_cout;
+		
 				if (($temp_cin != null)	&& ($temp_cout != null))
 				{ 
 								$interval = night_difference(strtotime('today '.$temp_cin),strtotime('tomorrow '.$temp_cout));
@@ -581,8 +582,8 @@ $ot2c = 0;
                                     echo $this->Html->link($trimTempCin,array('action' => 'error', $employee['Employee']['id'], $curr_date));
                                 }
 								else{
-								    echo $trimTempCin;
-                                   
+								    #echo $trimTempCin;
+                                   echo $this->Html->link($trimTempCin,array('action' => 'error', $employee['Employee']['id'], $curr_date));
 								};
 								if($temp_cin == null and $remark=='Absent'){
 									echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));}
@@ -596,7 +597,8 @@ $ot2c = 0;
                                      echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
                                 }
 							    else{	
-								    echo $trimTempCout;
+								    #echo $trimTempCout;
+									 echo $this->Html->link($trimTempCout,array('action' => 'error', $employee['Employee']['id'], $curr_date));
 								};
 				if($temp_cout == null && $remark=='Absent'){
 					echo $this->Html->link('Absent',array('action' => 'error', $employee['Employee']['id'], $curr_date));

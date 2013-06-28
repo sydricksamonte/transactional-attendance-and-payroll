@@ -428,7 +428,7 @@ class SchedulesController extends AppController{
         $this->set(compact('tempSched'));
 
         $empOnWeek = $this->EmpSched->getEmployeeOnSpecWeek($weekData);
-        $empNoSched = $this->Employee->getMissingEmployeeOnSpecWeek($empOnWeek);
+        $empNoSched = $this->Employee->getMissingEmployeeOnSpecWeek($empOnWeek,$netType);
         $this->set(compact('empNoSched'));
            
        

@@ -11,7 +11,15 @@
 		endforeach;}
       else { echo 'No schedule found on this date on the database'; }
  ?>
-</td></tr></tbody></table></div></div><br>
+ </td></tr></tbody></table></div><br>
+ <table class="table-bordered"><thead><tr><th>
+<?php if ($schedFound1 != null) { echo 'Schedule(s) tracked on the following date: '; ?> </th></tr></thead><br><tbody><tr><td>
+<?php $i = 0; foreach ($schedFound1 as $u): 
+			 ?><?php {	echo $u['CHECKTIME'] . ' - ' . $u['CHECKTYPE']; $i++; ?><br><?php }
+		endforeach;}
+      else { echo 'No schedule found on this date on the database'; }
+ ?>
+ </td></tr></tbody></table></div></div><br>
 
 
   <table class="table table-bordered">
