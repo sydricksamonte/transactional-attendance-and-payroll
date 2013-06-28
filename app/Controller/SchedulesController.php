@@ -17,6 +17,7 @@ class SchedulesController extends AppController{
     'Rule',
     'TempEmpSched',
     'Week',
+    'DayShift',
     'SubGroup'
   );
 	public $helpers = array('Html','Form');
@@ -109,7 +110,7 @@ class SchedulesController extends AppController{
         $wrkPattern1 = NULL;
         $rstPattern = NULL;
         $timePattern =  $this->data['Schedule']['time_in']['hour'].':'.$this->data['Schedule']['time_in']['min'].$this->data['Schedule']['time_in']['meridian'].'-'.$this->data['Schedule']['time_out']['hour'].':'.$this->data['Schedule']['time_out']['min'].$this->data['Schedule']['time_out']['meridian'];
-        $shiftSet = $this->Schedule->groupShifts();
+        $shiftSet = $this->DayShift->groupShifts();
         $this->set(compact('shiftSet'));
         if($this->data['Schedule']['sun'] == '1')
         {
@@ -227,7 +228,8 @@ class SchedulesController extends AppController{
         $wrkPattern1 = NULL;
         $rstPattern = NULL;
         $timePattern =  $this->data['Schedule']['time_in']['hour'].':'.$this->data['Schedule']['time_in']['min'].$this->data['Schedule']['time_in']['meridian'].'-'.$this->data['Schedule']['time_out']['hour'].':'.$this->data['Schedule']['time_out']['min'].$this->data['Schedule']['time_out']['meridian'];
-        $shiftSet = $this->Schedule->groupShifts();
+        $shiftSet = $this->DayShift->groupShifts();
+         debug($shiftSet);
         $this->set(compact('shiftSet'));
         if($this->data['Schedule']['sun'] == '1')
         {
@@ -379,6 +381,9 @@ class SchedulesController extends AppController{
     
     public function generate($netType){
         $unable = null;
+        $shiftAll = $this->DayShift->getShifting(0);
+     
+        $this->set(compact('shiftAll'));
         $this->set(compact('netType'));
         $toGenWeek =  $this->Week->getFollowUpWeek();
         $this->set(compact('toGenWeek')); #'2013-04-01 to 2013-04-07'
@@ -425,7 +430,14 @@ class SchedulesController extends AppController{
         $empOnWeek = $this->EmpSched->getEmployeeOnSpecWeek($weekData);
         $empNoSched = $this->Employee->getMissingEmployeeOnSpecWeek($empOnWeek);
         $this->set(compact('empNoSched'));
+           
+       
 	}
+    public function getGroupCount($groupCount)
+    {
+        $countGroup = $this->TempEmpSched->getGroupCount($groupCount);
+        return $countGroup;
+    }
 	public function save(){
 					if ($this->request->data == null)
 					{}

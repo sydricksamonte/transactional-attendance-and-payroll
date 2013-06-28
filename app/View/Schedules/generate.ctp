@@ -9,7 +9,7 @@
 <div>
 <br><br>
 
-<?php if ($unable != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No possible matches from previous month) '; ?> </th></tr></thead><br><tbody><tr><td>
+<?php if ($unable != null) { echo '<table class="table-bordered" style="width:40%; background-color:#FFADAD"><thead"><tr><th>'. 'Unable to generate schedule(s) for: (No possible matches from previous month) '; ?> </th></tr></thead><br><tbody><tr><td>
 
 <?php foreach ($names as $u): 
 ?>
@@ -19,7 +19,7 @@
 </td></tr></tbody></table></div>
 <div>
 <br><br>
-<?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:98%"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
+<?php if ($empNoSched != null) { echo '<table class="table-bordered" style="width:40%; background-color:#FFADAD"><thead><tr><th>'. 'Unable to generate schedule(s) for: (No schedules found on previous month)'; ?> </th></tr></thead><br><tbody><tr><td>
 <?php foreach ($empNoSched as $en): 
 			 ?><?php {	echo $en['Employee']['last_name'].', '.$en['Employee']['first_name'] . '   ';  
 						echo $this->Html->link('Add Schedule    ', array('controller'=>'Employees','action' => 'change_sched', $en['Employee']['id']));
@@ -28,6 +28,20 @@
 		endforeach;}
  ?>
 </td></tr></tbody></table></div>
+<table class="table-bordered" style="width:98%">
+  <thead>
+    <tr>
+	<?php foreach ($shiftAll as $en): ?>
+      <th><?php {	echo $en['DayShift']['shift']; } ?> </th>
+	  <?php endforeach;?>
+	</tr>
+	<tr>
+	<?php foreach ($shiftAll as $en): { ?>
+      <td><?php echo $this->requestAction('Schedules/getGroupCount/'.$en['DayShift']['id']);?> </td>
+	  <?php } endforeach;?>
+	</tr>
+	  </thead>
+	  </table>
 <table class="table-bordered" style="width:98%">
   <thead>
     <tr>

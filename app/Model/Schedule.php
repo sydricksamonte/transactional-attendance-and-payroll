@@ -14,8 +14,9 @@ class Schedule extends AppModel{
  	function findActionTaken($id){
   	$actTaken = $this->find('first', array('conditions' => array('emp_id' => $id)));
 		return ($actTaken['Schedule']['action_taken']);
-  }
-	function findExistingSchedule($date,$id){
+    }
+	
+    function findExistingSchedule($date,$id){
 		$cond = $this->find('count', array('conditions' => array('and' => array(
 			array('start_date <= ' => $date,
 				'end_date >= ' => $date
@@ -39,14 +40,15 @@ class Schedule extends AppModel{
 			'id <>' => $schedId
     ))));
     
-    if ($cond == '1') {
-      return true;
-    }else{
-      return false;
+        if ($cond == '1') {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-  }
 	function getRestDayNames($days)
-  {
+    {
     if($days == '01-05'){
     $restDays = array('Saturday','Sunday');
     }
@@ -69,138 +71,139 @@ class Schedule extends AppModel{
     $restDays = array('Friday','Saturday');
     }
     return $restDays;
-  }
+    }
 	function getNoOfWeek($date_string){
 	$numWeek = date("W", strtotime($date_string)) - 1;
 	return $numWeek;
 	}
-	function checkWeekExist($date_string){
-   $cond = $this->find('count', array(
-		'joins' => array(
-          'type' => 'inner',
-          'table' => 'emp_sched',
-          'alias' => 'EmpSched',
-          'conditions' => array(
-          'EmpSched.sched_id = Schedule.order_schedules'
-          )	
-		),
-		'conditions' => array(
-      'EmpSched.week_id' => $this->getNoOfWeek($date_string)
-      )));
-
-    if ($cond == '1') {
-      return true;
-    }else{
-      return false;
-    }
 	
-	debug($cond);
-  }
+    function checkWeekExist($date_string)
+    {
+        $cond = $this->find('count', array(
+        'joins' => array(
+            'type' => 'inner',
+            'table' => 'emp_sched',
+            'alias' => 'EmpSched',
+            'conditions' => array(
+            'EmpSched.sched_id = Schedule.order_schedules'
+            )	
+		),
+	    'conditions' => array(
+            'EmpSched.week_id' => $this->getNoOfWeek($date_string))));
+
+        if ($cond == '1') {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 	function getShifts(){
-					$shifts = $this->find('list', array(
-																	'fields' => array('descrip'),
-																	'order' => array(
-																					'order_schedules'),
-																	'group' => 'descrip'));
-					return $shifts;
+        $shifts = $this->find('list', array(
+            'fields' => array('descrip'),
+            'order' => array(
+                'order_schedules'),
+            'group' => 'descrip'));
+        return $shifts;
 	}
-	function getShiftOrder($id){
-          $shifts = $this->find('first', array(
-                                  'fields' => array('order_schedules'),
-																	'conditions' => array('id' => $id)));
-					return $shifts['Schedule']['order_schedules'];
-  }
+	
+    function getShiftOrder($id){
+        $shifts = $this->find('first', array(
+            'fields' => array('order_schedules'),
+            'conditions' => array('id' => $id)));
+        return $shifts['Schedule']['order_schedules'];
+    }
 
-	function getEmpFieldsSchedByWeek($weekNum, $subgroup){
-	  $empFields = $this->find('all',array(
-      'fields' => array(
-        'Employee.id',
-        'Employee.first_name',
-        'Employee.last_name',
-        'Employee.subgroup_id',
-        'Schedule.time_in',
-        'Schedule.time_out',
-        'Schedule.days',
-      ),
-      'joins' => array(
-        array(
-          'type' => 'inner',
-          'table' => 'emp_scheds',
-          'alias' => 'EmpSched',
-          'conditions' => array(
-          'EmpSched.sched_id = Schedule.order_schedules'
-          )
-        ),
-         array(
-          'type' => 'inner',
-          'table' => 'employees',
-          'alias' => 'Employee',
-          'conditions' => array(
-            'EmpSched.emp_id = Employee.id'
-          )
-        )
-      ),
+	function getEmpFieldsSchedByWeek($weekNum, $subgroup)
+    {
+        $empFields = $this->find('all',array(
+            'fields' => array(
+                'Employee.id',
+                'Employee.first_name',
+                'Employee.last_name',
+                'Employee.subgroup_id',
+                'Schedule.time_in',
+                'Schedule.time_out',
+                'Schedule.days',
+            ),
+            'joins' => array(
+                array(
+                'type' => 'inner',
+                'table' => 'emp_scheds',
+                'alias' => 'EmpSched',
+                    'conditions' => array(
+                        'EmpSched.sched_id = Schedule.order_schedules'
+                    )
+                ),
+                array(
+                'type' => 'inner',
+                'table' => 'employees',
+                'alias' => 'Employee',
+                'conditions' => array(
+                    'EmpSched.emp_id = Employee.id'
+                    )
+                )
+            ),
 			'conditions' => array(
-         array('EmpSched.week_id' => $weekNum, 'Employee.employed' => '1', 'Employee.subgroup_id' => $subgroup)
-      ),
-      'order' => array(
-         'Schedule.time_in',
-         'Schedule.days',
-				 'Employee.last_name',
-				 'Employee.first_name'
-      )
+                array('EmpSched.week_id' => $weekNum, 'Employee.employed' => '1', 'Employee.subgroup_id' => $subgroup)
+            ),
+            'order' => array(
+                'Schedule.time_in',
+                'Schedule.days',
+                'Employee.last_name',
+                'Employee.first_name'
+            )
     ));
-
     return $empFields; 
-   }
-	function generateEmpFieldsSched($weekNum, $limCount, $ruleAnd, $ruleOr, $exEmp){
-	 $empFields = $this->find('all',array(
-      'fields' => array(
-        'DISTINCT Employee.id',
-        'Employee.first_name',
-        'Employee.last_name',
-        'Employee.subgroup_id',
-        'Schedule.time_in',
-        'Schedule.time_out',
-        'Schedule.days',
-        'EmpSched.week_id',
-				'EmpSched.emp_id',
-				'EmpSched.sched_id'
-      ),
-      'joins' => array(
-        array(
-          'type' => 'inner',
-          'table' => 'emp_scheds',
-          'alias' => 'EmpSched',
-          'conditions' => array(
-          'EmpSched.sched_id = Schedule.order_schedules'
-          )
+    }
+    function generateEmpFieldsSched($weekNum, $limCount, $ruleAnd, $ruleOr, $exEmp){
+        $empFields = $this->find('all',array(
+        'fields' => array(
+            'DISTINCT Employee.id',
+            'Employee.first_name',
+            'Employee.last_name',
+            'Employee.subgroup_id',
+            'Schedule.time_in',
+            'Schedule.time_out',
+            'Schedule.days',
+            'EmpSched.week_id',
+		    'EmpSched.emp_id',
+		    'EmpSched.sched_id'
         ),
-         array(
-          'type' => 'inner',
-          'table' => 'employees',
-          'alias' => 'Employee',
-          'conditions' => array(
-            'EmpSched.emp_id = Employee.id'
-          )
-        )
-      ),
-      'conditions' => 
-											array('NOT' => array('EmpSched.emp_id' => $exEmp),
-															'AND' => array(
-																			'Employee.subgroup_id' => "18",
-																			'EmpSched.week_id' => $weekNum,
-																			'Schedule.regular' => "1",
-																		  'Schedule.group !='=>  $ruleAnd	),
-														 'OR' => $ruleOr
+        'joins' => array(
+            array(
+            'type' => 'inner',
+            'table' => 'emp_scheds',
+            'alias' => 'EmpSched',
+            'conditions' => array(
+                'EmpSched.sched_id = Schedule.order_schedules'
+                )
+            ),
+            array(
+            'type' => 'inner',
+            'table' => 'employees',
+            'alias' => 'Employee',
+            'conditions' => array(
+                'EmpSched.emp_id = Employee.id'
+                )
+            )
+        ),
+        'conditions' => 
+            array('NOT' => array('EmpSched.emp_id' => $exEmp),
+                'AND' => array(
+                    'Employee.subgroup_id' => "18",
+                    'EmpSched.week_id' => $weekNum,
+                    'Schedule.regular' => "1",
+                    'Schedule.group !='=>  $ruleAnd	),
+                'OR' => $ruleOr
 													 ),
-      'order' =>'rand()',
+        'order' =>'rand()',
 			'limit' => $limCount
-    ));
-    return $empFields;
-	}
-	 function getTempData(){
+        ));
+        return $empFields;
+    }
+    function getTempData(){
         $tempFields = $this->find('all',array(
             'fields' => array(
             'Employee.id',
@@ -278,14 +281,18 @@ class Schedule extends AppModel{
                     
     }
     function groupShifts(){
-        $shifts = array(
+        $shifts = $this->find('all', array(
+                'order' => 'id ASC'));
+                debug($shifts);
+        return $shifts;
+        /*$shifts = array(
             'Regular Shift (Non Network Engineer shift)',
             'Early Morning (Network Engineer shift)',
             'Morning (Network Engineer shift)',
             'Midday (Network Engineer shift)',
             'Afternoon (Network Engineer shift)',
             'Evening (Network Engineer shift)');
-        return $shifts;
+        return $shifts;*/
     } 
     function fetchShifts(){
         $rule = $this->find('all', array(

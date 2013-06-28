@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2013 at 09:37 AM
+-- Generation Time: Jun 28, 2013 at 08:47 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `attendance3`
+-- Database: `attendance`
 --
 
 -- --------------------------------------------------------
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `checkinouts` (
   `sn` varchar(20) DEFAULT NULL,
   `UserExtFmt` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `checkinouts`
@@ -45,7 +45,17 @@ CREATE TABLE IF NOT EXISTS `checkinouts` (
 
 INSERT INTO `checkinouts` (`id`, `USERID`, `CHECKTIME`, `CHECKTYPE`, `VERIFYCODE`, `SENSORID`, `WorkCode`, `sn`, `UserExtFmt`) VALUES
 (17, 9, '2013-04-29 08:53:00', 'I', NULL, NULL, NULL, NULL, NULL),
-(18, 9, '2013-04-29 18:28:00', 'O', NULL, NULL, NULL, NULL, NULL);
+(18, 9, '2013-04-29 18:28:00', 'O', NULL, NULL, NULL, NULL, NULL),
+(19, 159, '2013-06-04 08:19:00', 'I', NULL, NULL, NULL, NULL, NULL),
+(20, 159, '2013-06-04 18:14:00', 'O', NULL, NULL, NULL, NULL, NULL),
+(21, 14, '2013-06-21 20:58:00', 'I', NULL, NULL, NULL, NULL, NULL),
+(22, 14, '2013-06-22 06:02:00', 'O', NULL, NULL, NULL, NULL, NULL),
+(23, 179, '2013-06-17 22:00:00', 'I', NULL, NULL, NULL, NULL, NULL),
+(24, 179, '2013-06-18 06:00:00', 'O', NULL, NULL, NULL, NULL, NULL),
+(25, 102, '2013-06-21 20:47:00', 'I', NULL, NULL, NULL, NULL, NULL),
+(26, 102, '2013-06-22 07:35:00', 'O', NULL, NULL, NULL, NULL, NULL),
+(27, 14, '2013-06-11 20:03:00', 'I', NULL, NULL, NULL, NULL, NULL),
+(28, 14, '2013-06-12 06:04:00', 'O', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -58,6 +68,8 @@ CREATE TABLE IF NOT EXISTS `comp_advance_rules` (
   `name` varchar(50) NOT NULL,
   `grouping` int(1) NOT NULL,
   `var_total` varchar(45) NOT NULL,
+  `var_showing` varchar(45) NOT NULL,
+  `var_actual` varchar(45) NOT NULL,
   `fetch_rule` varchar(999) NOT NULL,
   `tagging_rule` varchar(999) NOT NULL,
   `computation_rule` varchar(300) NOT NULL,
@@ -72,22 +84,22 @@ CREATE TABLE IF NOT EXISTS `comp_advance_rules` (
 -- Dumping data for table `comp_advance_rules`
 --
 
-INSERT INTO `comp_advance_rules` (`id`, `name`, `grouping`, `var_total`, `fetch_rule`, `tagging_rule`, `computation_rule`, `show`, `execute`, `statement_sort`, `desc`) VALUES
-(1, 'OT1', 0, '$ot1total', 'else if ( $bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday") 								{ 											$ot1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot1"."/" ); 											$ot1b = $temp_scale; 											$ot1total = $ot1total + $ot1; 								}', 'if($ot1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot1 > 0 )\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n				\n				if($bg1== "bgcolor = #9966ff" or $ot1b != 0) \n				{ \n					echo $this->Html->link($ot1,array("controller" => "Incentives", "action" => "ot", $employee["Employee"]["id"], $curr_date, "ot1",$ot1b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot1;\n				}\n				echo "</td>";', ' $ot1_amount = ((($h_rate * .25))* $ot1total)', 1, 1, 5, 'Regular days'),
-(2, 'OT2', 0, '$ot2total', 'else if ( ($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday")) 								{\n											$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" ); 												$ot2c = $temp_scale; \n							}', 'if(($ot2b!=0 or $ot2c!= 0)  and ($temp_start != null and $temp_end != null  and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot2 > 0)\n				{\n					$bg1 = $bg;\n				} \n				echo "<td $bg1>";\n				\n				if( $bg1== "bgcolor = #9966ff" or ($ot2b != 0 or $ot2c != 0))\n				{ \nif ($ot2b == 0)\n{ $ot2b = $ot2c; }\n					echo $this->Html->link($ot2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot2",$ot2b)); \n					$bg1 = $bg;\n				}\n                                \n				else\n				{\n					echo $ot2;\n				}\n				\n				echo "</td>";', '$ot2_amount = ((($h_rate * .3))* $ot2total)', 1, 1, 4, 'Special holiday or restday'),
-(3, 'OT3', 0, '$ot3total', 'if(($bg == "bgcolor = #D6FFC2") and ($remark=="S Holiday")) 								 								{ 												$ot3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot3"."/" ); 												$ot3b = $temp_scale; 												$ot3total = $ot3total + $ot3; 								}', 'if($ot3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot3 > 0)\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot3b != 0)\n				{ \n					echo $this->Html->link($ot3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot3",$ot3b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot3;\n				}\n        \n				echo "</td>";', '$ot3_amount =((($h_rate * .5))* $ot3total)', 1, 1, 1, 'Special holiday & restday'),
-(4, 'OT4', 0, '$ot4total', 'else if (  ($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot4"."/" ); 												$ot4b = $temp_scale; 												$ot4total = $ot4total + $ot4; 								}', 'if($ot4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot4 > 0)\n				{\n					$bg1= $bg;\n				}	\n        \n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot4b != 0)\n				{\n					echo $this->Html->link($ot4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot4",$ot4b)); \n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot4;\n				}\n        \n				echo "</td>";', '$ot4_amount =((($h_rate * 1))* $ot4total)', 1, 1, 2, 'Regular holiday'),
-(5, 'OT5', 0, '$ot5total', 'else if (  ($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot5"."/" ); 												$ot5b = $temp_scale; 												$ot5total = $ot5total + $ot5; 								}', 'if ($ot5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n				$bg1= "bgcolor = #9966ff";\n				}\n				if($ot5 > 0)\n				{\n				$bg1= $bg;\n				}        \n				\n				echo "<td $bg1>";\n				if($bg1== "bgcolor = #9966ff" or $ot5b != 0)\n				{\n				echo $this->Html->link($ot5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot5",$ot5b));\n				$bg1 = $bg;\n				}\n				else\n				{\n				echo $ot5;\n				}\n				\n				echo "</td>";', '  $ot5_amount = ((($h_rate * 1.6))* $ot5total)', 1, 1, 3, 'Regular holiday & restday'),
-(6, 'ND1', 0, '$nd1total', 'else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")\n								{\n												if ($temp_start != "21:00:00"){\n																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );\n												}										\n												else\n												{\n																$nd1 = $ndCounter;\n												}											\n												$nd1b = $ndCounter;\n												$nd1total = $nd1total + $nd1;\n								}', '	if($nd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n		{\n			$bg1= "bgcolor = #9966ff";\n		}\n		if($nd1 > 0)\n		{\n			$bg1= $bg;\n		}\n        \n		echo "<td $bg1>";\n		\n		if($bg1 == "bgcolor = #9966ff" or $nd1b != 0)\n		{\n			echo $this->Html->link($nd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd1",$nd1b)); \n			$bg1 = $bg;\n		}\n		else\n		{\n			echo $nd1;\n		}\n		\n        echo "</td>";', '$nd1_amount =  ((($h_rate * .1))* $nd1total)', 1, 1, 5, 'Regular days'),
-(7, 'ND2', 0, '$nd2total', 'else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))\n								{ \n												if ($temp_start != "21:00:00"){\n																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );\n												}							\n												else{		\n																$nd2 = $ndCounter;\n												}										\n												$nd2b = $ndCounter;\n												$nd2total = $nd2total + $nd2;\n								}', 'if($nd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= "bgcolor = #9966ff";}if($nd2 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd2b != 0){echo $this->Html->link($nd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd2",$nd2b)); $bg1 = $bg;}else{echo $nd2;}\n        echo "</td>";', '$nd2_amount = ((($h_rate * .3))* $nd2total)', 1, 1, 4, 'Special holiday or restday'),
-(8, 'ND3', 0, '$nd3total', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );\n												}\n												else\n												{\n																$nd3 = $ndCounter;\n												}\n												$nd3b = $ndCounter;\n												$nd3total = $nd3total + $nd3;\n								}', 'if($nd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";} if($nd3 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd3b != 0){echo $this->Html->link($nd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd3",$nd3b)); $bg1 = $bg;}else{echo $nd3;}\n        echo "</td>";', '  $nd3_amount = ((($h_rate * .5))* $nd3total)', 1, 1, 1, 'Special holiday & restday'),
-(9, 'ND4', 0, '$nd4total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );\n												}\n												else\n												{\n																$nd4 = $ndCounter;\n												}\n												$nd4b = $ndCounter;\n												$nd4total = $nd4total + $nd4;\n								}', 'if($nd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd4 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd4b != 0){echo $this->Html->link($nd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd4",$nd4b)); $bg1 = $bg;}else{echo $nd4;}\n        echo "</td>";', '$nd4_amount = ((($h_rate * 1))* $nd4total)', 1, 1, 2, 'Regular holiday'),
-(10, 'ND5', 0, '$nd5total', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );\n												}\n												else\n												{								\n																$nd5 = $ndCounter;				\n												}								\n												$nd5b = $ndCounter;\n												$nd5total = $nd5total + $nd5;\n								}', 'if($nd5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd5 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd5b != 0){echo $this->Html->link($nd5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd5",$nd5b));$bg1 = $bg;}else{echo $nd5;}\n        echo "</td>";', '$nd5_amount =((($h_rate * 1.6))* $nd5total)', 1, 1, 3, 'Regular holiday & restday'),
-(11, 'H1', 0, '$hd1total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd1"."/" );\n																$hd1b = $holidayHours;\n																$hd1total = $hd1total + $hd1;\n												}\n\n', 'if($hd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n{$bg1= "bgcolor = #9966ff";}\nif($hd1 > 0){$bg1= $bg;}\n        echo "<td $bg1>";\n\nif($bg1== "bgcolor = #9966ff" or $hd1b != 0){echo $this->Html->link($hd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd1",$hd1b));$bg1 = $bg;}\nelse{echo $hd1;}\n        echo "</td>";', '$hd1_amount = ((($h_rate * .3))* $hd1total)', 1, 1, 4, 'Special holiday'),
-(12, 'H2', 0, '$hd2total', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd2"."/" );\n																$hd2b = $holidayHours;\n																$hd2total = $hd2total + $hd2;\n												}', 'if($hd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd2 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd2b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd2",$hd2b));$bg1 = $bg;}else{echo $hd2;}\n        echo "</td>";', '$hd2_amount = ((($h_rate * .5))* $hd2total)', 1, 1, 1, 'Special holiday & restday'),
-(13, 'H3', 0, '$hd3total', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd3"."/" );\n																$hd3b = $holidayHours;\n																$hd3total = $hd3total + $hd3;\n												}', 'if($hd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd3 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd3b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd3",$hd3b));$bg1 = $bg;}else{echo $hd3;}\n        echo "</td>";', ' $hd3_amount = ((($h_rate * 1))* $hd3total)', 1, 1, 2, 'Regular holiday'),
-(14, 'H4', 0, '$hd4total', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd4"."/" );\n																$hd4b = $holidayHours;\n																$hd4total = $hd4total + $hd4;\n												}', 'if($hd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd4 > 0){$bg1= $bg;} \n				echo "<td $bg1>";if($hd4b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd4",$hd4b));$bg1 = $bg;}else{echo $hd4;}\n        echo "</td>";', '$hd4_amount = ((($h_rate * 1.6))* $hd4total)', 1, 1, 3, 'Regular holiday & restday'),
-(15, 'H1B', 0, '', 'else if (($bg == "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "S Holiday"))\n												{															$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" );\n																$ot2b = $holidayHours + $ot2c;\n																$ot2total = $ot2total + $ot2;\n											}	', '', '', 0, 1, 5, '');
+INSERT INTO `comp_advance_rules` (`id`, `name`, `grouping`, `var_total`, `var_showing`, `var_actual`, `fetch_rule`, `tagging_rule`, `computation_rule`, `show`, `execute`, `statement_sort`, `desc`) VALUES
+(1, 'OT1', 0, '$ot1total', '$ot1b', '$ot1', 'else if ( $bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday") 								{ 											$ot1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot1"."/" ); 											$ot1b = $temp_scale; 											$ot1total = $ot1total + $ot1; 								}', 'if($ot1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot1 > 0 )\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n				\n				if($bg1== "bgcolor = #9966ff" or $ot1b != 0) \n				{ \n					echo $this->Html->link($ot1,array("controller" => "Incentives", "action" => "ot", $employee["Employee"]["id"], $curr_date, "ot1",$ot1b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot1;\n				}\n				echo "</td>";', ' $ot1_amount = ((($h_rate * .25))* $ot1total)', 1, 1, 5, 'Regular days'),
+(2, 'OT2', 0, '$ot2total', '$ot2b', '$ot2', 'else if ( ($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday")) 								{\n											$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" ); 												$ot2c = $temp_scale; \n							}', 'if(($ot2b!=0 or $ot2c!= 0)  and ($temp_start != null and $temp_end != null  and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot2 > 0)\n				{\n					$bg1 = $bg;\n				} \n				echo "<td $bg1>";\n				\n				if( $bg1== "bgcolor = #9966ff" or ($ot2b != 0 or $ot2c != 0))\n				{ \nif ($ot2b == 0)\n{ $ot2b = $ot2c; }\n					echo $this->Html->link($ot2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot2",$ot2b)); \n					$bg1 = $bg;\n				}\n                                \n				else\n				{\n					echo $ot2;\n				}\n				\n				echo "</td>";', '$ot2_amount = ((($h_rate * .3))* $ot2total)', 1, 1, 4, 'Special holiday or restday'),
+(3, 'OT3', 0, '$ot3total', '$ot3b', '$ot3', 'if(($bg == "bgcolor = #D6FFC2") and ($remark=="S Holiday")) 								 								{ 												$ot3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot3"."/" ); 												$ot3b = $temp_scale; 												$ot3total = $ot3total + $ot3; 								}', 'if($ot3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot3 > 0)\n				{\n					$bg1= $bg;\n				}\n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot3b != 0)\n				{ \n					echo $this->Html->link($ot3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot3",$ot3b));\n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot3;\n				}\n        \n				echo "</td>";', '$ot3_amount =((($h_rate * .5))* $ot3total)', 1, 1, 1, 'Special holiday & restday'),
+(4, 'OT4', 0, '$ot4total', '$ot4b', '$ot4', 'else if (  ($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot4"."/" ); 												$ot4b = $temp_scale; 												$ot4total = $ot4total + $ot4; 								}', 'if($ot4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n					$bg1= "bgcolor = #9966ff";\n				}\n				if($ot4 > 0)\n				{\n					$bg1= $bg;\n				}	\n        \n				echo "<td $bg1>";\n		\n				if($bg1== "bgcolor = #9966ff" or $ot4b != 0)\n				{\n					echo $this->Html->link($ot4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot4",$ot4b)); \n					$bg1 = $bg;\n				}\n				else\n				{\n					echo $ot4;\n				}\n        \n				echo "</td>";', '$ot4_amount =((($h_rate * 1))* $ot4total)', 1, 1, 2, 'Regular holiday'),
+(5, 'OT5', 0, '$ot5total', '$ot5b', '$ot5', 'else if (  ($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday")) 								{ 												$ot5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot5"."/" ); 												$ot5b = $temp_scale; 												$ot5total = $ot5total + $ot5; 								}', 'if ($ot5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) \n				{\n				$bg1= "bgcolor = #9966ff";\n				}\n				if($ot5 > 0)\n				{\n				$bg1= $bg;\n				}        \n				\n				echo "<td $bg1>";\n				if($bg1== "bgcolor = #9966ff" or $ot5b != 0)\n				{\n				echo $this->Html->link($ot5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "ot5",$ot5b));\n				$bg1 = $bg;\n				}\n				else\n				{\n				echo $ot5;\n				}\n				\n				echo "</td>";', '  $ot5_amount = ((($h_rate * 1.6))* $ot5total)', 1, 1, 3, 'Regular holiday & restday'),
+(6, 'ND1', 0, '$nd1total', '$nd1b', '$nd1', 'else if ($bg != "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "R Holiday")\n								{\n												if ($temp_start != "21:00:00"){\n																$nd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd1"."/" );\n												}										\n												else\n												{\n																$nd1 = $ndCounter;\n												}											\n												$nd1b = $ndCounter;\n												$nd1total = $nd1total + $nd1;\n								}', '	if($nd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n		{\n			$bg1= "bgcolor = #9966ff";\n		}\n		if($nd1 > 0)\n		{\n			$bg1= $bg;\n		}\n        \n		echo "<td $bg1>";\n		\n		if($bg1 == "bgcolor = #9966ff" or $nd1b != 0)\n		{\n			echo $this->Html->link($nd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd1",$nd1b)); \n			$bg1 = $bg;\n		}\n		else\n		{\n			echo $nd1;\n		}\n		\n        echo "</td>";', '$nd1_amount =  ((($h_rate * .1))* $nd1total)', 1, 1, 5, 'Regular days'),
+(7, 'ND2', 0, '$nd2total', '$nd2b', '$nd2', 'else if (($bg == "bgcolor = #D6FFC2" or $remark == "S Holiday"))\n								{ \n												if ($temp_start != "21:00:00"){\n																$nd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd2"."/" );\n												}							\n												else{		\n																$nd2 = $ndCounter;\n												}										\n												$nd2b = $ndCounter;\n												$nd2total = $nd2total + $nd2;\n								}', 'if($nd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)) {$bg1= "bgcolor = #9966ff";}if($nd2 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd2b != 0){echo $this->Html->link($nd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd2",$nd2b)); $bg1 = $bg;}else{echo $nd2;}\n        echo "</td>";', '$nd2_amount = ((($h_rate * .3))* $nd2total)', 1, 1, 4, 'Special holiday or restday'),
+(8, 'ND3', 0, '$nd3total', '$nd3b', '$nd3', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd3"."/" );\n												}\n												else\n												{\n																$nd3 = $ndCounter;\n												}\n												$nd3b = $ndCounter;\n												$nd3total = $nd3total + $nd3;\n								}', 'if($nd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";} if($nd3 > 0){$bg1= $bg;}       \necho "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd3b != 0){echo $this->Html->link($nd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd3",$nd3b)); $bg1 = $bg;}else{echo $nd3;}\n        echo "</td>";', '  $nd3_amount = ((($h_rate * .5))* $nd3total)', 1, 1, 1, 'Special holiday & restday'),
+(9, 'ND4', 0, '$nd4total', '$nd4b', '$nd4', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd4  =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd4"."/" );\n												}\n												else\n												{\n																$nd4 = $ndCounter;\n												}\n												$nd4b = $ndCounter;\n												$nd4total = $nd4total + $nd4;\n								}', 'if($nd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd4 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd4b != 0){echo $this->Html->link($nd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd4",$nd4b)); $bg1 = $bg;}else{echo $nd4;}\n        echo "</td>";', '$nd4_amount = ((($h_rate * 1))* $nd4total)', 1, 1, 2, 'Regular holiday'),
+(10, 'ND5', 0, '$nd5total', '$nd5b', '$nd5', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n								{\n												if ($temp_start != "21:00:00"){\n																$nd5 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "nd5"."/" );\n												}\n												else\n												{								\n																$nd5 = $ndCounter;				\n												}								\n												$nd5b = $ndCounter;\n												$nd5total = $nd5total + $nd5;\n								}', 'if($nd5b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($nd5 > 0){$bg1= $bg;}\n        echo "<td $bg1>";if($bg1 == "bgcolor = #9966ff" or $nd5b != 0){echo $this->Html->link($nd5,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "nd5",$nd5b));$bg1 = $bg;}else{echo $nd5;}\n        echo "</td>";', '$nd5_amount =((($h_rate * 1.6))* $nd5total)', 1, 1, 3, 'Regular holiday & restday'),
+(11, 'H1', 0, '$hd1total', '$hd1b', '$hd1', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd1 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd1"."/" );\n																$hd1b = $holidayHours;\n																$hd1total = $hd1total + $hd1;\n												}\n\n', 'if($hd1b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null))\n{$bg1= "bgcolor = #9966ff";}\nif($hd1 > 0){$bg1= $bg;}\n        echo "<td $bg1>";\n\nif($bg1== "bgcolor = #9966ff" or $hd1b != 0){echo $this->Html->link($hd1,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd1",$hd1b));$bg1 = $bg;}\nelse{echo $hd1;}\n        echo "</td>";', '$hd1_amount = ((($h_rate * .3))* $hd1total)', 1, 1, 4, 'Special holiday'),
+(12, 'H2', 0, '$hd2total', '$hd2b', '$hd2', 'if (($bg == "bgcolor = #D6FFC2" and $remark == "S Holiday"))\n												{$hd2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd2"."/" );\n																$hd2b = $holidayHours;\n																$hd2total = $hd2total + $hd2;\n												}', 'if($hd2b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd2 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd2b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd2,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd2",$hd2b));$bg1 = $bg;}else{echo $hd2;}\n        echo "</td>";', '$hd2_amount = ((($h_rate * .5))* $hd2total)', 1, 1, 1, 'Special holiday & restday'),
+(13, 'H3', 0, '$hd3total', '$hd3b', '$hd3', 'else if (($bg != "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd3 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd3"."/" );\n																$hd3b = $holidayHours;\n																$hd3total = $hd3total + $hd3;\n												}', 'if($hd3b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd3 > 0){$bg1= $bg;}\n				echo "<td $bg1>";if($hd3b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd3,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd3",$hd3b));$bg1 = $bg;}else{echo $hd3;}\n        echo "</td>";', ' $hd3_amount = ((($h_rate * 1))* $hd3total)', 1, 1, 2, 'Regular holiday'),
+(14, 'H4', 0, '$hd4total', '$hd4b', '$hd4', 'else if (($bg == "bgcolor = #D6FFC2" and $remark == "R Holiday"))\n												{$hd4 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "hd4"."/" );\n																$hd4b = $holidayHours;\n																$hd4total = $hd4total + $hd4;\n												}', 'if($hd4b!=0 and ($temp_start != null and $temp_end != null and $temp_cin != null and $temp_cout != null)){$bg1= "bgcolor = #9966ff";}if($hd4 > 0){$bg1= $bg;} \n				echo "<td $bg1>";if($hd4b != 0 or $bg1== "bgcolor = #9966ff"){echo $this->Html->link($hd4,array("controller" => "Incentives","action" => "ot", $employee["Employee"]["id"], $curr_date, "hd4",$hd4b));$bg1 = $bg;}else{echo $hd4;}\n        echo "</td>";', '$hd4_amount = ((($h_rate * 1.6))* $hd4total)', 1, 1, 3, 'Regular holiday & restday'),
+(15, 'H1B', 0, '$DUMMY', '$ot2c', '$ot2', 'else if (($bg == "bgcolor = #D6FFC2" and $remark != "S Holiday" and $remark != "S Holiday"))\n												{															$ot2 =  $this->requestAction("Incentives/getOverTime/". $employee["Employee"]["id"] ."/". $curr_date ."/". "ot2"."/" );\n																$ot2b = $holidayHours + $ot2c;\n																$ot2total = $ot2total + $ot2;\n											}	', '', '', 0, 1, 5, '');
 
 -- --------------------------------------------------------
 
@@ -163,6 +175,33 @@ INSERT INTO `days` (`id`, `day`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `day_shifts`
+--
+
+CREATE TABLE IF NOT EXISTS `day_shifts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shift` varchar(50) NOT NULL,
+  `group` int(11) NOT NULL,
+  `percentage` int(11) NOT NULL,
+  `authorized` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `day_shifts`
+--
+
+INSERT INTO `day_shifts` (`id`, `shift`, `group`, `percentage`, `authorized`) VALUES
+(0, 'No Shifting', 1, 0, 1),
+(1, 'Early Morning', 0, 20, 1),
+(2, 'Morning', 0, 30, 1),
+(3, 'Midday', 0, 30, 1),
+(4, 'Afternoon', 0, 10, 1),
+(5, 'Graveyard', 0, 10, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `deductions`
 --
 
@@ -221,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `employees` (
   PRIMARY KEY (`id`),
   KEY `group_id` (`subgroup_id`),
   KEY `tax_status` (`tax_status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=152 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=155 ;
 
 --
 -- Dumping data for table `employees`
@@ -230,17 +269,17 @@ CREATE TABLE IF NOT EXISTS `employees` (
 INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last_name`, `account_id`, `tax_status`, `monthly`, `employed`) VALUES
 (1, 2, 4, ' Jefrey', 'Flores', '32746-323-23432', 0, '"', 1),
 (2, 4, 4, ' Randy', 'Raya', '0', 1, '"', 1),
-(3, 6, 4, ' Ramon Bong-bong', 'Tauyan', '0', 1, '"', 1),
+(3, 6, 4, ' Ramon Bongbong', 'Tauyan', '0', 1, '"', 0),
 (4, 9, 5, ' Jelyn', 'Quijano', '0171234567', 0, '"', 1),
-(5, 12, 4, ' Mariel Aikeem', 'Magparoc', '0', 1, '"', 1),
+(5, 12, 16, ' Mariel Aikeem', 'Magparoc', '0', 1, '"', 1),
 (6, 14, 4, ' Cristhamay', 'Oxina', '0', 1, '"', 1),
 (7, 31, 4, ' Perry James', 'Olermo', '0', 1, '"', 1),
 (8, 32, 4, ' Kimberly', 'Atinen', '0', 1, '"', 0),
-(9, 44, 4, ' Naomi Claire', 'Curay', '0', 0, '"', 1),
+(9, 44, 16, ' Naomi Claire', 'Curay', '0', 0, '"', 1),
 (10, 51, 4, ' Josiah', 'Inubio', '0', 1, '"', 1),
-(11, 75, 4, ' Philip', 'Castro', '0', 1, '"', 1),
+(11, 75, 16, ' Philip', 'Castro', '0', 1, '"', 1),
 (12, 76, 4, ' Leilanie', 'Sauro', '0', 1, '"', 0),
-(13, 79, 4, ' Jay bee', 'Morales', '0', 1, '"', 0),
+(13, 79, 16, ' Jay bee', 'Morales', '0', 1, '"', 1),
 (14, 80, 6, ' Mark Angelo', 'Datu', '0', 1, '#{ýBÀ', 1),
 (15, 84, 4, ' Rhona', 'Noche', '0', 1, '"', 1),
 (16, 85, 4, ' Jheera', 'Ramos', '0', 1, '"', 1),
@@ -249,9 +288,9 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (19, 88, 4, ' Mark Kristoffer', 'Carlos', '0', 1, '"', 1),
 (20, 89, 3, ' Ann Marie', 'Montero', '0', 1, '"', 1),
 (21, 90, 3, ' Randell', 'Dagami', '0', 1, '#zýBÀ', 1),
-(22, 91, 4, ' Fredrick', 'Rojas', '0', 1, '"', 1),
+(22, 91, 16, ' Fredrick', 'Rojas', '0', 1, '"', 1),
 (23, 93, 1, ' Vhilly', 'Santiago', '0', 1, '"', 1),
-(24, 94, 2, ' Noelyn', 'Gusi', '0', 1, ' ýBÀ', 1),
+(24, 94, 2, ' Noelyn', 'Gusi', '0', 0, '''ýBÀ', 1),
 (25, 95, 1, ' Chey', 'Luna', '0', 1, '"', 1),
 (26, 96, 1, ' Adrian', 'Sosa', '0', 1, '"', 1),
 (27, 98, 1, ' Juzen Khay', 'Tanga', '0', 1, '"', 1),
@@ -265,11 +304,11 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (35, 108, 6, ' Jaime', 'Pahulas', '0', 1, '"', 1),
 (36, 110, 4, ' Isabelo', 'Cunan', '0', 1, '"', 1),
 (37, 112, 14, ' Ramon', 'Dy', '0', 3, '"', 1),
-(38, 113, 2, ' Joyce', 'Subang', '0', 0, '"', 1),
+(38, 113, 2, ' Joyce', 'Subang', '0', 0, '''ýBÀ', 1),
 (39, 114, 2, ' Syd', 'Samonte', '17000989', 0, '#vøJ', 1),
 (40, 115, 4, ' Royce', 'Lumbao', '0', 1, '"', 0),
 (41, 116, 4, ' Ernest', 'Hernan', '0', 1, '"', 0),
-(42, 117, 3, ' Karlo Ben', 'Balino', '0', 1, '"', 1),
+(42, 117, 3, ' Karlo Ben', 'Balino', '0', 0, '!ýB', 1),
 (43, 118, 4, ' Jomar', 'Turla', '0', 0, '"', 1),
 (44, 119, 4, ' Melody', 'Mercene', '0', 1, '"', 1),
 (45, 120, 6, ' Arnel', 'Apuyan', '0', 3, '"', 1),
@@ -278,16 +317,16 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (48, 123, 4, ' Jose Jewel', 'Morales', '0', 1, '"', 1),
 (49, 124, 4, ' Kristian', 'Marin', '0', 1, '"', 1),
 (50, 125, 2, ' Neil', 'Cabug-os', '000034355345', 0, '#ýBÀO', 1),
-(51, 126, 4, ' Mary Ann', 'Mallari', '0', 1, '"', 1),
+(51, 126, 16, ' Mary Ann', 'Mallari', '0', 1, '"', 1),
 (52, 127, 4, ' Maria Joanna', 'Sabeniano', '0', 1, '"', 0),
 (53, 128, 4, ' Philip', 'Tizon', '0', 1, '"', 0),
 (54, 129, 4, ' Donnel', 'Meneses', '0', 1, '"', 0),
 (55, 130, 4, ' Russel', 'Cruz', '0', 0, '"', 1),
 (56, 131, 4, ' Keen', 'Ricalde', '0', 1, '"', 0),
-(57, 132, 4, ' Katrina', 'Franco', '0', 1, '"', 1),
+(57, 132, 16, ' Katrina', 'Franco', '0', 1, '"', 1),
 (58, 133, 3, ' Anna', 'Anir', '0', 1, '"', 1),
 (59, 134, 4, ' Jake', 'Cabigas', '0', 1, '"', 1),
-(60, 135, 4, ' Camille', 'Samson', '0', 1, '"', 0),
+(60, 135, 16, ' Camille', 'Samson', '0', 1, '"', 1),
 (61, 136, 4, ' Jayson', 'Basulgan', '0', 1, '"', 1),
 (62, 137, 4, ' Carlo Jay', 'Agngaray', '0', 1, '"', 0),
 (63, 138, 4, ' Chiyoshi', 'Miyazawa', '0', 0, '"', 1),
@@ -300,8 +339,8 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (70, 145, 2, ' Daryll Smart', 'Arica', '0', 1, '"', 1),
 (71, 147, 2, ' Mark Roviel', 'Guarismo', '0', 0, '"', 1),
 (72, 148, 4, ' Mark Anthony', 'Mendoza', '0', 1, '"', 0),
-(73, 149, 4, ' Edd Julius', 'Tortoles', '0', 1, '"', 0),
-(74, 150, 4, ' Danica', 'Domingo', '0', 1, '"', 1),
+(73, 149, 16, ' Edd Julius', 'Tortoles', '0', 1, '"', 1),
+(74, 150, 16, ' Danica', 'Domingo', '0', 1, '"', 1),
 (75, 151, 7, ' Leandro', 'Sibal', '0', 1, '"', 1),
 (76, 152, 7, 'Ryouhei', 'Morita', '0', 0, ' ýBÀ', 1),
 (77, 154, 11, ' Gary', 'Mapa', '0', 0, '"', 1),
@@ -309,35 +348,38 @@ INSERT INTO `employees` (`id`, `userinfo_id`, `subgroup_id`, `first_name`, `last
 (79, 153, 4, 'Caluna', 'Casimiro', '0', 0, '"', 1),
 (80, 155, 4, ' Mark Angelo', 'Go', '20000', 1, ' ýBÀ', 1),
 (81, 156, 4, ' Patrick Joseph', 'Abling', '0', 1, '"', 1),
-(82, 158, 4, ' Marvin Lance', 'Semana', '45645-89789-98', 0, '"', 1),
-(83, 160, 4, ' Jefrey', 'Diaz', '0', 1, '"', 1),
+(82, 158, 16, ' Marvin Lance', 'Semana', '45645-89789-98', 0, '"', 1),
+(83, 160, 16, ' Jefrey', 'Diaz', '0', 1, '"', 1),
 (85, 159, 2, 'Maychell', 'Alcorin', '0', 0, ' ýBÀ', 1),
 (88, 171, 4, 'Ralp', 'Uy', '0', 1, '#vøJ', 1),
 (89, 172, 4, 'Rod', 'Mariano', '0', 0, '"', 1),
 (90, 170, 4, 'Audi', 'Nunez', '0', 0, '"', 1),
 (91, 169, 4, 'Daryl', 'Castillo', '0', 1, '"', 1),
 (99, -1, 15, 'Mary Grace', 'Aguirre', '0000-0000-0000', 0, '"', 1),
-(131, -10, 12, 'Rishelle Ann', 'Argame', '', 0, '"', 1),
+(131, 188, 16, 'Rishelle Ann', 'Argame', '', 0, '"', 1),
 (132, -11, 12, 'Noel', 'Concepcion', '', 0, '"', 1),
-(133, -12, 12, 'Maricel', 'Danganan', '', 0, '"', 1),
-(134, -13, 5, 'Jenalyn', 'Ducanes', '', 0, '"', 1),
+(133, 165, 16, 'Maricel', 'Danganan', '', 0, '"', 1),
+(134, 161, 5, 'Jenalyn', 'Ducanes', '', 0, '"', 1),
 (135, -14, 15, 'Rodolfo', 'Ducanes', '', 0, '"', 1),
 (136, -15, 12, 'Nimfa', 'Eugenio', '', 0, '"', 1),
-(137, -16, 12, 'April John', 'Frias', '', 0, '"', 1),
+(137, 167, 16, 'April John', 'Frias', '', 0, '"', 1),
 (138, -17, 12, 'Jonnel', 'Galibo', '', 0, '"', 1),
-(139, -18, 12, 'Alexis', 'Guevarra', '', 0, '"', 1),
-(140, -19, 12, 'John Felix', 'Guzman', '', 0, '"', 1),
-(141, -20, 12, 'Gilbert', 'Morillo', '', 0, '"', 1),
-(142, -21, 12, 'Kathy', 'Pagtakhan', '', 0, '"', 1),
-(143, -22, 12, 'Edmund', 'Tienzo', '', 0, '"', 1),
-(144, -23, 12, 'Richard', 'Tuliao', '', 0, '"', 1),
+(139, 166, 16, 'Alexis', 'Guevarra', '', 0, '"', 1),
+(140, 175, 16, 'John Felix', 'Guzman', '', 0, '"', 1),
+(141, 163, 16, 'Gilbert', 'Morillo', '', 0, '"', 1),
+(142, 186, 16, 'Kathy', 'Pagtakhan', '', 0, '"', 1),
+(143, 174, 12, 'Edmund', 'Tienzo', '', 0, '"', 1),
+(144, 177, 12, 'Richard', 'Tuliao', '', 0, '"', 1),
 (145, -24, 12, 'Rolando', 'Vergara', '', 0, '"', 1),
-(146, -25, 12, 'Donnabelle', 'Violanda', '', 0, '"', 1),
-(147, -26, 12, 'Jocelyn', 'Yabut', '', 0, '"', 1),
-(148, -27, 13, 'Ralph', 'Recto', '', 0, '"', 1),
-(149, -28, 13, 'Mohammad Ki', 'Junaide', '', 0, '"', 1),
-(150, -29, 13, 'Sonny', 'Gabutero', '', 0, '"', 1),
-(151, 121, 1, 'Angie', 'Mill', '', 1, '"', 1);
+(146, 185, 16, 'Donnabelle', 'Violanda', '', 0, '"', 1),
+(147, 162, 16, 'Jocelyn', 'Yabut', '', 0, '"', 1),
+(148, 178, 13, 'Ralph', 'Recto', '', 0, '"', 1),
+(149, 182, 13, 'Mohammad Ki', 'Junaide', '', 0, '"', 1),
+(150, 180, 13, 'Sonny', 'Gabutero', '', 0, '"', 1),
+(151, 121, 1, 'Angie', 'Mill', '', 1, '"', 1),
+(152, 181, 4, 'Kit', 'Larioza', '', 0, '"', 1),
+(153, 179, 4, 'Earl', 'Cornista', '', 0, '"', 1),
+(154, 183, 7, 'Joanna', 'Balane', '', 0, '"', 1);
 
 -- --------------------------------------------------------
 
@@ -354,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `emp_scheds` (
   KEY `emp_id` (`emp_id`),
   KEY `sched_id` (`sched_id`),
   KEY `week_id` (`week_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2434 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2665 ;
 
 --
 -- Dumping data for table `emp_scheds`
@@ -1136,10 +1178,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (1904, -1, 24, 12),
 (1905, -1, 24, 13),
 (1906, -1, 24, 14),
-(1907, -1, 24, 15),
-(1908, -1, 24, 16),
-(1909, -1, 24, 17),
-(1910, -1, 24, 18),
 (1911, -1, 24, 19),
 (1912, -1, 24, 20),
 (1913, -1, 24, 21),
@@ -1166,10 +1204,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (1934, -1, 28, 12),
 (1935, -1, 28, 13),
 (1936, -1, 28, 14),
-(1937, -1, 28, 15),
-(1938, -1, 28, 16),
-(1939, -1, 28, 17),
-(1940, -1, 28, 18),
 (1941, -1, 28, 19),
 (1942, -1, 28, 20),
 (1943, -1, 28, 21),
@@ -1196,10 +1230,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (1964, -1, 29, 12),
 (1965, -1, 29, 13),
 (1966, -1, 29, 14),
-(1967, -1, 29, 15),
-(1968, -1, 29, 16),
-(1969, -1, 29, 17),
-(1970, -1, 29, 18),
 (1971, -1, 29, 19),
 (1972, -1, 29, 20),
 (1973, -1, 29, 21),
@@ -1226,10 +1256,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (1994, -1, 38, 12),
 (1995, -1, 38, 13),
 (1996, -1, 38, 14),
-(1997, -1, 38, 15),
-(1998, -1, 38, 16),
-(1999, -1, 38, 17),
-(2000, -1, 38, 18),
 (2001, -1, 38, 19),
 (2002, -1, 38, 20),
 (2003, -1, 38, 21),
@@ -1256,10 +1282,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2024, -1, 39, 12),
 (2025, -1, 39, 13),
 (2026, -1, 39, 14),
-(2027, -1, 39, 15),
-(2028, -1, 39, 16),
-(2029, -1, 39, 17),
-(2030, -1, 39, 18),
 (2031, -1, 39, 19),
 (2032, -1, 39, 20),
 (2033, -1, 39, 21),
@@ -1286,10 +1308,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2054, -1, 50, 12),
 (2055, -1, 50, 13),
 (2056, -1, 50, 14),
-(2057, -1, 50, 15),
-(2058, -1, 50, 16),
-(2059, -1, 50, 17),
-(2060, -1, 50, 18),
 (2061, -1, 50, 19),
 (2062, -1, 50, 20),
 (2063, -1, 50, 21),
@@ -1316,10 +1334,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2084, -1, 67, 12),
 (2085, -1, 67, 13),
 (2086, -1, 67, 14),
-(2087, -1, 67, 15),
-(2088, -1, 67, 16),
-(2089, -1, 67, 17),
-(2090, -1, 67, 18),
 (2091, -1, 67, 19),
 (2092, -1, 67, 20),
 (2093, -1, 67, 21),
@@ -1346,10 +1360,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2114, -1, 70, 12),
 (2115, -1, 70, 13),
 (2116, -1, 70, 14),
-(2117, -1, 70, 15),
-(2118, -1, 70, 16),
-(2119, -1, 70, 17),
-(2120, -1, 70, 18),
 (2121, -1, 70, 19),
 (2122, -1, 70, 20),
 (2123, -1, 70, 21),
@@ -1376,10 +1386,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2144, -1, 71, 12),
 (2145, -1, 71, 13),
 (2146, -1, 71, 14),
-(2147, -1, 71, 15),
-(2148, -1, 71, 16),
-(2149, -1, 71, 17),
-(2150, -1, 71, 18),
 (2151, -1, 71, 19),
 (2152, -1, 71, 20),
 (2153, -1, 71, 21),
@@ -1406,10 +1412,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2174, -1, 85, 12),
 (2175, -1, 85, 13),
 (2176, -1, 85, 14),
-(2177, -1, 85, 15),
-(2178, -1, 85, 16),
-(2179, -1, 85, 17),
-(2180, -1, 85, 18),
 (2181, -1, 85, 19),
 (2182, -1, 85, 20),
 (2183, -1, 85, 21),
@@ -1437,10 +1439,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2205, -1, 4, 12),
 (2206, -1, 4, 13),
 (2207, -1, 4, 14),
-(2208, -1, 4, 15),
-(2209, -1, 4, 16),
-(2210, -1, 4, 17),
-(2211, -1, 4, 18),
 (2212, -1, 4, 19),
 (2213, -1, 4, 20),
 (2214, -1, 4, 21),
@@ -1473,10 +1471,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2241, -1, 134, 12),
 (2242, -1, 134, 13),
 (2243, -1, 134, 14),
-(2244, -1, 134, 15),
-(2245, -1, 134, 16),
-(2246, -1, 134, 17),
-(2247, -1, 134, 18),
 (2248, -1, 134, 19),
 (2249, -1, 134, 20),
 (2250, -1, 134, 21),
@@ -1503,10 +1497,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2271, -1, 77, 12),
 (2272, -1, 77, 13),
 (2273, -1, 77, 14),
-(2274, -1, 77, 15),
-(2275, -1, 77, 16),
-(2276, -1, 77, 17),
-(2277, -1, 77, 18),
 (2278, -1, 77, 19),
 (2279, -1, 77, 20),
 (2280, -1, 77, 21),
@@ -1533,10 +1523,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2301, -1, 32, 12),
 (2302, -1, 32, 13),
 (2303, -1, 32, 14),
-(2304, -1, 32, 15),
-(2305, -1, 32, 16),
-(2306, -1, 32, 17),
-(2307, -1, 32, 18),
 (2308, -1, 32, 19),
 (2309, -1, 32, 20),
 (2310, -1, 32, 21),
@@ -1563,10 +1549,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2331, -1, 37, 12),
 (2332, -1, 37, 13),
 (2333, -1, 37, 14),
-(2334, -1, 37, 15),
-(2335, -1, 37, 16),
-(2336, -1, 37, 17),
-(2337, -1, 37, 18),
 (2338, -1, 37, 19),
 (2339, -1, 37, 20),
 (2340, -1, 37, 21),
@@ -1600,10 +1582,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2368, -1, 75, 12),
 (2369, -1, 75, 13),
 (2370, -1, 75, 14),
-(2371, -1, 75, 15),
-(2372, -1, 75, 16),
-(2373, -1, 75, 17),
-(2374, -1, 75, 18),
 (2375, -1, 75, 19),
 (2376, -1, 75, 20),
 (2377, -1, 75, 21),
@@ -1637,10 +1615,6 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2405, -1, 76, 12),
 (2406, -1, 76, 13),
 (2407, -1, 76, 14),
-(2408, -1, 76, 15),
-(2409, -1, 76, 16),
-(2410, -1, 76, 17),
-(2411, -1, 76, 18),
 (2412, -1, 76, 19),
 (2413, -1, 76, 20),
 (2414, -1, 76, 21),
@@ -1662,7 +1636,150 @@ INSERT INTO `emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
 (2430, -1, 76, 37),
 (2431, -1, 76, 38),
 (2432, -1, 76, 39),
-(2433, -1, 76, 40);
+(2433, -1, 76, 40),
+(2522, 35, 7, 12),
+(2523, 35, 7, 13),
+(2524, 35, 7, 14),
+(2525, 36, 63, 12),
+(2526, 36, 63, 13),
+(2527, 36, 63, 14),
+(2528, 39, 69, 12),
+(2529, 39, 69, 13),
+(2530, 39, 69, 14),
+(2531, 38, 55, 12),
+(2532, 38, 55, 13),
+(2533, 38, 55, 14),
+(2534, -1, 152, 11),
+(2535, -1, 152, 12),
+(2536, -1, 152, 13),
+(2537, -1, 152, 14),
+(2538, 32, 42, 11),
+(2539, 32, 42, 12),
+(2540, 32, 42, 13),
+(2541, 32, 42, 14),
+(2542, 31, 153, 12),
+(2543, 31, 153, 13),
+(2544, 31, 153, 14),
+(2545, 30, 30, 11),
+(2546, 30, 30, 12),
+(2547, 30, 30, 13),
+(2548, 30, 30, 14),
+(2549, 1, 83, 12),
+(2550, 1, 83, 13),
+(2551, 1, 83, 14),
+(2552, 7, 147, 12),
+(2553, 7, 147, 13),
+(2554, 7, 147, 14),
+(2555, 1, 141, 11),
+(2556, 1, 141, 12),
+(2557, 1, 141, 13),
+(2558, 1, 141, 14),
+(2559, 25, 73, 11),
+(2560, 25, 73, 12),
+(2561, 25, 73, 13),
+(2562, 25, 73, 14),
+(2563, 19, 60, 11),
+(2564, 19, 60, 12),
+(2565, 19, 60, 13),
+(2566, 19, 60, 14),
+(2567, 5, 74, 12),
+(2568, 5, 74, 13),
+(2569, 5, 74, 14),
+(2570, 25, 133, 11),
+(2571, 25, 133, 12),
+(2572, 25, 133, 13),
+(2573, 25, 133, 14),
+(2574, 23, 13, 11),
+(2575, 23, 13, 12),
+(2576, 23, 13, 13),
+(2577, 23, 13, 14),
+(2578, -1, 82, 12),
+(2579, -1, 82, 13),
+(2580, -1, 82, 14),
+(2581, 22, 146, 11),
+(2582, 22, 146, 12),
+(2583, 22, 146, 13),
+(2584, 22, 146, 14),
+(2585, -1, 131, 12),
+(2586, -1, 131, 13),
+(2587, -1, 131, 14),
+(2588, -1, 142, 12),
+(2589, -1, 142, 13),
+(2590, -1, 142, 14),
+(2591, 27, 5, 11),
+(2592, 27, 5, 12),
+(2593, 27, 5, 13),
+(2594, 27, 5, 14),
+(2595, 30, 137, 12),
+(2596, 30, 137, 13),
+(2597, 30, 137, 14),
+(2598, 9, 139, 11),
+(2599, 9, 139, 12),
+(2600, 9, 139, 13),
+(2601, 9, 139, 14),
+(2602, -1, 140, 12),
+(2603, -1, 140, 13),
+(2604, -1, 140, 14),
+(2605, -1, 57, 11),
+(2606, -1, 57, 12),
+(2607, -1, 57, 13),
+(2608, -1, 57, 14),
+(2609, -1, 51, 12),
+(2610, -1, 51, 13),
+(2611, -1, 51, 14),
+(2612, -10, 9, 11),
+(2613, -10, 9, 12),
+(2614, -10, 9, 13),
+(2615, -10, 9, 14),
+(2616, 28, 11, 12),
+(2617, 28, 11, 13),
+(2618, 28, 11, 14),
+(2619, 9, 22, 11),
+(2620, 9, 22, 12),
+(2621, 9, 22, 13),
+(2622, 9, 22, 14),
+(2623, -1, 154, 42),
+(2624, -1, 154, 41),
+(2625, -1, 154, 1),
+(2626, -1, 154, 2),
+(2627, -1, 154, 3),
+(2628, -1, 154, 4),
+(2629, -1, 154, 5),
+(2630, -1, 154, 6),
+(2631, -1, 154, 7),
+(2632, -1, 154, 8),
+(2633, -1, 154, 9),
+(2634, -1, 154, 10),
+(2635, -1, 154, 11),
+(2636, -1, 154, 12),
+(2637, -1, 154, 13),
+(2638, -1, 154, 14),
+(2639, -1, 154, 15),
+(2640, -1, 154, 16),
+(2641, -1, 154, 17),
+(2642, -1, 154, 18),
+(2643, -1, 154, 19),
+(2644, -1, 154, 20),
+(2645, -1, 154, 21),
+(2646, -1, 154, 22),
+(2647, -1, 154, 23),
+(2648, -1, 154, 24),
+(2649, -1, 154, 25),
+(2650, -1, 154, 26),
+(2651, -1, 154, 27),
+(2652, -1, 154, 28),
+(2653, -1, 154, 29),
+(2654, -1, 154, 30),
+(2655, -1, 154, 31),
+(2656, -1, 154, 32),
+(2657, -1, 154, 33),
+(2658, -1, 154, 34),
+(2659, -1, 154, 35),
+(2660, -1, 154, 36),
+(2661, -1, 154, 37),
+(2662, -1, 154, 38),
+(2663, -1, 154, 39),
+(2664, -1, 154, 40);
 
 -- --------------------------------------------------------
 
@@ -2642,7 +2759,7 @@ CREATE TABLE IF NOT EXISTS `histories` (
   KEY `sched_id` (`sched_id`),
   KEY `create_by` (`create_by`),
   KEY `scheduleoverride_id` (`scheduleoverride_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=224 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=241 ;
 
 --
 -- Dumping data for table `histories`
@@ -2871,7 +2988,24 @@ INSERT INTO `histories` (`id`, `history_type_id`, `emp_id`, `sched_id`, `schedul
 (220, 4, 39, NULL, 201, '2013-05-15', '2013-05-15', '2013-06-10 04:42:28', 2),
 (221, 4, 50, NULL, 202, '2013-05-14', '2013-05-14', '2013-06-10 04:46:15', 2),
 (222, 4, 50, NULL, 203, '2013-05-14', '2013-05-14', '2013-06-10 04:47:50', 2),
-(223, 4, 76, NULL, 201, '2013-06-06', '2013-06-06', '2013-06-17 10:48:01', 2);
+(223, 4, 76, NULL, 201, '2013-06-06', '2013-06-06', '2013-06-17 10:48:01', 2),
+(224, 4, 7, NULL, 202, '2013-06-11', '2013-06-11', '2013-06-26 05:19:33', 2),
+(225, 4, 50, NULL, 203, '2013-06-22', '2013-06-22', '2013-06-26 07:36:22', 2),
+(226, 4, 50, NULL, 203, '2013-06-22', '2013-06-22', '2013-06-26 07:36:53', 2),
+(227, 4, 42, NULL, 204, '2013-06-13', '2013-06-13', '2013-06-26 08:36:19', 2),
+(228, 4, 42, NULL, 205, '2013-06-16', '2013-06-16', '2013-06-26 08:37:37', 2),
+(229, 4, 42, NULL, 206, '2013-06-15', '2013-06-15', '2013-06-26 08:38:10', 2),
+(230, 4, 42, NULL, 207, '2013-06-23', '2013-06-23', '2013-06-26 08:39:12', 2),
+(231, 4, 42, NULL, 208, '2013-06-22', '2013-06-22', '2013-06-26 08:39:40', 2),
+(232, 4, 146, NULL, 209, '2013-06-15', '2013-06-15', '2013-06-26 12:38:47', 2),
+(233, 4, 146, NULL, 210, '2013-06-16', '2013-06-16', '2013-06-26 12:39:09', 2),
+(234, 4, 146, NULL, 211, '2013-06-22', '2013-06-22', '2013-06-26 12:39:51', 2),
+(235, 4, 146, NULL, 212, '2013-06-23', '2013-06-23', '2013-06-26 12:40:16', 2),
+(236, 4, 11, NULL, 213, '2013-06-18', '2013-06-18', '2013-06-26 12:42:55', 2),
+(237, 4, 11, NULL, 214, '2013-06-19', '2013-06-19', '2013-06-26 12:43:12', 2),
+(238, 4, 11, NULL, 215, '2013-06-11', '2013-06-11', '2013-06-26 12:43:39', 2),
+(239, 4, 11, NULL, 216, '2013-06-12', '2013-06-12', '2013-06-26 12:43:55', 2),
+(240, 4, 11, NULL, 217, '2013-06-20', '2013-06-20', '2013-06-26 12:45:47', 2);
 
 -- --------------------------------------------------------
 
@@ -2920,7 +3054,7 @@ CREATE TABLE IF NOT EXISTS `holidays` (
   `authorize` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `authorize` (`authorize`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `holidays`
@@ -2935,7 +3069,8 @@ INSERT INTO `holidays` (`id`, `date`, `name`, `regular`, `authorize`) VALUES
 (12, '2013-05-01', 'Labor Day', 1, 1),
 (13, '2013-05-13', 'Elections', 0, 1),
 (14, '2013-06-05', 'Labor Day', 1, 1),
-(15, '2013-05-24', 'Independence Day', 0, 0);
+(15, '2013-05-24', 'Independence Day', 0, 0),
+(16, '2013-06-12', 'Independence Day', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2950,7 +3085,7 @@ CREATE TABLE IF NOT EXISTS `incentives` (
   `date` date NOT NULL,
   `hour` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `incentives`
@@ -2985,7 +3120,9 @@ INSERT INTO `incentives` (`id`, `emp_id`, `type`, `date`, `hour`) VALUES
 (32, 76, 'ot1', '2013-05-27', '1'),
 (33, 50, 'ot1', '2013-05-27', '1'),
 (34, 50, 'ot1', '2013-05-30', '2'),
-(36, 50, 'ot4', '2013-06-05', '0');
+(36, 50, 'ot4', '2013-06-05', '0'),
+(37, 77, 'ot1', '2013-05-29', '2'),
+(38, 38, 'ot1', '2013-05-09', '1.5');
 
 -- --------------------------------------------------------
 
@@ -3058,14 +3195,13 @@ CREATE TABLE IF NOT EXISTS `rules` (
   `order_schedules` int(5) NOT NULL,
   `rules` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=382 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=385 ;
 
 --
 -- Dumping data for table `rules`
 --
 
 INSERT INTO `rules` (`id`, `order_schedules`, `rules`) VALUES
-(1, 1, '9'),
 (2, 1, '10'),
 (3, 1, '11'),
 (4, 1, '12'),
@@ -3445,7 +3581,9 @@ INSERT INTO `rules` (`id`, `order_schedules`, `rules`) VALUES
 (378, 18, '27'),
 (379, 18, '30'),
 (380, 18, '31'),
-(381, 18, '33');
+(381, 18, '33'),
+(383, 33, '24'),
+(384, 32, '24');
 
 -- --------------------------------------------------------
 
@@ -3503,7 +3641,7 @@ CREATE TABLE IF NOT EXISTS `scheduleoverrides` (
   KEY `change_by` (`change_by`),
   KEY `emp_id` (`emp_id`),
   KEY `scheduleoverride_type_id` (`scheduleoverride_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=202 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=218 ;
 
 --
 -- Dumping data for table `scheduleoverrides`
@@ -3678,7 +3816,23 @@ INSERT INTO `scheduleoverrides` (`id`, `emp_id`, `time_in`, `time_out`, `start_d
 (198, 39, '09:00:00', '18:00:00', '2013-05-16', '2013-05-16', 0, '2013-05-21 08:19:36', 3, 1),
 (199, 39, '09:00:00', '18:00:00', '2013-05-17', '2013-05-17', 0, '2013-06-07 09:59:57', 3, 2),
 (200, 77, '06:00:00', '15:00:00', '2013-05-18', '2013-05-18', 0, '2013-05-22 08:13:20', 7, 2),
-(201, 76, '09:00:00', '18:00:00', '2013-06-06', '2013-06-06', 0, '2013-06-17 10:47:51', 3, 2);
+(201, 76, '09:00:00', '18:00:00', '2013-06-06', '2013-06-06', 0, '2013-06-17 10:47:51', 3, 2),
+(202, 7, '08:00:00', '17:00:00', '2013-06-11', '2013-06-11', 0, '2013-06-26 05:19:25', 8, 2),
+(203, 50, '09:00:00', '18:00:00', '2013-06-22', '2013-06-22', 0, '2013-06-26 07:36:45', 8, 2),
+(204, 42, '21:00:00', '06:00:00', '2013-06-13', '2013-06-13', 0, '2013-06-26 08:36:15', 8, 2),
+(205, 42, '12:30:00', '21:30:00', '2013-06-16', '2013-06-16', 0, '2013-06-26 08:37:12', 1, 2),
+(206, 42, '12:30:00', '21:30:00', '2013-06-15', '2013-06-15', 0, '2013-06-26 08:37:55', 1, 2),
+(207, 42, '12:30:00', '21:30:00', '2013-06-23', '2013-06-23', 0, '2013-06-26 08:38:57', 1, 2),
+(208, 42, '12:30:00', '21:30:00', '2013-06-22', '2013-06-22', 0, '2013-06-26 08:39:29', 1, 2),
+(209, 146, '21:30:00', '06:00:00', '2013-06-15', '2013-06-15', 0, '2013-06-26 12:38:38', 1, 2),
+(210, 146, '21:00:00', '06:00:00', '2013-06-16', '2013-06-16', 0, '2013-06-26 12:38:57', 1, 2),
+(211, 146, '21:00:00', '06:00:00', '2013-06-22', '2013-06-22', 0, '2013-06-26 12:39:36', 1, 2),
+(212, 146, '21:00:00', '06:00:00', '2013-06-23', '2013-06-23', 0, '2013-06-26 12:40:03', 1, 2),
+(213, 11, '09:00:00', '18:00:00', '2013-06-18', '2013-06-18', 0, '2013-06-26 12:42:49', 1, 2),
+(214, 11, '09:00:00', '18:00:00', '2013-06-19', '2013-06-19', 0, '2013-06-26 12:43:06', 1, 2),
+(215, 11, '09:00:00', '18:00:00', '2013-06-11', '2013-06-11', 0, '2013-06-26 12:43:33', 1, 2),
+(216, 11, '09:00:00', '18:00:00', '2013-06-12', '2013-06-12', 0, '2013-06-26 12:43:48', 1, 2),
+(217, 11, '12:30:00', '21:00:00', '2013-06-20', '2013-06-20', 0, '2013-06-26 12:45:23', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -3722,58 +3876,65 @@ CREATE TABLE IF NOT EXISTS `schedules` (
   `group` int(11) NOT NULL,
   `descrip` varchar(100) NOT NULL,
   `regular` tinyint(1) NOT NULL,
-  `rd` varchar(10) NOT NULL,
+  `rd` varchar(30) NOT NULL,
+  `authorize` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_schedules` (`order_schedules`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
 
 --
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`id`, `time_in`, `time_out`, `days`, `order_schedules`, `group`, `descrip`, `regular`, `rd`) VALUES
-(1, '06:00:00', '15:00:00', '01-05', 1, 1, 'MTWThF 06:00AM-03:00PM', 1, 'Sat-Sun'),
-(2, '06:00:00', '15:00:00', '02-06', 3, 1, 'TWThFSa 06:00AM-03:00PM', 1, 'Sun-Mon'),
-(3, '06:00:00', '15:00:00', '03-07', 4, 1, 'WThFSaSu 06:00AM-03:00PM', 1, 'Mon-Tue'),
-(4, '06:00:00', '15:00:00', '04-01', 5, 1, 'MThFSaSu  06:00AM-03:00PM', 1, 'Tue-Wed'),
-(5, '06:00:00', '15:00:00', '05-02', 6, 1, 'MTFSaSu 06:00AM-03:00PM', 1, 'Wed-Thu'),
-(6, '06:00:00', '15:00:00', '06-03', 7, 1, 'MTWSaSu 06:00AM-03:00PM', 1, 'Thu-Fri'),
-(7, '06:00:00', '15:00:00', '07-04', 8, 1, 'MTWThSu 06:00AM-03:00PM', 1, 'Fri-Sat'),
-(8, '12:30:00', '21:30:00', '01-05', 19, 4, 'MTWThF 12:30 PM-9:30PM', 1, 'Sat-Sun'),
-(24, '21:00:00', '06:00:00', '07-04', 33, 5, 'MTWThSu 9:00PM-06:00AM', 1, 'Fri-Sat'),
-(25, '21:00:00', '06:00:00', '06-03', 32, 5, 'MTWSaSu 9:00PM-06:00AM', 1, 'Thu-Fri'),
-(26, '21:00:00', '06:00:00', '05-02', 31, 5, 'MTFSaSu 9:00PM-06:00AM', 1, 'Wed-Thu'),
-(27, '21:00:00', '06:00:00', '04-01', 30, 5, 'MThFSaSu 9:00PM-06:00AM', 1, 'Tue-Wed'),
-(28, '21:00:00', '06:00:00', '03-07', 29, 5, 'WThFSaSu 9:00PM-06:00AM', 1, 'Mon-Tue'),
-(29, '21:00:00', '06:00:00', '02-06', 28, 5, 'TWThFSa 9:00PM-06:00AM', 1, 'Sun-Mon'),
-(30, '21:00:00', '06:00:00', '01-05', 27, 5, 'MTWThF 9:00PM-06:00AM', 1, 'Sat-Sun'),
-(31, '08:00:00', '17:00:00', '01-05', 9, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun'),
-(38, '12:30:00', '21:30:00', '03-07', 22, 4, 'WThFSaSu 12:30 PM-9:30PM', 1, 'Mon-Tue'),
-(39, '12:30:00', '21:30:00', '07-04', 26, 4, 'MTWThSu 12:30 PM-9:30PM', 1, 'Fri-Sat'),
-(40, '12:30:00', '21:30:00', '01-05', 20, 4, 'MTWThF 12:30 PM-9:30PM', 1, 'Sat-Sun'),
-(41, '12:30:00', '21:30:00', '02-06', 21, 4, 'TWThFSa 12:30 PM-9:30PM', 1, 'Sun-Mon'),
-(42, '12:30:00', '21:30:00', '04-01', 23, 4, 'MThFSaSu 12:30 PM-9:30PM', 1, 'Tue-Wed'),
-(43, '12:30:00', '21:30:00', '05-02', 24, 4, 'MTFSaSu 12:30 PM-9:30PM', 1, 'Wed-Thu'),
-(44, '12:30:00', '21:30:00', '06-03', 25, 4, 'MTWSaSu 12:30 PM-9:30PM', 1, 'Thu-Fri'),
-(95, '06:00:00', '15:00:00', '01-05', 2, 1, 'MTWThF 06:00AM-03:00PM', 1, 'Sat-Sun'),
-(97, '08:00:00', '17:00:00', '01-05', 10, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun'),
-(98, '08:00:00', '17:00:00', '01-05', 11, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun'),
-(99, '08:00:00', '17:00:00', '01-05', 12, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun'),
-(100, '08:00:00', '17:00:00', '01-05', 13, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun'),
-(101, '11:00:00', '20:00:00', '01-05', 14, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun'),
-(102, '11:00:00', '20:00:00', '01-05', 15, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun'),
-(103, '11:00:00', '20:00:00', '01-05', 16, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun'),
-(104, '11:00:00', '20:00:00', '01-05', 17, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun'),
-(105, '11:00:00', '20:00:00', '01-05', 18, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun'),
-(108, '09:30:00', '18:30:00', '01-05', -2, 0, 'MTWThF 09:30:AM-06:30PM', 0, 'Sat-Sun'),
-(109, '10:00:00', '19:00:00', '01-05', -3, 0, 'MTWThF 10:00:AM-07:00PM', 0, 'Sat-Sun'),
-(110, '09:00:00', '18:00:00', '01-05', -1, 0, 'MTWThF 09:00:AM-06:00PM', 0, 'Sat-Sun'),
-(114, '13:00:00', '22:00:00', '02-06', -4, 0, 'TWThFSa 01:00PM-10:00PM', 0, 'Sun-Mon'),
-(115, '06:00:00', '15:00:00', '01-06', -5, 0, 'MTWThFSa 06:00:AM-03:00PM', 0, 'Sun'),
-(116, '13:00:00', '22:00:00', '07-05', -6, 0, 'MTWThFSu 01:00:PM-10:00PM', 0, 'Sat'),
-(117, '21:00:00', '06:00:00', '07-05', -7, 0, 'MTWThFSu 09:00:PM-06:00AM', 0, 'Sat'),
-(118, '13:00:00', '22:00:00', '02-06', -8, 0, 'TWThFSa 01:00:PM-10:00PM', 0, 'Sun-Mon'),
-(119, '21:00:00', '06:00:00', '01-06', -9, 0, 'MTWThFSa 9:00PM-06:00AM', 0, 'Sun');
+INSERT INTO `schedules` (`id`, `time_in`, `time_out`, `days`, `order_schedules`, `group`, `descrip`, `regular`, `rd`, `authorize`) VALUES
+(1, '06:00:00', '15:00:00', '1-2-3-4-5', 1, 1, 'MTWThF 06:00AM-03:00PM', 1, 'Sat-Sun', 1),
+(2, '06:00:00', '15:00:00', '2-3-4-5-6', 3, 1, 'TWThFSa 06:00AM-03:00PM', 1, 'Sun-Mon', 1),
+(3, '06:00:00', '15:00:00', '3-4-5-6-7', 4, 1, 'WThFSaSu 06:00AM-03:00PM', 1, 'Mon-Tue', 1),
+(4, '06:00:00', '15:00:00', '1-4-5-6-7', 5, 1, 'MThFSaSu  06:00AM-03:00PM', 1, 'Tue-Wed', 1),
+(5, '06:00:00', '15:00:00', '1-2-5-6-7', 6, 1, 'MTFSaSu 06:00AM-03:00PM', 1, 'Wed-Thu', 1),
+(6, '06:00:00', '15:00:00', '1-2-3-6-7', 7, 1, 'MTWSaSu 06:00AM-03:00PM', 1, 'Thu-Fri', 1),
+(7, '06:00:00', '15:00:00', '1-2-3-4-7', 8, 1, 'MTWThSu 06:00AM-03:00PM', 1, 'Fri-Sat', 1),
+(8, '12:30:00', '21:30:00', '1-2-3-4-5', 19, 4, 'MTWThF 12:30 PM-9:30PM', 1, 'Sat-Sun', 1),
+(24, '21:00:00', '06:00:00', '1-2-3-4-7', 33, 5, 'MTWThSu 9:00PM-06:00AM', 1, 'Fri-Sat', 1),
+(25, '21:00:00', '06:00:00', '1-2-3-6-7', 32, 5, 'MTWSaSu 9:00PM-06:00AM', 1, 'Thu-Fri', 1),
+(26, '21:00:00', '06:00:00', '1-2-5-6-7', 31, 5, 'MTFSaSu 9:00PM-06:00AM', 1, 'Wed-Thu', 1),
+(27, '21:00:00', '06:00:00', '1-4-5-6-7', 30, 5, 'MThFSaSu 9:00PM-06:00AM', 1, 'Tue-Wed', 1),
+(28, '21:00:00', '06:00:00', '3-4-5-6-7', 29, 5, 'WThFSaSu 9:00PM-06:00AM', 1, 'Mon-Tue', 1),
+(29, '21:00:00', '06:00:00', '2-3-4-5-6', 28, 5, 'TWThFSa 9:00PM-06:00AM', 1, 'Sun-Mon', 1),
+(30, '21:00:00', '06:00:00', '1-2-3-4-5', 27, 5, 'MTWThF 9:00PM-06:00AM', 1, 'Sat-Sun', 1),
+(31, '08:00:00', '17:00:00', '1-2-3-4-5', 9, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun', 1),
+(38, '12:30:00', '21:30:00', '3-4-5-6-7', 22, 4, 'WThFSaSu 12:30 PM-9:30PM', 1, 'Mon-Tue', 1),
+(39, '12:30:00', '21:30:00', '1-2-3-4-7', 26, 4, 'MTWThSu 12:30 PM-9:30PM', 1, 'Fri-Sat', 1),
+(40, '12:30:00', '21:30:00', '1-2-3-4-5', 20, 4, 'MTWThF 12:30 PM-9:30PM', 1, 'Sat-Sun', 1),
+(41, '12:30:00', '21:30:00', '2-3-4-5-6', 21, 4, 'TWThFSa 12:30 PM-9:30PM', 1, 'Sun-Mon', 1),
+(42, '12:30:00', '21:30:00', '1-4-5-6-7', 23, 4, 'MThFSaSu 12:30 PM-9:30PM', 1, 'Tue-Wed', 1),
+(43, '12:30:00', '21:30:00', '1-2-5-6-7', 24, 4, 'MTFSaSu 12:30 PM-9:30PM', 1, 'Wed-Thu', 1),
+(44, '12:30:00', '21:30:00', '1-2-3-6-7', 25, 4, 'MTWSaSu 12:30 PM-9:30PM', 1, 'Thu-Fri', 1),
+(95, '06:00:00', '15:00:00', '1-2-3-4-5', 2, 1, 'MTWThF 06:00AM-03:00PM', 1, 'Sat-Sun', 1),
+(97, '08:00:00', '17:00:00', '1-2-3-4-5', 10, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun', 1),
+(98, '08:00:00', '17:00:00', '1-2-3-4-5', 11, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun', 1),
+(99, '08:00:00', '17:00:00', '1-2-3-4-5', 12, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun', 1),
+(100, '08:00:00', '17:00:00', '1-2-3-4-5', 13, 2, 'MTWThF 08:00:AM-05:00PM', 1, 'Sat-Sun', 1),
+(101, '11:00:00', '20:00:00', '1-2-3-4-5', 14, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun', 1),
+(102, '11:00:00', '20:00:00', '1-2-3-4-5', 15, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun', 1),
+(103, '11:00:00', '20:00:00', '1-2-3-4-5', 16, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun', 1),
+(104, '11:00:00', '20:00:00', '1-2-3-4-5', 17, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun', 1),
+(105, '11:00:00', '20:00:00', '1-2-3-4-5', 18, 3, 'MTWThF 11:00:AM-08:00PM', 1, 'Sat-Sun', 1),
+(108, '09:30:00', '18:30:00', '1-2-3-4-5', -2, 0, 'MTWThF 09:30:AM-06:30PM', 0, 'Sat-Sun', 1),
+(109, '10:00:00', '19:00:00', '1-2-3-4-5', -3, 0, 'MTWThF 10:00:AM-07:00PM', 0, 'Sat-Sun', 1),
+(110, '09:00:00', '18:00:00', '1-2-3-4-5', -1, 0, 'MTWThF 09:00:AM-06:00PM', 0, 'Sat-Sun', 1),
+(114, '13:00:00', '22:00:00', '2-3-4-5-6', -4, 0, 'TWThFSa 01:00PM-10:00PM', 0, 'Sun-Mon', 1),
+(115, '06:00:00', '15:00:00', '1-2-3-4-5-6', -5, 0, 'MTWThFSa 06:00:AM-03:00PM', 0, 'Sun', 1),
+(116, '13:00:00', '22:00:00', '1-2-3-4-5-7', -6, 0, 'MTWThFSu 01:00:PM-10:00PM', 0, 'Sat', 1),
+(117, '21:00:00', '06:00:00', '1-2-3-4-5-7', -7, 0, 'MTWThFSu 09:00:PM-06:00AM', 0, 'Sat', 1),
+(118, '13:00:00', '22:00:00', '2-3-4-5-6', -8, 0, 'TWThFSa 01:00:PM-10:00PM', 0, 'Sun-Mon', 1),
+(119, '21:00:00', '06:00:00', '1-2-3-4-5-6', -9, 0, 'MTWThFSa 9:00PM-06:00AM', 0, 'Sun', 1),
+(138, '07:00:00', '16:00:00', '1-2-3-4-7', 34, 1, 'MTWThSu 07:00AM-04:00PM', 1, 'Fri-Sat', 1),
+(139, '08:00:00', '17:00:00', '2-3-4-5-6', 35, 2, 'TWThFSa 08:00AM-05:00PM', 1, 'Mon-Sun', 1),
+(140, '08:00:00', '17:00:00', '1-4-5-6-7', 36, 2, 'MThFSaSu 08:00AM-05:00PM', 1, 'Tue-Wed', 1),
+(142, '08:00:00', '17:00:00', '1-2-3-6-7', 38, 2, 'MTWSaSu 08:00AM-05:00PM', 1, 'Thu-Fri', 1),
+(143, '08:00:00', '17:00:00', '1-2-5-6-7', 39, 2, 'MTFSaSu 08:00AM-05:00PM', 1, 'Wed-Thu', 1),
+(144, '10:00:00', '19:00:00', '2-3-4-5-6', -10, 0, 'TWThFSa 10:00AM-07:00PM', 0, 'Mon-Sun', 1);
 
 -- --------------------------------------------------------
 
@@ -3812,7 +3973,7 @@ CREATE TABLE IF NOT EXISTS `sub_groups` (
   `authorize` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `sub_groups`
@@ -3830,7 +3991,8 @@ INSERT INTO `sub_groups` (`id`, `group_id`, `name`, `authorize`) VALUES
 (12, 2, 'Network Engineer Valero team', 1),
 (13, 2, 'Network Engineer Newbies', 1),
 (14, 2, 'Network Engineer (Regular Schedule)', 1),
-(15, 6, 'Employee (No Log required)', 1);
+(15, 6, 'Employee (No Log required)', 1),
+(16, 2, 'ISS', 1);
 
 -- --------------------------------------------------------
 
@@ -3847,19 +4009,36 @@ CREATE TABLE IF NOT EXISTS `temp_emp_scheds` (
   KEY `emp_id` (`emp_id`),
   KEY `sched_id` (`sched_id`),
   KEY `week_id` (`week_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7092 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2132 ;
 
 --
 -- Dumping data for table `temp_emp_scheds`
 --
 
 INSERT INTO `temp_emp_scheds` (`id`, `sched_id`, `emp_id`, `week_id`) VALUES
-(7086, 4, 34, 0),
-(7087, 12, 20, 0),
-(7088, 3, 42, 0),
-(7089, 11, 58, 0),
-(7090, 22, 30, 0),
-(7091, 10, 21, 0);
+(2109, 22, 19, 0),
+(2110, 4, 153, 0),
+(2111, 21, 61, 0),
+(2112, 22, 64, 0),
+(2113, 19, 79, 0),
+(2114, 11, 6, 0),
+(2115, 30, 59, 0),
+(2116, 29, 31, 0),
+(2117, 28, 88, 0),
+(2118, 2, 15, 0),
+(2119, 15, 48, 0),
+(2120, 5, 16, 0),
+(2121, 17, 1, 0),
+(2122, 18, 44, 0),
+(2123, 1, 91, 0),
+(2124, 26, 68, 0),
+(2125, 31, 66, 0),
+(2126, 24, 89, 0),
+(2127, 23, 80, 0),
+(2128, 9, 81, 0),
+(2129, 14, 90, 0),
+(2130, 12, 18, 0),
+(2131, 16, 43, 0);
 
 -- --------------------------------------------------------
 
@@ -4284,10 +4463,10 @@ INSERT INTO `weeks` (`id`, `week_no`, `monday`, `tuesday`, `wednesday`, `thursda
 (8, 20, '2013-05-13', '2013-05-14', '2013-05-15', '2013-05-16', '2013-05-17', '2013-05-18', '2013-05-19', '2013-05-13', '2013-05-19', 2013, 1),
 (9, 21, '2013-05-20', '2013-05-21', '2013-05-22', '2013-05-23', '2013-05-24', '2013-05-25', '2013-05-26', '2013-05-20', '2013-05-26', 2013, 1),
 (10, 22, '2013-05-27', '2013-05-28', '2013-05-29', '2013-05-30', '2013-05-31', '2013-06-01', '2013-06-02', '2013-05-27', '2013-06-02', 2013, 1),
-(11, 23, '2013-06-03', '2013-06-04', '2013-06-05', '2013-06-06', '2013-06-07', '2013-06-08', '2013-06-09', '2013-06-03', '2013-06-09', 2013, 0),
-(12, 24, '2013-06-10', '2013-06-11', '2013-06-12', '2013-06-13', '2013-06-14', '2013-06-15', '2013-06-16', '2013-06-10', '2013-06-16', 2013, 0),
-(13, 25, '2013-06-17', '2013-06-18', '2013-06-19', '2013-06-20', '2013-06-21', '2013-06-22', '2013-06-23', '2013-06-17', '2013-06-23', 2013, 0),
-(14, 26, '2013-06-24', '2013-06-25', '2013-06-26', '2013-06-27', '2013-06-28', '2013-06-29', '2013-06-30', '2013-06-24', '2013-06-30', 2013, 0),
+(11, 23, '2013-06-03', '2013-06-04', '2013-06-05', '2013-06-06', '2013-06-07', '2013-06-08', '2013-06-09', '2013-06-03', '2013-06-09', 2013, 1),
+(12, 24, '2013-06-10', '2013-06-11', '2013-06-12', '2013-06-13', '2013-06-14', '2013-06-15', '2013-06-16', '2013-06-10', '2013-06-16', 2013, 1),
+(13, 25, '2013-06-17', '2013-06-18', '2013-06-19', '2013-06-20', '2013-06-21', '2013-06-22', '2013-06-23', '2013-06-17', '2013-06-23', 2013, 1),
+(14, 26, '2013-06-24', '2013-06-25', '2013-06-26', '2013-06-27', '2013-06-28', '2013-06-29', '2013-06-30', '2013-06-24', '2013-06-30', 2013, 1),
 (15, 27, '2013-07-01', '2013-07-02', '2013-07-03', '2013-07-04', '2013-07-05', '2013-07-06', '2013-07-07', '2013-07-01', '2013-07-07', 2013, 0),
 (16, 28, '2013-07-08', '2013-07-09', '2013-07-10', '2013-07-11', '2013-07-12', '2013-07-13', '2013-07-14', '2013-07-08', '2013-07-14', 2013, 0),
 (17, 29, '2013-07-15', '2013-07-16', '2013-07-17', '2013-07-18', '2013-07-19', '2013-07-20', '2013-07-21', '2013-07-15', '2013-07-21', 2013, 0),
@@ -4316,16 +4495,6 @@ INSERT INTO `weeks` (`id`, `week_no`, `monday`, `tuesday`, `wednesday`, `thursda
 (40, 52, '2013-12-23', '2013-12-24', '2013-12-25', '2013-12-26', '2013-12-27', '2013-12-28', '2013-12-29', '2013-12-23', '2013-12-29', 2013, 0),
 (41, 12, '2013-03-18', '2013-03-19', '2013-03-20', '2013-03-21', '2013-03-22', '2013-03-23', '2013-03-24', '2013-03-18', '2013-03-24', 2013, 1),
 (42, 8, '2013-02-18', '2013-02-19', '2013-02-20', '2013-02-21', '2013-02-22', '2013-02-23', '2013-02-24', '2013-02-18', '2013-02-24', 2013, 1);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `emp_scheds`
---
-ALTER TABLE `emp_scheds`
-  ADD CONSTRAINT `emp_scheds_ibfk_4` FOREIGN KEY (`sched_id`) REFERENCES `schedules` (`order_schedules`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

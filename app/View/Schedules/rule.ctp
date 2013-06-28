@@ -29,14 +29,14 @@
 	  $checker = false;
 	  if ($this->requestAction('Schedules/checkSched/'. $w1['Rule']['order_schedules'].'/'. $w['Rule']['order_schedules'] .'/' ) == true)
 	  {
-		$checker = true;
+		$checker = 'Yes';
 	  }
 	  else
 	  {
-		$checker = false;
+		$checker = '';
 	  }
 	?>
-	  <td class="numeric"><?php echo $this->Form->input('cut_off',array('label' => false, 'type' => 'checkbox', 'checked' =>$checker));?> </td>
+	  <td class="numeric"><?php echo $checker;?> </td>
 	  <?php endforeach;?>
     </tr>
     </tbody>
