@@ -17,4 +17,8 @@ echo $this->Form->input('Schedule.authorize', array('value' => '1', 'type' => 'h
 echo $this->Form->end("Add Schedule");
 ?>
 </div>
+<br>
+<div class="btn" style="margin-left:40px;">
+<a href="javascript:window.history.back()"><b><--Back</b></a>
+</div>	
 
