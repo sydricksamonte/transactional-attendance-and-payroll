@@ -28,7 +28,6 @@ class SchedulesController extends AppController{
                                     'order' => array('group_id' => 'ASC')
                                     ));
 					$this->set(compact('subgroups'));
-
 					$weeks = $this->Week->fetchGenerated();
 					$this->set(compact('weeks'));
 					if ($this->data != null){
@@ -103,7 +102,75 @@ class SchedulesController extends AppController{
         }
         return $wrkDays;
     }
+    function possibleNextMonthSched($curMonth,$group)
+    {   
+        $possible = NULL;
+        $possTime = NULL;
+        if ($curMonth == '1-2-3-4-5')
+        {
+            $possible = array('1-2-3-4-5','1-2-3-4-7','1-2-3-6-7','1-2-5-6-7','1-4-5-6-7');
+            
+        }
+        else if ($curMonth == '1-2-3-4-7')
+        {
+            $possible = array('1-2-3-4-7','1-2-3-6-7','1-2-5-6-7','1-4-5-6-7','2-3-4-5-6','3-4-5-6-7');
+        }
+        else if ($curMonth == '1-2-3-6-7')
+        {
+            $possible = array('1-2-3-6-7','1-2-5-6-7','1-4-5-6-7','2-3-4-5-6','3-4-5-6-7');
+        }
+        else if ($curMonth == '1-2-5-6-7')
+        {
+            $possible = array('1-2-5-6-7','1-4-5-6-7','2-3-4-5-6','3-4-5-6-7');
+        }
+        else if ($curMonth == '1-2-5-6-7')
+        {
+            $possible = array('1-2-5-6-7','1-4-5-6-7','2-3-4-5-6','3-4-5-6-7');
+        }
+        else if ($curMonth == '1-4-5-6-7')
+        {
+            $possible = array('1-4-5-6-7','2-3-4-5-6','3-4-5-6-7');
+        }
+        else if ($curMonth == '3-4-5-6-7')
+        {
+            $possible = array('2-3-4-5-6','3-4-5-6-7');
+        }
+        else if  ($curMonth == '2-3-4-5-6')
+        {
+            $possible = array('2-3-4-5-6','1-2-3-4-5','1-2-3-4-7','1-2-3-6-7','1-2-5-6-7','1-4-5-6-7');
+        }
+        
+        if ($group = '5' and (strpos($curMonth, '7') !== FALSE))
+        {
+            $possible = array('2-3-4-5-6','3-4-5-6-7');
+        }
+        debug($possible);
 
+        if ($group == 1)
+        {
+            $possTime = array(2,3,4,5);
+        }
+        else if ($group == 2)
+        {
+            $possTime = array(1,3,4,5);
+        }
+        else if  ($group == 3)
+        {
+            $possTime = array(2,3,5);
+        }
+        else if ($group == 4)
+        {
+            $possTime = array(2,3,4,5);
+        }
+        else if ($group == 5)
+        {
+            $possTime = array(2,3,4,5);
+        }
+
+        #$possTime = array(2,3,4,5)
+        return $possible;
+    }
+    
     public function add(){
         $group = NULL;
         $descPattern = NULL;
@@ -336,6 +403,9 @@ class SchedulesController extends AppController{
             
 
         }
+        $this->possibleNextMonthSched($this->data['Schedule']['days'],$this->data['Schedule']['group']
+        );
+        debug($this->data);
     }
 	public function weeks(){
 
@@ -358,12 +428,15 @@ class SchedulesController extends AppController{
 	}
     public function editruleSave($orderSchedId, $ruleid, $id){
             {
+                $ruleid2 = $this->Schedule->getOSched($ruleid);
                 $this->request->data['Rule']['id'] = $id;
-                $this->request->data['Rule']['order_schedules'] = $orderSchedId;										
-                $this->request->data['Rule']['rules'] = $ruleid;
+                $this->request->data['Rule']['order_schedules'] =$ruleid2;										
+                $this->request->data['Rule']['rules'] =  $orderSchedId;
                 $this->Rule->save($this->request->data);
                 $this->Session->setFlash('Schedule information has been updated');
                 $this->redirect(array('action' => 'edit', $ruleid));
+                
+                #debug($ruleid);
             }		
 	}
     public function deleteruleSave( $id){

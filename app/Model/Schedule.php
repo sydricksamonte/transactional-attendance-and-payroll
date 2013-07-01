@@ -306,5 +306,10 @@ class Schedule extends AppModel{
                 'order' => 'order_schedules ASC'));
         return $rule;
     } 
+    function getOSched($id)
+    {
+        $osched = $this->find('first', array('fields' => array ('order_schedules'),'conditions' => array('id' => $id)));
+        return($osched['Schedule']['order_schedules']);
+    }
 }
 ?>

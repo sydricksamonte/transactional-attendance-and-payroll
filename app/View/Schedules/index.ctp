@@ -14,10 +14,13 @@ echo $this->Form->end('Search',array('class'=>'btn btn-info'));
 <?php echo $this->Html->link("Generate schedule for network engineers (w/ shifting schedule)", array('action' => 'generate','4')); ?>
 </div>
 <div class="btn btn-primary">
+<?php echo $this->Html->link("Generate schedule for team leaders", array('action' => 'generate','3')); ?>
+</div>
+<div class="btn btn-primary">
 <?php echo $this->Html->link("Generate schedule for ISS (Shifting schedule)", array('action' => 'generate','16')); ?>
 </div>
 <div class="btn btn-primary">
-<?php echo $this->Html->link("Generate schedule for team leaders", array('action' => 'generate','3')); ?>
+<?php echo $this->Html->link("Generate schedule for ISS team leaders (Shifting schedule)", array('action' => 'generate','17')); ?>
 </div>
 <div class="btn btn-primary">
 <?php echo $this->Html->link("Create schedule for other groups", array('controller' => 'Groups', 'action' => 'index')); ?>
