@@ -15,8 +15,9 @@
 		$actId = 1;
 	}
 */	?>
-<div align="right"><a href="javascript:window.history.back()"><--Back</a></div>
+
 	<h2>Employee Profile</h2>
+
 	<div class="formstyle" style="width:68%;">
 	Employee ID: <b><?php echo $employee['Employee']['id'];?></b>
 	<br><br>
@@ -60,7 +61,9 @@
 	
 	<?php echo $this->Form->end('Add Schedule');?>
 	</div>
-
+<div class="btn" style="margin-left:40px;">
+<a href="javascript:window.history.back()"><b><--Back</b></a>
+</div>
 </div>
 </div>
 

@@ -10,4 +10,7 @@
 ?>
 <?php echo $this->Form->end('Generate'); ?>
 </div>
-
+<br>
+<div class="btn" style="margin-left:40px;">
+<a href="javascript:window.history.back()"><b><--Back</b></a>
+</div>	
