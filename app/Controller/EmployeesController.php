@@ -498,14 +498,15 @@ class EmployeesController extends AppController{
 			        $dayCutOff = date('d');
                     if (($dayCutOff >= '11') && ($dayCutOff <= '25'))
                     { 
-                        $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
-                        $edates =  date('Y').'-'.date('m').'-10';
+                  	    $sdates =  date('Y').'-'.date('m').'-11';
+                        $edates =  date('Y').'-'.date('m').'-25';
 					   
                     }
                     else 
                     {
-					    $sdates =  date('Y').'-'.date('m').'-11';
-                        $edates =  date('Y').'-'.date('m').'-25';
+                                 $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
+                        $edates =  date('Y').'-'.date('m').'-10';
+				
                     }	
                 }
 				else
