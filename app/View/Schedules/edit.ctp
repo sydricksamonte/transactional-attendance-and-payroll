@@ -1,6 +1,6 @@
 
 <div class="btn btn-primary" style='width:90px'><div class="colorw" >
-<?php echo $this->Html->link('Edit Month Rule', array('action' => 'edit_rule',$this->data['Schedule']['id'])); ?>
+<?php echo $this->Html->link('Edit Month Rule', array('action' => 'edit_rule',$this->data['Schedule']['order_schedules'])); ?>
 </div></div>
 <?php
 echo $this->Form->create('Schedule');

@@ -13,7 +13,7 @@
   <tbody>
     <tr>
         <td><?php echo $group['Employee']['id']; ?></td>
-         <td><?php echo $group['Employee']['last_name'] . ', '. $group['Employee']['first_name']; ?></td>
+         <td><?php echo  $this->Html->link($group['Employee']['last_name'] . ', '. $group['Employee']['first_name'],array('controller' => 'employees', 'action' => 'edit', $group['Employee']['id']));  ?></td>
         <td><?php if ($group['Employee']['employed']=='1'){echo 'Employed';} else {echo 'Resigned';}; ?></td>
    </tbody>
     </tr>

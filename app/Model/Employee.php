@@ -360,6 +360,59 @@ class Employee extends AppModel{
               
             return $employee;
     }
+     public function getEmployeeAndSchedOnSpecWeek($week)
+    {
+            $employee = $this->find('all',array(
+	            'fields' => array(
+                  'Employee.id',																					
+                    'Employee.first_name',
+                    'Employee.last_name',
+                    'Employee.userinfo_id',
+                    'Schedule.time_in',
+                    'Schedule.days',
+                    'Schedule.time_out',
+                    'Schedule.id',
+                    'EmpSched.week_id',
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'inner',
+                        'table' => 'emp_scheds',
+                        'alias' => 'EmpSched',
+                        'conditions' => array(
+                        'Employee.id = EmpSched.emp_id'
+                        )
+                    ),
+                     array(
+                        'type' => 'inner',
+                        'table' => 'weeks',
+                        'alias' => 'W',
+                        'conditions' => array(
+                        'EmpSched.week_id = W.id'
+                        )
+                    ),
+                    array(
+                        'type' => 'inner',
+                        'table' => 'schedules',
+                        'alias' => 'Schedule',
+                        'conditions' => array(
+                        'EmpSched.sched_id=Schedule.order_schedules'
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'W.week_no' => $week,
+                    'Employee.employed' => '1'
+                ),
+                'order' => array(
+                    'Employee.subgroup_id ASC',
+                    'Employee.last_name ASC',
+                    'Employee.first_name ASC',
+                )
+            ));
+              
+            return $employee;
+    }
     public $validate = array(
                       'first_name' => array(
                               'alphaNumeric' => array(

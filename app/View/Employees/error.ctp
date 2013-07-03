@@ -17,7 +17,7 @@
 <?php $i = 0; foreach ($schedFound1 as $u): 
 			 ?><?php {	echo $u['CHECKTIME'] . ' - ' . $u['CHECKTYPE']; $i++; ?><br><?php }
 		endforeach;}
-      else { echo 'No schedule found on this date on the database'; }
+     
  ?>
  </td></tr></tbody></table></div></div><br>
 

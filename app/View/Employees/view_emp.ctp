@@ -40,7 +40,9 @@ else {
 				$monthStart = date('m');	
 }
 ?>
-
+<div align="right">
+<a href="javascript:window.history.back()"><--Back</a>
+</div>
 <div class="sp1">
 <h3>Employee Profile</h3>
 	<div class="formstyle" style="width:68%;">
@@ -56,7 +58,7 @@ else {
 	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;border-bottom:1px solid rgb(149, 211, 240);">
 	<b><?php if ($empAuth == 1){ echo '';}?></b>
 		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div><br>";} ?>
-	<?php { echo '<div class="colorw"><div class="btn btn-primary" style="width:50%">'.$this->Html->link('Edit Employee Information',array('action' => 'edit', $employee['Employee']['id']))."</div></div>";} ?>
+	<?php { echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Edit Employee Information',array('action' => 'edit', $employee['Employee']['id']))."</div></div>";} ?>
 	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
 	  <?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).
 			$this->Form->end('View schedule');?>
@@ -64,9 +66,7 @@ else {
 	</div>
 	</div>
 	<br>
-<div class="btn" style="margin-left:40px;">
-<a href="javascript:window.history.back()"><b><--Back</b></a>
-</div>	
+	
 <h2>Schedule</h2>
 <div class="span3" style='height:750px'>
 
@@ -210,8 +210,8 @@ $e_day = date('d',strtotime($edates));
 $s_year = date('Y',strtotime($sdates));
 $e_year = date('Y',strtotime($edates));
 
-#$curr_date = mktime(0,0,0,3,26,date("Y"));
-#$yearend_date = mktime(23,59,59,4,10,date("Y"));
+#$curr_date = mktime(0,0,0,6,17,date("Y"));
+#$yearend_date = mktime(23,59,59,6,17,date("Y"));
 #######SYD
 $curr_date = mktime(0,0,0,$s_month,$s_day,$s_year);
 $yearend_date = mktime(23,59,59,$e_month,$e_day,$e_year);
@@ -230,8 +230,6 @@ while ($curr_date <= $yearend_date){
 						$temp_cin = date('H:i:s', strtotime($temp_cin));
 					}
 				}
-				
-				
 				$excemp = 0;
 				$remark = null;
 				$ot_remark = null;
