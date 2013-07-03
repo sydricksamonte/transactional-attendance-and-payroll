@@ -24,4 +24,5 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
 		</div>
+
 </html>

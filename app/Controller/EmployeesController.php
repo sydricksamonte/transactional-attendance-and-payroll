@@ -486,7 +486,7 @@ class EmployeesController extends AppController{
         }
 		public function view_emp($id=null)
         {
-            
+		
             $trans = $this->CompAdvanceRule->getAll();
             $this->set(compact('trans'));
             $sdate = date("Y-m-d", time());
@@ -517,6 +517,16 @@ class EmployeesController extends AppController{
 				}
 						
             $this->set(compact('cutDropDown'));
+
+			/*Add Code->Maychell*/
+			
+			$retroPay=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id, 'Retro.cutoff_id'=>$cutDropDown),'order'=>'Retro.id DESC'));
+			$this->set(compact('retroPay'));
+
+			
+			/*End Code*/
+			
+			
             $this->set(compact('sdates'));
             $this->set(compact('edates'));
             $weekStart =  $this->Week->getAllStart();
@@ -644,6 +654,7 @@ class EmployeesController extends AppController{
             $this->set(compact('exs'));
             $govDeduc = $this->Govdeduction->getGovTax($employee['Employee']['tax_status'], Security::cipher($employee['Employee']['monthly'], 'my_key')); /*$employee['Employee']['monthly']*/
             $this->set(compact('govDeduc'));
+		
 		}
 
 		public function edit($id=null){
@@ -1067,7 +1078,7 @@ class EmployeesController extends AppController{
 
   }
  public function view_all2($id=null,$dateId){
- #$this->layout='view_all';
+
 			$this->set(compact('dateId'));
             $trans = $this->CompAdvanceRule->getAll();
             $this->set(compact('trans'));
@@ -1099,7 +1110,16 @@ class EmployeesController extends AppController{
 	#			}
 						
 #            $this->set(compact('cutDropDown'));
-			$this->set(compact('sdates'));
+
+			/*Add Code->Maychell*/
+			
+			$retroPay=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id, 'Retro.cutoff_id'=>$dateId),'order'=>'Retro.id DESC'));
+			$this->set(compact('retroPay'));
+			
+			/*End Code*/
+			
+			
+            $this->set(compact('sdates'));
             $this->set(compact('edates'));
             $weekStart =  $this->Week->getAllStart();
             $weekEnd =  $this->Week->getAllEnd();
@@ -1180,6 +1200,7 @@ class EmployeesController extends AppController{
         $this->set(compact('shiftOrder'));
         $res=$this->data;
         $this->set(compact('res'));
+
 #########account_id
 		$emp_accnt_Id=$this->Employee->find('first',array('fields'=>array('Employee.account_id'),'conditions'=>array('Employee.id'=>$employee['Employee']['id'])));
 		$this->set(compact('emp_accnt_Id'));
@@ -1229,6 +1250,8 @@ class EmployeesController extends AppController{
             $this->set(compact('exs'));
             $govDeduc = $this->Govdeduction->getGovTax($employee['Employee']['tax_status'], Security::cipher($employee['Employee']['monthly'], 'my_key')); /*$employee['Employee']['monthly']*/
             $this->set(compact('govDeduc'));
+
+			
 		}
                                                                                                                        
 

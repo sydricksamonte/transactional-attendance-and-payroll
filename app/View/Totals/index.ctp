@@ -39,30 +39,17 @@ function formatAmount($amount)
 				<th width=100>Holiday</th>
 				<th width=100>SSS Loan</th>
 				<th width=100>HMDF Loan</th>
+				<th width=100>Other Bonuses</th>
+				<th width=100>Other Deductions</th>
 				<th width=280>Net Pay</th>
       </tr></thead>
       <tbody><tr></tr><tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+
+	  <?php
+		for($x=0;$x<23;$x++){
+			echo "<td></td>";
+		}
+	  ?>
 </tr>
       <?php foreach ($total as $t): ?>
 <tr>
@@ -95,6 +82,8 @@ function formatAmount($amount)
 				<?php echo "<td $bg width=100>". formatAmount($t['Total']['holiday'])."</td>" ?>
 				<?php echo "<td $bg width=100>". formatAmount($t['Total']['sss_loan'])."</td>" ?>
 				<?php echo "<td $bg width=100>". formatAmount($t['Total']['hmdf_loan'])."</td>" ?>
+				<?php echo "<td $bg width=200>". formatAmount($t['Total']['other_bonus'])."</td>" ?>
+				<?php echo "<td $bg width=200>". formatAmount($t['Total']['other_deduction'])."</td>" ?>
 				<?php echo "<td $bg width=200>". formatAmount($t['Total']['net_pay'])."</td>" ?>
 				</tr>
       <?php endforeach; ?>

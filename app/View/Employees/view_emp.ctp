@@ -3,6 +3,8 @@ $userid=$employee['Employee']['id'];
 
 ?>
 <?php
+$other_bonus=0;
+$other_deductions=0;
 $yesLeave=0;
 $ssLoan=0;
 $hmdfLoan=0;
@@ -66,7 +68,7 @@ else {
 <a href="javascript:window.history.back()"><b><--Back</b></a>
 </div>	
 <h2>Schedule</h2>
-<div class="span3" style='height:700px'>
+<div class="span3" style='height:750px'>
 
 <table class='table-bordered'>
 <thead>
@@ -938,16 +940,74 @@ $totalsalary=$net;
 				echo "NONE";
 }?></td>
 </tr>
+
+<!--Start of Code for Additional Pays-->
+<?php
+	$addpay=0;
+	$lesspay=0;
+	if ($retroPay != null){
+	foreach ($retroPay as $retroPay):
+	
+	if ($retroPay['Retro']['pay_type']=="add"){
+		if ($retroPay['Retro']['status']==1){
+				$taxa= $retroPay['Retro']['taxable'];
+				
+				if (strtolower($taxa) == 1){
+					$perc='.'.$retroPay['Retro']['percent'];
+					$retropay=$retroPay['Retro']['retropay'];
+					$retropay=$retropay-($retropay * ($perc));
+				}else{
+					$retropay=$retroPay['Retro']['retropay'];
+				}
+		echo "<tr><td>&nbsp;&nbsp;&nbsp;";
+			$addpay=$addpay+$retropay;
+			
+		echo $retroPay['Retro']['type'];
+		echo "</td><td>".formatAmount($retropay)."</td>
+			</tr>
+		";}
+	}else{
+		if ($retroPay['Retro']['status']==1){
+				$taxa= $retroPay['Retro']['taxable'];
+				
+				if (strtolower($taxa) == 1){
+					$perc='.'.$retroPay['Retro']['percent'];
+					$retropay=$retroPay['Retro']['retropay'];
+					$retropay=$retropay-($retropay * ($perc));
+				}else{
+					$retropay=$retroPay['Retro']['retropay'];
+				}
+		echo "<tr><td>&nbsp;&nbsp;&nbsp;";
+			$lesspay=$retropay+$lesspay;
+		echo $retroPay['Retro']['type'];
+		echo "</td><td>-".formatAmount($retropay)."</td>
+			</tr>
+		";
+		
+		}
+	}
+	endforeach;
+	}
+
+?>
+<!--End of Code-->
+
 <tr>
 <td>Net pay</td>
-<td><?php echo formatAmount($totalsalary + $attbonus - $ssLoan - $hmdfLoan);?></td>
+<td><?php echo formatAmount(($totalsalary + $attbonus - $ssLoan - $hmdfLoan)+$addpay-$lesspay);?></td>
 </tr>
 <tr>
 <td>
 <div class="colorw">
 <div class="btn btn-primary" style="width:90px">
 <?php
-echo $this->Html->link('Add Retro',array('controller'=>'Retros','action' => 'index', $employee['Employee']['id'],$cutDropDown));
+echo $this->Html->link('Add ++',array('controller'=>'Retros','action' => 'index', $employee['Employee']['id'],$cutDropDown));
+echo '
+	</div></div><br>
+	<div class="colorw">
+	<div class="btn btn-primary" style="width:90px">	
+	 ';
+echo $this->Html->link('Deduct --',array('controller'=>'Retros','action' => 'minus', $employee['Employee']['id'],$cutDropDown));
 $curr_date = null;
 $temp_start = null;
 $temp_end = null;
@@ -956,7 +1016,14 @@ $temp_cout = null;
 ?>
 
 </div></div>
-</td><td></td>
+</td><td>
+<div class="colorw">
+<div class="btn btn-primary" style="width:90px">
+<center>
+<?php echo $this->Html->link('View Other Pays',array('controller'=>'Retros','action' => 'view_pays', $employee['Employee']['id'],$cutDropDown));?></td>
+</center>
+</div>
+</div>
 </tr></tr>
 </table>
 </td></tr>

@@ -1,3 +1,6 @@
+<a href="javascript:window.history.back()"><b>Back</b></a>
+<br>
+<br>
 <div style="font-size:10px">
 <?php
 function formatAmount($amount)
@@ -20,8 +23,8 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 #echo date('F j',strtotime($empS['Cutoff']['start_date'])).date('-j Y', strtotime($empS['Cutoff']['end_date']));
 ?>
 <table>
-<tr><td>
-	<table>
+<tr><td valign="top">
+	<table >
 <tr><hr>
 	<td>Name</td>
 	<td><?php echo $empS['Employee']['last_name'].', '.$empS['Employee']['first_name']?></td>
@@ -53,8 +56,8 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 	<td>Holiday Pay</td><td><?php echo  formatAmount($empS['Total']['holiday']);?></td>
 </tr>
 	</table>
-</td><td>
-	<table border=0>
+</td><td valign="top">
+	<table >
 <tr><hr>
 	<td>Deduction</td><td><?php echo  formatAmount($empS['Total']['deductions'])?></td>
 </tr>
@@ -86,14 +89,37 @@ echo  formatAmount($tard1 + $tard2);
 <tr>
 	<td>HMDF (Pagibig) Load</td><td><?php echo formatAmount($empS['Total']['hmdf_loan'])?></td>
 </tr>
+<?php
+
+	/*Code for additional pays and deductions*/
+		foreach ($others as $other):
+		if ($other['Retro']['status']==1){
+		echo "<tr>";
+			if ($empS['Employee']['id'] == $other['Retro']['emp_id']){
+				echo "<td>".$other['Retro']['type']."</td>";
+				if ($other['Retro']['pay_type']=='deduct'){
+					echo "<td>-".$other['Retro']['retropay']."</td>";
+				}else{
+					echo "<td>".$other['Retro']['retropay']."</td>";
+				}
+			}
+		echo "</tr>";
+		}
+		endforeach;
+	/*end of code for additions and deductions*/
+	
+?>
 	</table>
 </td></tr>
 <tr>
 <?php #debug($empS['Total']['net_pay'], 'my_key');
 		$netpay=$empS['Total']['net_pay']; ?>
-<td></td><td border=1><u>Net Pay: <?php echo formatAmount($netpay); ?><td>
+<td></td><td ><u>Net Pay: <?php echo 'P '.formatAmount($netpay); ?><td>
 </tr>
 </table>
 </center>
 <hr>
 <?php endforeach; ?>
+</div>
+<br>
+<a href="javascript:window.history.back()"><b>Back</b></a>

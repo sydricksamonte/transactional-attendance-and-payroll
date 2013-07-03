@@ -58,7 +58,7 @@ class RetrosController extends AppController{
 					$cuts=$this->Cutoff->find('first',array('conditions'=>array('Cutoff.id'=>$cutoff)));
 					$this->set(compact('cuts'));
 
-					$existing = $this->Retro->findByEmp_id($id);
+					/*$existing = $this->Retro->findByEmp_id($id);
 
 					if ($existing) {
 									if ($this->request->is('post') || $this->request->is('put')) {
@@ -74,14 +74,23 @@ class RetrosController extends AppController{
 									}
 
 					}
-					else {
+					else {*/
+					debug($this->data);
+					#debug($this->data['Retro']['taxable']);
+					if (($this->data['Retro']['taxable']==1) && ($this->data['Retro']['percent']==0)){
+							$this->Session->setFlash('Please Indicate the percentage to be deducted.','failed');
+					}else if (($this->data['Retro']['taxable']==0) && ($this->data['Retro']['percent']!=0)){
+							$this->Session->setFlash('You Enter percentage of deduction. Please check the Taxable field.','failed');
+					}else{
+						
 									if ($this->request->is('post')) {
 													$this->Retro->create();
 													$this->Retro->set('emp_id',$id);
 													$this->Retro->set('retropay',$this->data['Retro']['Retro Pay']);
 													$this->Retro->set('cutoff_id',$cutoff);
 													if ($this->Retro->save($this->request->data)) {
-																	$this->Session->setFlash('Employee\' Retro pay has been saved.','success');
+																	$this->Session->setFlash('Employee\' Additional Pay has been saved.','success');
+																	$this->redirect(array('controller'=>'Retros','action' => 'view_pays',$id,$cutoff));
 													} else {
 																	$this->Session->setFlash('Unable to Save.','failed');
 													}
@@ -92,10 +101,12 @@ class RetrosController extends AppController{
 
 	public function payslip($id=null,$cutoff=null) {
 $this->layout='view_all';
+
 					$empS = $this->Retro->find('first',array(
 																	'fields' => array(
 																					'Retro.id',
 																					'Retro.emp_id',
+																					'Retro.type',
 																					'Total.id',
 																					'Total.emp_id',
 																					'Total.cutoff_id',
@@ -180,9 +191,8 @@ $this->layout='view_all';
 													);
 					$this->set(compact('total'));
 
-					$retroPay=$this->Retro->find('first',array('conditions'=>array('Retro.emp_id'=>$id)));
+					$retroPay=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id, 'Retro.cutoff_id'=>$cutoff),'order'=>'Retro.id DESC'));
 					$this->set(compact('retroPay'));
-
 	}
 
 	public function view_pdf($id = null) {
@@ -276,8 +286,95 @@ $this->layout='view_all';
 
 						$this->set(compact('empret'));
 	}
+	
+	public function view_pays($id=null,$cutoff=null){
+		
+		$employee=$this->Employee->find('first',array('conditions'=>array('Employee.id'=>$id)));
+		$this->set(compact('employee'));
+	
+		$pays=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id,'Retro.cutoff_id'=>$cutoff)));
+		$this->set(compact('pays'));
+	}
+	
+	public function edit($emp_id=null,$id=null,$cutoff=null){
+	
+		$this->set(compact('emp_id'));
+		$this->set(compact('id'));
+		$this->set(compact('cutoff'));
+		
+		$employee=$this->Employee->find('first',array('conditions'=>array('Employee.id'=>$emp_id)));
+		$this->set(compact('employee'));
+		
+		$pays=$this->Retro->find('first',array('conditions'=>array('Retro.emp_id'=>$emp_id,'Retro.id'=>$id,'Retro.cutoff_id'=>$cutoff)));
+		$this->set(compact('pays'));
+		
+		
+		
+		$this->Retro->id = $id;
+
+					if (empty($this->data)) {
+									$this->data = $this->Retro->read();
+					} else {
+									if ($this->Retro->save($this->data)) {
+													$this->Session->setFlash('Pay has been updated.','success');
+													$this->redirect(array('controller'=>'Retros','action' => 'view_pays',$emp_id,$cutoff));
+									}
+							}
 
 
+	}
+	
+	public function minus($id,$cutoff) {
+					$employee=$this->Employee->find('first',array('conditions'=>array('Employee.id'=>$id)));
+					$this->set(compact('employee'));
+					$empRet=$this->Retro->find('first',array(
+																	'fields'=>array(
+																					'Retro.id',
+																					'Retro.emp_id',
+																					'Retro.retropay',
+																					'Employee.id',
+																					'Employee.first_name',
+																					'Employee.last_name',
+																					),
+																	'joins'=>array(
+																					array(
+																									'type'=>'left',
+																									'table'=>'employees',
+																									'alias'=>'Employee',
+																									'conditions'=>array(
+																													'Employee.id=Retro.emp_id'
+																													)
+																							 )																				
+																					),
+																	'conditions'=>array(
+																					'Retro.emp_id'=>$id
+																					)
+																					));
+					$this->set(compact('empRet'));
 
-}
+					$cuts=$this->Cutoff->find('first',array('conditions'=>array('Cutoff.id'=>$cutoff)));
+					$this->set(compact('cuts'));
+
+									if ($this->request->is('post')) {
+													$this->Retro->create();
+													$this->Retro->set('emp_id',$id);
+													$this->Retro->set('retropay',$this->data['Retro']['Retro Pay']);
+													$this->Retro->set('cutoff_id',$cutoff);
+													if ($this->Retro->save($this->request->data)) {
+																	
+																	$this->Session->setFlash('Employee\' Deduction Pay has been Saved.','success');
+																	#$this->redirect(array('action' => 'view_pays/1/1'));
+																	$this->redirect(array('controller'=>'Retros','action' => 'view_pays',$id,$cutoff));
+																	
+													} else {
+																	$this->Session->setFlash('Unable to Save.','failed');
+													}
+									}
+
+						}
+						
+					
+	}
+	
+
 ?>

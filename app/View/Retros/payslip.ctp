@@ -12,7 +12,7 @@ echo 'From: '.$empS['Cutoff']['start_date'].'<br>To: '.$empS['Cutoff']['end_date
 <div align="right">
 </div>
 <table>
-<tr><td>
+<tr><td valign="top">
 	<table border=1>
 <tr>
 	<td>Name</td>
@@ -79,16 +79,31 @@ echo  formatAmount($tard1 + $tard2);
 <tr>
   <td>HMDF (Pagibig) Loan</td><td>0</td>
 </tr>
+<?php foreach ($retroPay as $retroPay): ?>
 <tr>
-  <td>Retro Pay</td><td><?php
-$retropay=$retroPay['Retro']['retropay'];
- $retropay=$retropay-($retropay * .10);
- echo formatAmount($retropay)?></td>
+  <td><?php
+
+		echo $retroPay['Retro']['type'];
+		 $taxa= $retroPay['Retro']['taxable'];
+		
+		if (strtolower($taxa) == 1){
+			$perc='.'.$retroPay['Retro']['percent'];
+			$retropay=$retroPay['Retro']['retropay'];
+			$retropay=$retropay-($retropay * ($perc));
+		}else{
+			$retropay=$retroPay['Retro']['retropay'];
+		}
+	
+	  ?></td><td><?php
+
+ echo formatAmount($retropay);?></td>
+
 </tr>
+ <?php endforeach; ?>
 </table>
 </td></tr>
 <tr>
-<td></td><td><u>Net Pay: <?php echo formatAmount((Security::cipher($empS['Total']['net_pay'], 'my_key'))+($retropay))?><td>
+<td></td><td><u>Net Pay: <?php echo formatAmount(($total['Total']['net_pay'])+($retropay))?><td>
 </tr>
 </table>
 </center>

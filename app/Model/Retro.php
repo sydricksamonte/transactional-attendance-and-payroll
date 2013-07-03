@@ -4,13 +4,25 @@ class Retro extends AppModel{
         'Employee' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'A username is required'
+                'message' => 'Required Name'
             )
         ),
         'Retro Pay' => array(
+            'required' => array(false,
+                'rule' => array('Numeric'),
+                'message' => 'Required Amount'
+            )
+        ),
+		'type' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'A password is required'
+                'message' => 'Required Type of Pay'
+            )
+        ),
+		'percent' => array(
+            'required' => array(
+                'rule' => array('notEmpty'),
+                'message' => 'Required Percentage or set to it\'s default as 0.'
             )
         ),
 		);

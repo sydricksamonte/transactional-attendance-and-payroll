@@ -26,7 +26,7 @@ class TotalsController extends AppController{
   );
 
 #		function saveInfo($date,$id,$basic,$account_id,$absent,$late,$deduc,$att, $sss, $ph, $pag,$tax, $ot,$nd,$hd,$net,$error,$hmdf,$sssL )
-		function saveInfo($dateId,$employeeID,$basic,$account_id,$absent_total,$late,$deduct_amnt,$attbonus,$sss,$philhealth,$pagibig,$tax,$otamount,$ndamount,$hdamount,$net_pay,$errorCount,$hmdfLoan,$ssLoan)
+		function saveInfo($dateId,$employeeID,$basic,$account_id,$absent_total,$late,$deduct_amnt,$attbonus,$sss,$philhealth,$pagibig,$tax,$otamount,$ndamount,$hdamount,$net_pay,$errorCount,$hmdfLoan,$ssLoan,$addpay,$lesspay)
 		{
            
 						if ($this->Total->findCutOff($dateId, $employeeID) == null){
@@ -60,6 +60,8 @@ class TotalsController extends AppController{
 						$Total['error'] = $errorCount;
 						$Total['hmdf_loan'] = $hmdfLoan;
                         $Total['sss_loan'] = $ssLoan;
+						$Total['other_bonus']=$addpay;
+						$Total['other_deduction']=$lesspay;
 						$this->Total->save($Total);	
                         
 		}
@@ -148,6 +150,8 @@ class TotalsController extends AppController{
 																										));
 
 						$this->set(compact('empSal'));
+						$others= $this->Retro->find('all',array('conditions'=>array('Retro.cutoff_id'=>$cutoff_id)));
+						$this->set(compact('others'));
 		}
 		public function index($id)
 		{
