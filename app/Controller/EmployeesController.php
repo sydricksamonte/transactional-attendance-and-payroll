@@ -441,6 +441,7 @@ class EmployeesController extends AppController{
                         }
                         $db = new PDO("odbc:DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=$dbName; Uid=; Pwd=;");       
                         $sql  = "SELECT TOP 1 CHECKTIME FROM CHECKINOUT WHERE  CHECKTYPE = 'I' AND USERID =".$bId." AND CHECKTIME LIKE "."'$dateAccessFormat%'"." ORDER BY CHECKTIME ASC ";
+         
                         $result = $db->query($sql);
                         $lIn = $result->fetchAll(PDO::FETCH_COLUMN);
                         if ($lIn != null)
@@ -484,6 +485,28 @@ class EmployeesController extends AppController{
             $desc = $this->CompAdvanceRule->getInitValues();
             return $desc;
         }
+        public function manpower($day)
+        {
+            $desc = $this->CompAdvanceRule->getInitValues();
+            return $desc;
+        }
+        public function select_manpower(){
+            if ($this->data != null)
+            {  
+                $date = $this->data['CutOff']['cut_use'];
+                $date2 = $date['year'].'-'.$date['month'].'-'.$date['day'];
+                $date2 = strtotime($date2);
+                $week_no = $this->Week->findDayOnWeek($date);
+                $this->redirect(array('controller' => 'Employees', 'action' => 'select_manpower_day',$week_no,$date2));
+            }
+	    }
+        public function select_manpower_day($week, $day){
+            $empScheds = $this->Employee->getEmployeeAndSchedOnSpecWeek($week);
+            $dw = date( "w", $day);
+            $this->set(compact('empScheds'));
+            $this->set(compact('day'));
+            $this->set(compact('dw'));     
+		}
 		public function view_emp($id=null)
         {
             
@@ -502,6 +525,7 @@ class EmployeesController extends AppController{
                         $edates =  date('Y').'-'.date('m').'-25';
 					   
                     }
+                 
                     else 
                     {
                                  $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
@@ -675,60 +699,58 @@ class EmployeesController extends AppController{
 		}
 
 		public function add_schedule($id=null){
-						$employee = $this->Employee->find('first',array(
-																		'fields' => array(
-																						'Employee.id',
-																						'Employee.first_name',
-																						'Employee.last_name',
-																						'Group.name',
-																						'Schedules.start_date',
-																						'Schedules.end_date'
-																						),
-																		'joins' => array(
-																						array(
-																										'type' => 'left',
-																										'table' => 'groups',
-																										'alias' => 'Group',
-																										'conditions' => array(
-																														'Employee.group_id = Group.id'
-																														)
-																								 ),
-																						array(
-																										'type' => 'left',
-																										'table' => 'schedules',
-																										'alias' => 'Schedules',
-																										'conditions' => array(
-																														'Employee.id = Schedules.id'
-																														)
-																								 )
-																						),
-																		'conditions' => array(
-																										'Employee.id' => $id
-																										)
-																						));
-
-						$this->set(compact('employee'));
+            $employee = $this->Employee->find('first',array(
+            'fields' => array(
+                'Employee.id',
+                'Employee.first_name',
+                'Employee.last_name',
+                'Group.name',
+                'Schedules.start_date',
+                'Schedules.end_date'
+            ),
+            'joins' => array(
+                array(
+                'type' => 'left',
+                'table' => 'groups',
+                'alias' => 'Group',
+                'conditions' => array(
+                    'Employee.group_id = Group.id'
+                    )
+                ),
+                array(
+                'type' => 'left',
+                'table' => 'schedules',
+                'alias' => 'Schedules',
+                'conditions' => array(
+                    'Employee.id = Schedules.id'
+                    )
+                )
+            ),
+            'conditions' => array(
+                'Employee.id' => $id
+                )
+            )
+        );
+        $this->set(compact('employee'));
 		}
-
 		public function add_employee(){
-						$subgroups = $this->SubGroup->find('list',array(
-																		'conditions' => array('authorize' => '1'),
-																		'order' => array('group_id' => 'ASC')
-																		));
-						$this->set(compact('subgroups'));
-
-						if (!empty($this->data)){
-										if($this->Employee->save($this->data)){
-														$secretMonthly = Security::cipher($this->data['Employee']['monthly'], 'my_key');
-														$this->request->data['Employee']['monthly'] = $secretMonthly;										
-														$this->request->data['Employee']['id'] =$this->Employee->getLastInsertID();
-														$this->Employee->save($this->request->data);													
-														$this->Session->setFlash('New Employee Saved!','success');
-														$this->redirect(array('action' => 'index'));
-										}
-						}
+            $subgroups = $this->SubGroup->find('list',array(
+            'conditions' => array('authorize' => '1'),
+            'order' => array('group_id' => 'ASC')
+            ));
+            $this->set(compact('subgroups'));
+            if (!empty($this->data)){
+                if($this->Employee->save($this->data))
+                {
+                    $secretMonthly = Security::cipher($this->data['Employee']['monthly'], 'my_key');
+                    $this->request->data['Employee']['monthly'] = $secretMonthly;							
+                    $this->request->data['Employee']['id'] =$this->Employee->getLastInsertID();
+                    $this->Employee->save($this->request->data);												
+                    $this->Session->setFlash('New Employee Saved!','success');
+                    $this->redirect(array('action' => 'index'));
+                }
+            }
 		}
-
 		public function modify_sched($id = null){}
 		public function edit_day_sched($id=null, $dateId){
 						$curr_date_ymd = date('Y-m-d', $dateId);
@@ -740,7 +762,7 @@ class EmployeesController extends AppController{
 																		'conditions' => array('Scheduleoverride.emp_id' => $id,'start_date' => $curr_date_ymd )));
 						$this->set(compact('schedExist'));
 						$employee = $this->Employee->getEmployeeSchedulePrf($id, $schedId);
-				  	$this->set(compact('employee'));
+				  	    $this->set(compact('employee'));
 						$actions = $this->Scheduleoverride_type->findTypes();
 						$this->set(compact('actions'));
 						$shifts = $this->Schedule->getShifts();
@@ -1093,9 +1115,11 @@ class EmployeesController extends AppController{
 				else
 				{
 #*/	#				$cutDropDown = $this->data['Emp']['cut_off']; 
-					$sdates = $this->Cutoff->getCutOffPeriodStart($dateId);
+					
+                    $sdates = $this->Cutoff->getCutOffPeriodStart($dateId);
 					$edates = $this->Cutoff->getCutOffPeriodEnd($dateId);
-
+                    #$sdates = '2013-06-05';
+					#$edates = '2013-06-05';
 	#			}
 						
 #            $this->set(compact('cutDropDown'));

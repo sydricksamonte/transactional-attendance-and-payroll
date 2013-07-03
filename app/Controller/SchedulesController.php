@@ -272,8 +272,17 @@ class SchedulesController extends AppController{
                     $this->request->data['Schedule']['order_schedules'] = $order_sched_last;										
                     $this->request->data['Schedule']['id'] =$this->Schedule->getLastInsertID();
                     $this->Schedule->save($this->request->data);													
-                    $this->Session->setFlash('New Schedule Saved!');
-                    $this->redirect(array('action' => 'shifts'));
+                    
+                    if ($this->data['Schedule']['group'] != '0')
+                    {
+                        $this->Session->setFlash('New Schedule Saved! Please update schedule rules');
+                        $this->redirect(array('action' => 'edit_rule',$order_sched_last));
+                    }
+                    else
+                    {
+                        $this->Session->setFlash('New Schedule Saved!');
+                        $this->redirect(array('action' => 'shifts'));
+                    }
                 }
             }
         }
@@ -420,31 +429,36 @@ class SchedulesController extends AppController{
         $weekData = $this->Rule->fetchDistinctSchedule();
         $this->set(compact('weekData'));
 	}
-     public function findIdByRuleAndOSched($rule, $osched){
+     public function findIdByRuleAndOSched($osched, $rule){
         $rule_id = $this->Rule->findId($rule, $osched);
         $this->set(compact('rule_id'));
         return $rule_id;
         
 	}
-    public function editruleSave($orderSchedId, $ruleid, $id){
-            {
+    public function editruleSave($ruleid, $orderSchedId, $id){
+            {   if ($id == NULL)
+                {
+                       $id =NULL; 
+                }
                 $ruleid2 = $this->Schedule->getOSched($ruleid);
                 $this->request->data['Rule']['id'] = $id;
-                $this->request->data['Rule']['order_schedules'] =$ruleid2;										
-                $this->request->data['Rule']['rules'] =  $orderSchedId;
+                $this->request->data['Rule']['order_schedules'] = $orderSchedId;								
+                $this->request->data['Rule']['rules'] =  $ruleid;		
                 $this->Rule->save($this->request->data);
                 $this->Session->setFlash('Schedule information has been updated');
-                $this->redirect(array('action' => 'edit', $ruleid));
+                #$this->redirect(array('action' => 'edit', $ruleid));
                 
                 #debug($ruleid);
             }		
 	}
-    public function deleteruleSave( $id){
-        $this->Rule->delete($id);
+    public function deleteruleSave($id){
+        
+        $this->Rule->delete($id);  //condition
         $this->Session->setFlash('Schedule information has been updated');
-        $this->redirect(array('action' => 'edit'));
+       # $this->redirect(array('action' => 'edit', $id));
 	}
      public function edit_rule($id){
+
         $weekData = $this->Rule->fetchDistinctSchedule();
         $orderScheds = $this->Rule->getRulesOfOrderSched($id);
         $this->set(compact('weekData'));
