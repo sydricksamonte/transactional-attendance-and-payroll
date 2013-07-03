@@ -11,6 +11,7 @@ $all_late = 0;
 $all_ut = 0;
 $all_abs = 0;
 $all_error = 0;
+if ($dw == '0') {$dw = '7';}
  ?>
  
 <table>
@@ -44,7 +45,8 @@ $all_error = 0;
 				echo $s_i2 = date('H:i',strtotime($over['Scheduleoverride']['time_in'])); 
 			}
 		}
-		else{if (strpos($e['Schedule']['days'], $dw) !== FALSE) 
+		else
+		{ if (strpos($e['Schedule']['days'], $dw) !== FALSE) 
 				{ 
 					$s_i = $e['Schedule']['time_in']; 
 					echo $s_i2 = date('H:i',strtotime($e['Schedule']['time_in'])); 
