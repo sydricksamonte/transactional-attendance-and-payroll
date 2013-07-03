@@ -503,6 +503,7 @@ class EmployeesController extends AppController{
         public function select_manpower_day($week, $day){
             $empScheds = $this->Employee->getEmployeeAndSchedOnSpecWeek($week);
             $dw = date( "w", $day);
+
             $this->set(compact('empScheds'));
             $this->set(compact('day'));
             $this->set(compact('dw'));     
@@ -541,6 +542,8 @@ class EmployeesController extends AppController{
 				}
 						
             $this->set(compact('cutDropDown'));
+            $retroPay=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id, 'Retro.cutoff_id'=>$cutDropDown),'order'=>'Retro.id DESC'));
+			$this->set(compact('retroPay'));
             $this->set(compact('sdates'));
             $this->set(compact('edates'));
             $weekStart =  $this->Week->getAllStart();
