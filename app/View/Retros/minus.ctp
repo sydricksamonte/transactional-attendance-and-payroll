@@ -1,5 +1,6 @@
 <h2>Deduction Pay</h2>
 <br>
+<div class="formstyle" style="width:25%;">
 <?php
 echo $this->Form->create('Retro');
 #echo $this->Form->input('Employee',array('type'=>'text','value'=>$employee['Employee']['first_name'].' '.$employee['Employee']['last_name']));
@@ -13,3 +14,4 @@ echo $this->Form->input('status',array('type'=>'checkbox','label'=>'Valid'));
 echo "<br><br>";
 echo $this->Form->end("Save Deduction");
 ?>
+</div>

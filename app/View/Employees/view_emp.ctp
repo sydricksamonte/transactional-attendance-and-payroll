@@ -40,9 +40,7 @@ else {
 				$monthStart = date('m');	
 }
 ?>
-<div align="right">
-<a href="javascript:window.history.back()"><--Back</a>
-</div>
+
 <div class="sp1">
 <h3>Employee Profile</h3>
 	<div class="formstyle" style="width:68%;">
@@ -66,7 +64,9 @@ else {
 	</div>
 	</div>
 	<br>
-	
+<div class="btn">
+<a href="javascript:window.history.back()"><b><--Back</b></a>
+</div>	
 <h2>Schedule</h2>
 <div class="span3" style='height:750px'>
 

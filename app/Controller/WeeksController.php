@@ -34,13 +34,51 @@ class WeeksController extends AppController{
 								while ($week_no!=01);
 								$wks=$this->Week->find('all',
 								array(
-'order'=>'Week.end_date ASC'
+									'order'=>'Week.end_date ASC'
 			)
 								);
 								$this->set(compact('wks'));
 
 
 				}
+				
+		public function showwk(){
+				
+				$wks=$this->Week->find('all', array( 'order'=>'Week.end_date ASC' ));
+				$this->set(compact('wks'));
+				
+					$today = strtotime(date("M.d, Y"));
+			
+			   foreach ($wks as $wk):
+					$gen= 0; $outmonday="<font color='black'>"; $outtuesday="<font color='black'>"; $outwednesday="<font color='black'>"; $outthursday="<font color='black'>"; $outfriday="<font color='black'>"; $outsaturday="<font color='black'>"; $outsunday="<font color='black'>";
+					$monday = date("M.d, Y", strtotime($wk['Week']['monday']));
+					$tuesday = date("M.d, Y", strtotime($wk['Week']['tuesday']));
+					$wednesday = date("M.d, Y", strtotime($wk['Week']['wednesday']));
+					$thursday = date("M.d, Y", strtotime($wk['Week']['thursday']));
+					$friday = date("M.d, Y", strtotime($wk['Week']['friday']));
+					$saturday = date("M.d, Y", strtotime($wk['Week']['saturday']));
+					$sunday = date("M.d, Y", strtotime($wk['Week']['sunday']));
+			
+				if (strtotime($monday) <= $today){ $outmonday="<font color='red'>"; $gen=1;}
+				if (strtotime($tuesday) <= $today){ $outtuesday="<font color='red'>"; $gen=1;}
+				if (strtotime($wednesday) <= $today){ $outwednesday="<font color='red'>"; $gen=1;}
+				if (strtotime($thursday) <= $today){ $outthursday="<font color='red'>"; $gen=1;}
+				if (strtotime($friday) <= $today){ $outfriday="<font color='red'>"; $gen=1;}
+				if (strtotime($saturday) <= $today){ $outsaturday="<font color='red'>"; $gen=1;}
+				if (strtotime($sunday) <= $today){ $outsunday="<font color='red'>"; $gen=1;}
+				
+					$wkid=$wk['Week']['id'];
+					
+					$this->Week->read(null, $wkid);
+					$this->Week->set('generated', $gen);
+					$this->Week->save();
+									
+			endforeach;
+			
+				$wk=$this->Week->find('all', array( 'order'=>'Week.end_date ASC' ));
+				$this->set(compact('wk'));
+				
+		}
 }
 ?>
 
