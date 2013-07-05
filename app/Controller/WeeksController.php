@@ -1,6 +1,18 @@
 <?php
 class WeeksController extends AppController{
 				public function index(){
+                    $ws =  $this->Week->getStartingWeek();
+                   
+                    foreach ($ws as $w):
+                    {
+                        $week['Week']['no'] = $w['Week']['no'];
+                        $week['Week']['generated'] = FALSE;
+                        $this->Week->save($week);
+                        debug($w['Week']['id']);
+                    }
+                    endforeach;
+
+                    //SYD
 								$date_string = date("D Y-m-d", time());
 								$week_no=date("W", strtotime($date_string));
 								$wkplus1=$date_string;

@@ -1,5 +1,7 @@
 <?php 
+#echo $this->Form->input('week',array('label' =>'Generated data according to week:', 'type' => 'select', 'options' =>$ws, 'value' => 0));
 ?>
+
 <br> <?php echo 'Table generated for the Week(s) of: '. $toGenWeek .'<br>';?> </br>
 <div class="colorw" >
 <div class="btn btn-primary" style='width:70px'>

@@ -471,12 +471,17 @@ class SchedulesController extends AppController{
         $shiftAll = $this->DayShift->getShifting(0);
      
         $this->set(compact('shiftAll'));
+     
         $this->set(compact('netType'));
         $toGenWeek =  $this->Week->getFollowUpWeek();
         $this->set(compact('toGenWeek')); #'2013-04-01 to 2013-04-07'
         $this->TempEmpSched->deleteAll('1=1');
-        $weekData = $this->Week->getRecentGenerated(); #week id: 1
+        $weekData = $this->Week->getRecentGenerated(); #week id: 1\ 
+        # $ws =  $this->Week->getStartingWeek();
+        # $this->set(compact('ws'));
+        # debug($ws);
         $netEmp = $this->EmpSched->getAllNetEmpOfWeek($weekData, $netType);
+        #$netEmp = $this->EmpSched->getAllNetEmpOfWeek($ws, $netType);
         foreach ($netEmp as $gen):
         {
             $this->request->data['TempEmpSched']['id'] = null;
