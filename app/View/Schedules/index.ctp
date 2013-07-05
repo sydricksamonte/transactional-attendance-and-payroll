@@ -11,10 +11,10 @@ echo $this->Form->end('Search',array('class'=>'btn btn-info'));
 </br>
 <div class="colorw">
 <div class="btn btn-primary">
-<?php echo $this->Html->link("Generate schedule for network engineers (w/ shifting schedule)", array('action' => 'generate','4')); ?>
+<?php echo $this->Html->link("Generate schedule for TSC (shifting schedule)", array('action' => 'generate','4')); ?>
 </div>
 <div class="btn btn-primary">
-<?php echo $this->Html->link("Generate schedule for team leaders", array('action' => 'generate','3')); ?>
+<?php echo $this->Html->link("Generate schedule for TSC team leaders", array('action' => 'generate','3')); ?>
 </div>
 <div class="btn btn-primary">
 <?php echo $this->Html->link("Generate schedule for ISS (Shifting schedule)", array('action' => 'generate','16')); ?>

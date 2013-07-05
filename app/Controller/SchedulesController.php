@@ -446,24 +446,25 @@ class SchedulesController extends AppController{
                 $this->request->data['Rule']['rules'] =  $ruleid;		
                 $this->Rule->save($this->request->data);
                 $this->Session->setFlash('Schedule information has been updated');
-                #$this->redirect(array('action' => 'edit', $ruleid));
-                
-                #debug($ruleid);
             }		
+	}
+    public function redir(){
+        $this->redirect(array('action' => 'rule'));	
 	}
     public function deleteruleSave($id){
         
         $this->Rule->delete($id);  //condition
         $this->Session->setFlash('Schedule information has been updated');
-       # $this->redirect(array('action' => 'edit', $id));
 	}
      public function edit_rule($id){
 
         $weekData = $this->Rule->fetchDistinctSchedule();
+        $weekId = $this->Schedule->fetchIdByOSched($id);
         $orderScheds = $this->Rule->getRulesOfOrderSched($id);
         $this->set(compact('weekData'));
         $this->set(compact('orderScheds'));
         $this->set(compact('id'));  
+        $this->set(compact('weekId')); 
 	}
     
     public function generate($netType){
@@ -541,8 +542,6 @@ class SchedulesController extends AppController{
             $this->set(compact('tempFields'));
             $unGen = $this->Week->fetchUngenerated();
             $this->set(compact('unGen'));
-            #$newEmpFields = $this->Week->getWeeksToGenerate($this->data['EmpSched']['week_use']);
-            #debug($newEmpFields);
             foreach ($newEmpFields as $week):
             {			
                 foreach ($tempFields as $gen):
@@ -553,10 +552,7 @@ class SchedulesController extends AppController{
                     $this->request->data['EmpSched']['emp_id'] = $gen['TempEmpSched']['emp_id'];
                     $this->EmpSched->save($this->request->data);
                 }
-                endforeach;
-                #$this->request->data['Week']['generated'] = 1;
-                #$this->request->data['Week']['id']		= $week;						
-                #$this->Week->save($this->data);								
+                endforeach;						
                 $this->Session->setFlash('Schedule(s) saved.','success');
             }
             endforeach;

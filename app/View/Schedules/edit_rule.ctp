@@ -1,7 +1,12 @@
 <?php echo $this->Form->create('Rule',array('method' => 'post')); ?>
 <div class="btn btn-primary" style='width:90px'><div class="colorw" >
-<?php  echo $this->Html->link("Add schedule", array('action' => 'add')); ?>
+<?php  echo $this->Html->link("Add new schedule", array('action' => 'add')); ?>
 </div></div>
+
+<div class="btn btn-primary" style='width:90px'><div class="colorw" >
+<?php  echo $this->Html->link("Edit this schedule", array('action' => 'edit',$weekId)); ?>
+</div></div>
+
 <table class="table-bordered">
 <h1> Rule for schedule <?php echo $orderScheds[0]['Schedules']['descrip']; ?></h1>
   <thead>
@@ -44,7 +49,9 @@
 	  </td>
     </tr>
     </tbody>
-    <?php $i++; endforeach;?>
+    <?php $i++; endforeach; 
+	if($this->data != null) {$this->requestAction('Schedules/redir/'.'/' );} ?>
+	
   </table>
 </div>
 <?php

@@ -5,10 +5,10 @@
 
 <h2> Schedule rules </h2>
     	<div class="container_12">
-        	    		<div class="grid_4">
+        	    		<div class="grid_4" style="height:800px">
 
-        	<div class="grid_4 height400">
-        		<table class="fancyTable" id="myTable05" cellpadding="0" cellspacing="0">
+        	<div class="grid_4 height400" style="height:800px">
+        		<table class="fancyTable" id="myTable05" cellpadding="0" cellspacing="0" style="height:800px">
   <thead>
     <tr>
       <th>Schedule</th>
@@ -24,7 +24,7 @@
 		?>
    <tbody>
     <tr>
-     <td <?php $addcols;?> ><?php  echo $this->Html->link($w['Schedules']['descrip'], array('action' => 'edit',$w['Schedules']['id'])); ?></td>
+     <td <?php $addcols;?> ><?php  echo $this->Html->link($w['Schedules']['descrip'], array('action' => 'edit_rule',$w['Rule']['order_schedules'])); ?></td>
 	  <?php foreach($weekData as $w1):
 	  $checker = false;
 	  if ($this->requestAction('Schedules/checkSched/'. $w1['Rule']['order_schedules'].'/'. $w['Rule']['order_schedules'] .'/' ) == true)
@@ -49,4 +49,3 @@
   </table>
 </div><div class="clear"></div>
 </div></div>
-<div style="width:100px;padding:10px;"><?php echo $this->Form->end('Save');?></div>

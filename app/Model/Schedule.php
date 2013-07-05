@@ -103,7 +103,7 @@ class Schedule extends AppModel{
         $shifts = $this->find('list', array(
             'fields' => array('descrip'),
             'order' => array(
-                'order_schedules'),
+                'time_in ASC', 'days ASC'),
             'group' => 'descrip'));
         return $shifts;
 	}
@@ -306,6 +306,13 @@ class Schedule extends AppModel{
                 'order' => 'order_schedules ASC'));
         return $rule;
     } 
+    function fetchIdByOSched($id){
+        $rule = $this->find('first', array(
+                'conditions' => array(
+                        'order_schedules' => $id)));
+        return $rule['Schedule']['id'];
+        
+    }
     function getOSched($id)
     {
         $osched = $this->find('first', array('fields' => array ('order_schedules'),'conditions' => array('id' => $id)));
