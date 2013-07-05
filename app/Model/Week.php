@@ -2,8 +2,8 @@
 class Week extends AppModel{
     public $validate = array(
         'monday' => array(
-            'rule'    => 'isUnique',
-            'message' => 'This username has already been taken.'
+        'rule'    => 'isUnique',
+        'message' => 'This username has already been taken.'
         )
     );
     function getAllAvailableWeeks(){
@@ -51,7 +51,7 @@ class Week extends AppModel{
             return($weeks);
         }
         else{ return false; }
-			
+								
     }
     function fetchGenerated()
     {
@@ -82,31 +82,35 @@ class Week extends AppModel{
         $weeks = $this->find('first', array('fields' => array ('start_date', 'end_date'),'conditions' => array('generated' => false, 'year' => date('Y')), 'order' => array ('week_no ASC')));
         return ($weeks['Week']['start_date']. ' to '. $weeks['Week']['end_date']);
     }
-    function getStartingWeek(){
-        $now = date('Y-m');
-        $weeks = $this->find('all', array('fields' => array ('id'),
-            'conditions' => array('start_date <=' => $now), 'order' => array ('week_no DESC')));
+    function getWeeksBetween($start, $end){
+        $weeks = $this->find('list', array('fields' => array ('week_no'),
+            'conditions' => array(
+                'week_no BETWEEN ? AND ?' => array(
+                 $start, $end)),
+            'order' => array ('week_no ASC')));
         return ($weeks);
     }
     function findScheduleId($date,$id){
-        $schedId = $this->find('first',array('fields' => array('ES.sched_id'), 'joins' => array(
-            array(
-            'type' => 'inner',
-            'table' => 'emp_scheds',
-            'alias' => 'ES',
-            'conditions' => array(
-            'ES.week_id = Week.id'
-            )
-        )),
+          $schedId = $this->find('first',array('fields' => array('ES.sched_id'), 
+            'joins' => array(
+                array(
+                    'type' => 'inner',
+                    'table' => 'emp_scheds',
+                    'alias' => 'ES',
+                    'conditions' => array(
+                        'ES.week_id = Week.id'
+                        )
+                    )
+                ),
             'conditions' => array('and' => array(
                 array('Week.start_date <= ' => $date,
                     'Week.end_date >= ' => $date
+                    ),
+                'ES.emp_id' => $id
                 ),
-            'ES.emp_id' => $id
-            ),
-        )));
-    return ($schedId['ES']['sched_id']);
-  }
+            )));
+        return ($schedId['ES']['sched_id']);
+    }
 }
 
 ?>

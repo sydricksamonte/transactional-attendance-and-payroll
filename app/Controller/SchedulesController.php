@@ -471,17 +471,12 @@ class SchedulesController extends AppController{
         $shiftAll = $this->DayShift->getShifting(0);
      
         $this->set(compact('shiftAll'));
-     
         $this->set(compact('netType'));
         $toGenWeek =  $this->Week->getFollowUpWeek();
         $this->set(compact('toGenWeek')); #'2013-04-01 to 2013-04-07'
         $this->TempEmpSched->deleteAll('1=1');
-        $weekData = $this->Week->getRecentGenerated(); #week id: 1\ 
-        # $ws =  $this->Week->getStartingWeek();
-        # $this->set(compact('ws'));
-        # debug($ws);
+        $weekData = $this->Week->getRecentGenerated(); #week id: 1
         $netEmp = $this->EmpSched->getAllNetEmpOfWeek($weekData, $netType);
-        #$netEmp = $this->EmpSched->getAllNetEmpOfWeek($ws, $netType);
         foreach ($netEmp as $gen):
         {
             $this->request->data['TempEmpSched']['id'] = null;
@@ -531,34 +526,43 @@ class SchedulesController extends AppController{
         return $countGroup;
     }
 	public function save(){
-					if ($this->request->data == null)
-					{}
-					else {
-									$tempFields = $this->TempEmpSched->fetchTempField();
-									$this->set(compact('tempFields'));
-									$unGen = $this->Week->fetchUngenerated();
-									$this->set(compact('unGen'));
-									$newEmpFields = $this->Week->getWeeksToGenerate($this->data['EmpSched']['week_use']);
-									foreach ($newEmpFields as $week):
-									{			
-													foreach ($tempFields as $gen):
-													{			
-																	$this->request->data['EmpSched']['id'] = null;
-																	$this->request->data['EmpSched']['week_id'] = $week;
-																	$this->request->data['EmpSched']['sched_id'] =  $gen['TempEmpSched']['sched_id'];
-																	$this->request->data['EmpSched']['emp_id'] = $gen['TempEmpSched']['emp_id'];
-																	$this->EmpSched->save($this->request->data);
-													}
-													endforeach;
-													$this->request->data['Week']['generated'] = 1;
-													$this->request->data['Week']['id']		= $week;						
-													$this->Week->save($this->data);								
-													$this->Session->setFlash('Schedule(s) saved.','success');
-									}
-									endforeach;
-									$this->TempEmpSched->deleteAll('1=1');
-									$this->redirect(array('action' => 'index'));
-					}
+        $weekStart =  $this->Week->getAllStart();
+        $weekEnd =  $this->Week->getAllEnd();
+        $weekNum =  $this->Week->getWeekNo();
+        $this->set(compact('weekNum'));
+        $this->set(compact('weekStart'));
+        $this->set(compact('weekEnd'));
+        
+        if ($this->request->data == null)
+        {}
+        else {
+            $newEmpFields = $this->Week->getWeeksBetween($this->data['EmpSched']['start'],$this->data['EmpSched']['end']);
+            $tempFields = $this->TempEmpSched->fetchTempField();
+            $this->set(compact('tempFields'));
+            $unGen = $this->Week->fetchUngenerated();
+            $this->set(compact('unGen'));
+            #$newEmpFields = $this->Week->getWeeksToGenerate($this->data['EmpSched']['week_use']);
+            #debug($newEmpFields);
+            foreach ($newEmpFields as $week):
+            {			
+                foreach ($tempFields as $gen):
+                {			
+                    $this->request->data['EmpSched']['id'] = null;
+                    $this->request->data['EmpSched']['week_id'] = $week;
+                    $this->request->data['EmpSched']['sched_id'] =  $gen['TempEmpSched']['sched_id'];
+                    $this->request->data['EmpSched']['emp_id'] = $gen['TempEmpSched']['emp_id'];
+                    $this->EmpSched->save($this->request->data);
+                }
+                endforeach;
+                #$this->request->data['Week']['generated'] = 1;
+                #$this->request->data['Week']['id']		= $week;						
+                #$this->Week->save($this->data);								
+                $this->Session->setFlash('Schedule(s) saved.','success');
+            }
+            endforeach;
+            $this->TempEmpSched->deleteAll('1=1');
+            $this->redirect(array('action' => 'index'));
+        }
 	}
 }
 ?>
