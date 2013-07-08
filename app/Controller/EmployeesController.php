@@ -557,6 +557,13 @@ class EmployeesController extends AppController{
             $this->set(compact('cutoffLoan'));
             $histor = $this->Employee->getHistor($id);
             $this->set(compact('histor'));
+            
+            $sl = $this->Scheduleoverride->countCredit(4, $id, $sdates);
+            $vl = $this->Scheduleoverride->countCredit(3, $id, $sdates);
+            $this->set(compact('sl'));
+            $this->set(compact('vl'));
+            $yearL = substr($sdates,0,4);
+            $this->set(compact('yearL'));
 
             $empLoans = $this->Loan->find('all',array(
                 'joins'=>array(

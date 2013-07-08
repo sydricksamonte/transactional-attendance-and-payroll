@@ -275,12 +275,12 @@ class SchedulesController extends AppController{
                     
                     if ($this->data['Schedule']['group'] != '0')
                     {
-                        $this->Session->setFlash('New Schedule Saved! Please update schedule rules');
+                        $this->Session->setFlash('New Schedule Saved! Please update schedule rules','success');
                         $this->redirect(array('action' => 'edit_rule',$order_sched_last));
                     }
                     else
                     {
-                        $this->Session->setFlash('New Schedule Saved!');
+                        $this->Session->setFlash('New Schedule Saved!','success');
                         $this->redirect(array('action' => 'shifts'));
                     }
                 }
@@ -293,7 +293,7 @@ class SchedulesController extends AppController{
     }
     function delete($id){
         if($this->Schedule->delete($id)){
-            $this->Session->setFlash('Schedule has been deleted.');
+            $this->Session->setFlash('Schedule has been deleted.','success');
             $this->redirect(array('action' => 'shifts'));
         }
     }
@@ -401,7 +401,7 @@ class SchedulesController extends AppController{
                     $this->request->data['Schedule']['order_schedules'] = $order_sched_last;										
                     $this->request->data['Schedule']['id'] =$id;
                     $this->Schedule->save($this->request->data);													
-                    $this->Session->setFlash('Schedule successfully modified!');
+                    $this->Session->setFlash('Schedule successfully modified!','success');
                     #$this->redirect(array('action' => 'shifts'));
                 
             }
@@ -445,7 +445,7 @@ class SchedulesController extends AppController{
                 $this->request->data['Rule']['order_schedules'] = $orderSchedId;								
                 $this->request->data['Rule']['rules'] =  $ruleid;		
                 $this->Rule->save($this->request->data);
-                $this->Session->setFlash('Schedule information has been updated');
+                $this->Session->setFlash('Schedule information has been updated','success');
             }		
 	}
     public function redir(){
@@ -454,7 +454,7 @@ class SchedulesController extends AppController{
     public function deleteruleSave($id){
         
         $this->Rule->delete($id);  //condition
-        $this->Session->setFlash('Schedule information has been updated');
+        $this->Session->setFlash('Schedule information has been updated','success');
 	}
      public function edit_rule($id){
 

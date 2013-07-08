@@ -44,6 +44,8 @@ else {
 <div class="sp1">
 <h3>Employee Profile</h3>
 	<div class="formstyle" style="width:68%;">
+	<table  style="background-image: linear-gradient( rgb(149, 211, 240), rgb(153, 220, 230));">
+		<tr><td>
 		Employee ID: &nbsp;&nbsp;&nbsp;
 			<b><?php echo $employee['Employee']['id']; ?></b>
 		<br><br>Name: &nbsp;&nbsp;&nbsp;
@@ -52,24 +54,43 @@ else {
 			<b><?php echo $employee['SubGroup']['name']; ?></b>
 		<br><br>Status: &nbsp;&nbsp;&nbsp;
 			<b><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></b>
-
-	<div style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;border-bottom:1px solid rgb(149, 211, 240);">
+		</td><td>
+	<div style="width:38%;">
 	<b><?php if ($empAuth == 1){ echo '';}?></b>
 		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div><br>";} ?>
 	<?php { echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Edit Employee Information',array('action' => 'edit', $employee['Employee']['id']))."</div></div>";} ?>
 	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
 	  <?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $cutDropDown)).
 			$this->Form->end('View schedule');?>
-	
 	</div>
+		</td><td>
+			<table class='table-bordered' style='width:20px'>
+				<thead>
+				<tr>
+				<th colspan=2 ><center>Consumed Leaves <?php echo "(".$yearL.")"; ?></th>
+				</tr>
+				</thead>
+				<tr>
+				<td> VL</th>
+				<td > SL</th>
+				</tr>
+				<tr>
+				<td> <?php echo $vl; ?></td>
+				<td> <?php echo $sl; ?></td>
+				</tr>
+			</table>
+		</td>
+		</tr></table>
 	</div>
 	<br>
 <div class="btn">
 <a href="javascript:window.history.back()"><b><--Back</b></a>
 </div>	
+
+
+
 <h2>Schedule</h2>
 <div class="span3" style='height:750px'>
-
 <table class='table-bordered'>
 <thead>
 <tr>
