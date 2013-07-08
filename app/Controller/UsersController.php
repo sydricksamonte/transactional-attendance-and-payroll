@@ -40,7 +40,7 @@ $this->layout='login';
                 ));
             if($user){
                 if ($this->Auth->login($user)) {
-                    $this->redirect($this->Auth->redirect(array('controller' => 'employees', 'action' => 'index')));
+                    $this->redirect($this->Auth->redirect(array('controller' => 'weeks', 'action' => 'showwk')));
                 }
             } else {
                     #$this->Session->setFlash(__('Invalid username or password, try again'));

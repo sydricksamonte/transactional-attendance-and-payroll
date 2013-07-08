@@ -73,7 +73,7 @@ class WeeksController extends AppController{
 			
         $wk=$this->Week->find('all', array( 'order'=>'Week.end_date ASC' ));
         $this->set(compact('wk'));
-				
+		$this->redirect($this->Auth->redirect(array('controller' => 'employees', 'action' => 'index')));		
     }
 }
 ?>
