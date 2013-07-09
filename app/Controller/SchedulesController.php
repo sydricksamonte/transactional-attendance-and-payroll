@@ -67,7 +67,7 @@ class SchedulesController extends AppController{
     $wrkDays = array('Thursday','Friday','Saturday','Sunday','Monday');
     }
     else if($days == '1-2-5-6-7'){
-    $wrkDays = array('Friday','Saturday','Sunday','Monday','Tuesday');
+    $wrkDays = array('Monday','Tuesday','Friday','Saturday','Sunday');
     }
     else if($days == '1-2-3-6-7'){
     $wrkDays = array('Saturday','Sunday','Monday','Tuesday','Wednesday');
@@ -78,7 +78,7 @@ class SchedulesController extends AppController{
     return $wrkDays;
   }
     function getWorkDayNames2($days)
-    {
+    {echo $days;
         if($days == 'MTWThF'){
             $wrkDays = '01-05';
         }

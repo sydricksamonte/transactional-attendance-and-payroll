@@ -413,6 +413,47 @@ class Employee extends AppModel{
               
             return $employee;
     }
+    public function fecthEmployeeAndSchedOnSpecWeek($week, $emp_id)
+    {
+            $employee = $this->find('first',array(
+	            'fields' => array(																					
+                    'Schedule.rd'
+                ),
+                'joins' => array(
+                    array(
+                        'type' => 'inner',
+                        'table' => 'emp_scheds',
+                        'alias' => 'EmpSched',
+                        'conditions' => array(
+                        'Employee.id = EmpSched.emp_id'
+                        )
+                    ),
+                     array(
+                        'type' => 'inner',
+                        'table' => 'weeks',
+                        'alias' => 'W',
+                        'conditions' => array(
+                        'EmpSched.week_id = W.id'
+                        )
+                    ),
+                    array(
+                        'type' => 'inner',
+                        'table' => 'schedules',
+                        'alias' => 'Schedule',
+                        'conditions' => array(
+                        'EmpSched.sched_id=Schedule.order_schedules'
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'W.week_no' => $week,
+                    'Employee.employed' => '1',
+                    'Employee.id' => $emp_id
+                )
+            ));
+              
+            return $employee['Schedule']['rd'];
+    }
     public $validate = array(
                       'first_name' => array(
                               'alphaNumeric' => array(

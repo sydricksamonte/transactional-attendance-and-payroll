@@ -192,13 +192,13 @@ foreach($exs as $ex2):
 								if($histor[0]['Week']['start_date']!=null){
 												foreach($histor as $history):
 																$start_date = date('M d, Y', strtotime($history['Week']['start_date']));
-												$end_date = date('M d, Y', strtotime($history['Week']['end_date']));
-												$daydiff = floor( ( strtotime( $end_date ) - strtotime( $start_date ) ) / 86400 );
+																$end_date = date('M d, Y', strtotime($history['Week']['end_date']));
+																$daydiff = floor( ( strtotime( $end_date ) - strtotime( $start_date ) ) / 86400 );
 
 												for($x=0;$x<=$daydiff;$x++){
+																
 																$temp[$start_date."-start"] = $history['Schedule']['time_in'];
 																$temp[$start_date."-end"] = $history['Schedule']['time_out'];
-																$restd=$history['Schedule']['rd'];
 																$start_date = date('M d, Y',strtotime($start_date."+1 day"));
 												}
 												endforeach;
@@ -331,12 +331,14 @@ while ($curr_date <= $yearend_date){
 								}								
 								if (isset($temp[$curr_date_myd."-type_name"])){
 												$remark = $temp[$curr_date_myd."-type_name"];
+											
 												if ($remark == "Rest Day"){
 																$temp_start = null;
 																$temp_end = null;
 																$remark = '';
 																$rd="yes";
 																$bg = "bgcolor = #D6FFC2";
+															
 												}
 								} else {
 												$remark = "Absent";
@@ -346,7 +348,9 @@ while ($curr_date <= $yearend_date){
 								$late = 0;
 								$under = 0;
 				}
-				$ddays=date('D',strtotime($curr_date_myd));
+				$ddays = date('D',strtotime($curr_date_myd));
+				
+				$restd = $this->requestAction('Employees/findDayOnWeek/' . date('Y-m-d', strtotime($curr_date_myd)) .'/'. $employee['Employee']['id'].'/'); 
 				if((strstr($restd,$ddays))==true){
 								$rd='yes';
 								$fcolor = "style='color:black'";

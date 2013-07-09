@@ -220,156 +220,175 @@ class EmployeesController extends AppController{
             $enDa = $this->data['Employee']['end'];
             $sched = $this->data['Employee']['scheds'];
             $schedOrder = $this->Schedule->getShiftOrder($sched);
-						if (empty($this->data)) {
-										$this->data = $this->EmpSched->read();
-						} else {
-                         {
-																$stDa2 = $this->Week->getWeekOrder($stDa);
-																$enDa2 = $this->Week->getWeekOrder($enDa);
-																$filWeeks =   $this->Week->getWeeksInBetween($stDa2, $enDa2);
-															 foreach ($filWeeks as $fw):{
-																			 $this->request->data['EmpSched']['id'] = null;
-																			 $existingId = $this->EmpSched->checkExist($fw, $id);
-
-																			 $this->request->data['EmpSched']['emp_id'] = $id;
-																			 $this->request->data['EmpSched']['sched_id'] = $schedOrder;
-																			 $this->request->data['EmpSched']['week_id'] = $fw;
-																			 $this->set(compact('existingId'));																			 
-																			 if ($existingId == null){
-																							 $this->EmpSched->save($this->request->data);
-																							 $this->Session->setFlash('Schedule has been successfully added','success');
-																			 }
-																			 else{
-																							 $this->request->data['EmpSched']['id'] = $existingId['EmpSched']['id'];
-																							 $this->EmpSched->save($this->request->data);
-																							 $this->Session->setFlash('Schedule has been updated','success');
-																			 }
-															 }
-															 endforeach;
-																$this->redirect(array('action' => 'view_emp', $id));
+            
+            if (empty($this->data)) 
+            {
+                $this->data = $this->EmpSched->read();
+            } 
+            else 
+            {
+                {
+                    $stDa2 = $this->Week->getWeekOrder($stDa);
+                    $enDa2 = $this->Week->getWeekOrder($enDa);
+                    $filWeeks =   $this->Week->getWeeksInBetween($stDa2, $enDa2);
+                    foreach ($filWeeks as $fw):{
+                        $this->request->data['EmpSched']['id'] = null;
+                        $existingId = $this->EmpSched->checkExist($fw, $id);
+            
+                        $this->request->data['EmpSched']['emp_id'] = $id;
+                        $this->request->data['EmpSched']['sched_id'] = $schedOrder;
+                        $this->request->data['EmpSched']['week_id'] = $fw;
+                        $this->set(compact('existingId'));																			 
+                        if ($existingId == null)
+                        {
+                            $this->EmpSched->save($this->request->data);
+                            $this->Session->setFlash('Schedule has been successfully added','success');
                         }
+                        else
+                        {
+                            $this->request->data['EmpSched']['id'] = $existingId['EmpSched']['id'];
+                            $this->EmpSched->save($this->request->data);
+                            $this->Session->setFlash('Schedule has been updated','success');
+                        }
+                    }
+                    endforeach;
+                    $this->redirect(array('action' => 'view_emp', $id));
                 }
-
+            }
 		}
 
-		public function edit_selected_sched($id=null, $schedId){
-						$this->Employee->id = $id;
-						$this->Schedule->id = $schedId;
-						$shifts = $this->Shift->find('list',array(
-																		'fields' => array('Shift.time_shift'),
-																		'conditions' => array('Shift.authorize')
-																		));
+		public function edit_selected_sched($id=null, $schedId)
+        {
+            $this->Employee->id = $id;
+            $this->Schedule->id = $schedId;
+            $shifts = $this->Shift->find('list',array(
+                'fields' => array('Shift.time_shift'),
+                'conditions' => array('Shift.authorize')
+            ));
 
-						$this->set(compact('shifts'));
-						$actions = $this->Historytype->find('list',array(
-																		'fields' => array('Historytype.name')
-																		));
+            $this->set(compact('shifts'));
+            $actions = $this->Historytype->find('list',array(
+                'fields' => array('Historytype.name')
+            ));
 
-						$this->set(compact('actions'));
-						$user = $this->User->find('list',array(
-																		'fields' => array('User.id')
-																		));
+            $this->set(compact('actions'));
+            $user = $this->User->find('list',array(
+                'fields' => array('User.id')
+            ));
 
-						$this->set(compact('user'));
-						$employee = $this->Employee->find('first',array(
-																		'fields' => array(
-																						'Employee.id',
-																						'Employee.first_name',
-																						'Employee.last_name',
-																						'Group.name',
-																						'Schedules.id',
-																						'Shifts.start_time',
-																						'Shifts.end_time',
-																						'Schedules.start_date',
-																						'Schedules.end_date',
-																						'Schedules.changed_time',
-																						'Shifts.time_shift',
-																						'Schedules.shift_id',
-																						'Schedules.action_taken'
-																						),
-																		'joins' => array(
-																						array(
-																										'type' => 'left',
-																										'table' => 'groups',
-																										'alias' => 'Group',
-																										'conditions' => array(
-																														'Employee.group_id = Group.id'
-																														)
-																								 ),
-																						array(
-																										'type' => 'left',
-																										'table' => 'schedules',
-																										'alias' => 'Schedules',
-																										'conditions' => array(
-																														'Employee.id = Schedules.id'
-																														)
-																								 ),
-																						array(
-																										'type' => 'left',
-																										'table' => 'shifts',
-																										'alias' => 'Shifts',
-																										'conditions' => array(
-																														'Schedules.shift_id = Shifts.id'
-																														)
-																								 ),
-																						array(
-																														'type' => 'left',
-																														'table' => 'historytypes',
-																														'alias' => 'HistoryType',
-																														'conditions' => array(
-																																		'HistoryType.id= Schedules.action_taken'
-																																		)
-																								 )
-																										),
-																						'conditions' => array(
-																														'Employee.id' => $id,
-																														'Schedules.id' => $schedId
-																														)
-																										));
+            $this->set(compact('user'));
+            $employee = $this->Employee->find('first',array(
+                'fields' => array(
+                    'Employee.id',
+                    'Employee.first_name',
+                    'Employee.last_name',
+                    'Group.name',
+                    'Schedules.id',
+                    'Shifts.start_time',
+                    'Shifts.end_time',
+                    'Schedules.start_date',
+                    'Schedules.end_date',
+                    'Schedules.changed_time',
+                    'Shifts.time_shift',
+                    'Schedules.shift_id',
+                    'Schedules.action_taken'
+                ),
+                'joins' => array(
+                    array(
+                    'type' => 'left',
+                    'table' => 'groups',
+                    'alias' => 'Group',
+                    'conditions' => array(
+                        'Employee.group_id = Group.id'
+                        )
+                    ),
+                    array(
+                    'type' => 'left',
+                    'table' => 'schedules',
+                    'alias' => 'Schedules',
+                    'conditions' => array(
+                        'Employee.id = Schedules.id'
+                        )
+                    ),
+                    array(
+                    'type' => 'left',
+					'table' => 'shifts',
+					'alias' => 'Shifts',
+					'conditions' => array(
+					    'Schedules.shift_id = Shifts.id'
+					    )
+					),
+					array(
+					'type' => 'left',
+					'table' => 'historytypes',
+					'alias' => 'HistoryType',
+					'conditions' => array(
+						'HistoryType.id= Schedules.action_taken'
+						)
+					)
+				),
+				'conditions' => array(
+                    'Employee.id' => $id,
+                    'Schedules.id' => $schedId
+                    )
+                )
+            );
 
-						$this->set(compact('employee'));
-						$reqSDate;
-						$reqEDate;
+            $this->set(compact('employee'));
+            $reqSDate;
+            $reqEDate;
 
-						$reqSDate =$this->data['Employee']['start_date']['year'].'-'.$this->data['Employee']['start_date']['month'].'-'.$this->data['Employee']['start_date']['day'];
-						$reqEDate =$this->data['Employee']['end_date']['year'].'-'.$this->data['Employee']['end_date']['month'].'-'.$this->data['Employee']['end_date']['day'];
+            $reqSDate = $this->data['Employee']['start_date']['year'].'-'.$this->data['Employee']['start_date']['month'].'-'.$this->data['Employee']['start_date']['day'];
+            $reqEDate = $this->data['Employee']['end_date']['year'].'-'.$this->data['Employee']['end_date']['month'].'-'.$this->data['Employee']['end_date']['day'];
 
-						$hisType = $this->Schedule->findActionTaken($id);
-						$condStartDate = $this->Schedule->findExSched($reqSDate,$id,$schedId);
-						$condEndDate = $this->Schedule->findExSched($reqEDate,$id,$schedId);
+            $hisType = $this->Schedule->findActionTaken($id);
+            $condStartDate = $this->Schedule->findExSched($reqSDate,$id,$schedId);
+            $condEndDate = $this->Schedule->findExSched($reqEDate,$id,$schedId);
 
-						if (($condStartDate == true)&&($this->data['action_taken'] == $hisType)){
-										$this->Session->setFlash('Target start date exists on this employees schedule.','failed');
-						} else if (($condEndDate == true)&&($this->data['action_taken'] == $hisType)){
-										$this->Session->setFlash('Target end date exists on this employees schedule.','failed');
-						}
-						else if ($reqSDate > $reqEDate){
-										$this->Session->setFlash('Invalid date range','failed');
-						} else {
-										if (empty($this->data)) {
-														$this->data = $this->Schedule->read();
-														$this->data = $this->Shift->read();
-														$this->data = $this->Scheduleoverride->read();
-										} else {
-														if ($this->data['action_taken'] == '1') {
-																		$this->request->data['history_type_id'] = '1';
-														} else  {
-																		$this->request->data['history_type_id'] = '2';
-														}
-														//$schedId =  $this->Schedule->getLastInsertID();
-														if ($this->Schedule->save($this->data)){
-																		//$schedId =  $this->Schedule->getLastInsertID();
-																		$this->request->data['start_date']  = $reqSDate;
-																		$this->request->data['end_date']  = $reqEDate;
-																		$this->Schedule->save($this->request->data);
-																		$this->request->data['sched_id']  = $schedId;
-																		$this->request->data['id'] = null;
-																		$this->History->save($this->request->data);
-																		$this->Session->setFlash('The schedule has been updated.','success');
-																		$this->redirect(array('action' => 'view_emp',$id));
-														}
-										}
-						}
+            if (($condStartDate == true)&&($this->data['action_taken'] == $hisType))
+            {
+                $this->Session->setFlash('Target start date exists on this employees schedule.','failed');
+            } 
+            else if (($condEndDate == true)&&($this->data['action_taken'] == $hisType))
+            {
+                $this->Session->setFlash('Target end date exists on this employees schedule.','failed');
+            }
+            else if ($reqSDate > $reqEDate)
+            {
+                $this->Session->setFlash('Invalid date range','failed');
+            } 
+            else 
+            {
+                if (empty($this->data)) 
+                {
+                    $this->data = $this->Schedule->read();
+                    $this->data = $this->Shift->read();
+                    $this->data = $this->Scheduleoverride->read();
+                } 
+                else 
+                {
+                    if ($this->data['action_taken'] == '1') 
+                    {
+                        $this->request->data['history_type_id'] = '1';
+                    } 
+                    else  
+                    {
+                        $this->request->data['history_type_id'] = '2';
+                    }
+                    //$schedId =  $this->Schedule->getLastInsertID();
+                    if ($this->Schedule->save($this->data)){
+                        //$schedId =  $this->Schedule->getLastInsertID();
+                        $this->request->data['start_date']  = $reqSDate;
+                        $this->request->data['end_date']  = $reqEDate;
+                        $this->Schedule->save($this->request->data);
+						$this->request->data['sched_id']  = $schedId;
+						$this->request->data['id'] = null;
+						$this->History->save($this->request->data);
+						$this->Session->setFlash('The schedule has been updated.','success');
+						$this->redirect(array('action' => 'view_emp',$id));
+					}
+				}
+		    }
 		}
         public function getLogOutAccess($dateLO, $bId)
         {
@@ -490,13 +509,19 @@ class EmployeesController extends AppController{
             $desc = $this->CompAdvanceRule->getInitValues();
             return $desc;
         }
+        public function findDayOnWeek($date2, $emp_id){
+            $weeks = $this->Week->find('first', array('fields' => array ('week_no'),'conditions' => array('OR' => array('monday' => $date2,'tuesday' => $date2,'wednesday' => $date2,'thursday' => $date2,'friday' => $date2,'saturday' => $date2,'sunday' => $date2)), 'order' => array ('week_no ASC')));
+            $week = ($weeks['Week']['week_no']);
+            $empScheds = $this->Employee->fecthEmployeeAndSchedOnSpecWeek($week, $emp_id);
+            return $empScheds;
+        }
         public function select_manpower(){
             if ($this->data != null)
             {  
                 $date = $this->data['CutOff']['cut_use'];
                 $date2 = $date['year'].'-'.$date['month'].'-'.$date['day'];
                 $date2 = strtotime($date2);
-                $week_no = $this->Week->findDayOnWeek($date);
+                $week_no = $this->Week->findDayOnWeek($date); #Model 
                 $this->redirect(array('controller' => 'Employees', 'action' => 'select_manpower_day',$week_no,$date2));
             }
 	    }
@@ -680,7 +705,8 @@ class EmployeesController extends AppController{
             $this->set(compact('govDeduc'));
 		}
 
-		public function edit($id=null){
+		public function edit($id=null)
+        {
             $this->Employee->id = $id;
 
             $subgroups = $this->SubGroup->find('list',array(
@@ -743,7 +769,8 @@ class EmployeesController extends AppController{
         );
         $this->set(compact('employee'));
 		}
-		public function add_employee(){
+		
+        public function add_employee(){
             $subgroups = $this->SubGroup->find('list',array(
             'conditions' => array('authorize' => '1'),
             'order' => array('group_id' => 'ASC')
@@ -784,12 +811,15 @@ class EmployeesController extends AppController{
 						$schedTime = $this->Scheduleoverride->findSchebyTimeAndEmp($id,$curr_date_ymd); 
 						$this->set(compact('schedTime'));		
 
-						if (empty($this->data)) {
+						if (empty($this->data)) 
+                        {
 										$this->data = $this->Schedule->read();
 										$this->data = $this->Shift->read();
 										$this->data = $this->Restday->read();
 										$this->data = $this->Scheduleoverride->read();
-						} else {
+						} 
+                        else 
+                        {
 										$this->request->data['start_date'] = $curr_date_ymd;
 										$this->request->data['end_date'] = $curr_date_ymd;
 									    $this->request->data['emp_id'] = $id;
