@@ -316,6 +316,8 @@ while ($curr_date <= $yearend_date){
 				} 
 				else if($temp_cin == null or $temp_cout == null){
 								$remark = 'ERROR';
+								$late = 0;
+								$under = 0;
 				}
 				$tempOt = 0;
 				if (isset($temp[$curr_date_myd."-type_name"])){
@@ -409,6 +411,7 @@ while ($curr_date <= $yearend_date){
 				}
 				if($temp_cin != null and $temp_cout == null){
 								$remark = 'ERROR';
+								
 				}
 				if ($ot_remark != 'Y')
 				{ 

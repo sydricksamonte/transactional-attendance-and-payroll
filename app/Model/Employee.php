@@ -38,6 +38,41 @@ class Employee extends AppModel{
         $groupId = $this->find('first', array('conditions' => array('id' => $id)));
         return ($groupId['Employee']['sched_id']);
     }
+
+    function getFilter($emp_id)
+    {        echo $emp_id;
+        $res = $this->find('all',array(
+            'fields'=>array(
+                'Employee.id',
+                'Employee.first_name',
+                'Employee.last_name',
+				'Employee.employed',
+				'SubGroup.name'
+				),
+			'joins'=>array(array(
+			    'type' => 'left',
+                'table' => 'sub_groups',
+                'alias' => 'SubGroup',
+                'conditions' => array(
+                'Employee.subgroup_id = SubGroup.id'
+                ))
+            ),
+            'conditions' => array(
+                array('OR' => array(
+                    'OR' =>array(
+                    array('Employee.last_name LIKE' => '%'.$emp_id.'%'),
+                    array('Employee.first_name LIKE' => '%'.$emp_id.'%'),
+                    array('Employee.id LIKE' => '%'.$emp_id.'%'),
+                    array('SubGroup.name LIKE' => '%'.$emp_id.'%')
+            )))),
+            'order' => array(
+                'Employee.employed' => 'DESC',
+                'SubGroup.name' => 'ASC',
+                'Employee.last_name' => 'ASC'
+            )
+        ));
+        return $res;
+    }
     
     function getYearCutOff()
     {
@@ -412,47 +447,6 @@ class Employee extends AppModel{
             ));
               
             return $employee;
-    }
-    public function fecthEmployeeAndSchedOnSpecWeek($week, $emp_id)
-    {
-            $employee = $this->find('first',array(
-	            'fields' => array(																					
-                    'Schedule.rd'
-                ),
-                'joins' => array(
-                    array(
-                        'type' => 'inner',
-                        'table' => 'emp_scheds',
-                        'alias' => 'EmpSched',
-                        'conditions' => array(
-                        'Employee.id = EmpSched.emp_id'
-                        )
-                    ),
-                     array(
-                        'type' => 'inner',
-                        'table' => 'weeks',
-                        'alias' => 'W',
-                        'conditions' => array(
-                        'EmpSched.week_id = W.id'
-                        )
-                    ),
-                    array(
-                        'type' => 'inner',
-                        'table' => 'schedules',
-                        'alias' => 'Schedule',
-                        'conditions' => array(
-                        'EmpSched.sched_id=Schedule.order_schedules'
-                        )
-                    )
-                ),
-                'conditions' => array(
-                    'W.week_no' => $week,
-                    'Employee.employed' => '1',
-                    'Employee.id' => $emp_id
-                )
-            ));
-              
-            return $employee['Schedule']['rd'];
     }
     public $validate = array(
                       'first_name' => array(

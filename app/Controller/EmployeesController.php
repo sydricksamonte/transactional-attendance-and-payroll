@@ -63,106 +63,75 @@ class EmployeesController extends AppController{
             }
         }
 	}
-    public function filter(){
-						$ressult=$this->data;
-						$this->set(compact('ressult'));
-						$res=$this->Employee->find('all',array(
-																		'fields'=>array(
-																						'Employee.id',
-																						'Employee.first_name',
-																						'Employee.last_name',
-																						'Employee.employed',
-																						'SubGroup.name'
-																						),
-																		'joins'=>array(array(
-																										'type' => 'left',
-																										'table' => 'sub_groups',
-																										'alias' => 'SubGroup',
-																										'conditions' => array(
-																														'Employee.subgroup_id = SubGroup.id'
-																														))
-																						),
-																		'conditions' => array(
-																						array('OR' => array(
-																														'OR' =>array(
-																																		array('Employee.last_name LIKE' => '%'.$ressult['Employee']['emp_id'].'%'),
-																																		array('Employee.first_name LIKE' => '%'.$ressult['Employee']['emp_id'].'%'),
-																																		array('Employee.id LIKE' => '%'.$ressult['Employee']['emp_id'].'%'),
-																																		array('SubGroup.name LIKE' => '%'.$ressult['Employee']['emp_id'].'%')
-																																		)))),
-																		'order' => array(
-																						  'Employee.employed' => 'DESC',
-																						'SubGroup.name' => 'ASC',		'Employee.last_name' => 'ASC'
-																										)
-																						));
+    public function filter()
+    {
+        $ressult = $this->data;
+        $this->set(compact('ressult'));
+        $res = $this->Employee->getFilter($this->data['Employee']['emp_id']);
+        $this->set(compact('res'));
+    }
+    
+    public function index()
+    {
+        $yeard = date("Y", time());
+        $cutoffexist=$this->Cutoff->find('first',array('conditions'=>$yeard.'01-25'));
+        $this->set(compact('cutoffexist'));
 
-						$this->set(compact('res'));
-		}
-		public function index(){
-						$yeard = date("Y", time());
-						$cutoffexist=$this->Cutoff->find('first',array('conditions'=>$yeard.'01-25'));
-						$this->set(compact('cutoffexist'));
+        $wks=$this->Week->find('all',
+            array('order'=>'Week.end_date ASC'));
+        $this->set(compact('wks'));
 
-                $wks=$this->Week->find('all',
-                                array(
-                                        'order'=>'Week.end_date ASC'
-                                     )
-                                );
-                $this->set(compact('wks'));
+        $employees = $this->Employee->find('all',array(
+            'fields' => array(
+                'Employee.id',
+                'Employee.first_name',
+                'Employee.last_name',
+                'Employee.employed',
+                'SubGroup.name',
+            ),
+            'joins' => array(
+                array(
+                'type' => 'left',
+                'table' => 'sub_groups',
+                'alias' => 'SubGroup',
+                'conditions' => array(
+                'Employee.subgroup_id = SubGroup.id'
+                )
+            ),
+        ),
+        'order' => array(
+            'Employee.employed' => 'DESC',
+            'SubGroup.name' => 'ASC',																					
+            'Employee.last_name' => 'ASC'
+            )
+        ));
 
-						$employees = $this->Employee->find('all',array(
-																		'fields' => array(
-																						'Employee.id',
-																						'Employee.first_name',
-																						'Employee.last_name',
-																						'Employee.employed',
-																						'SubGroup.name',
-																						),
-																		'joins' => array(
-																						array(
-																										'type' => 'left',
-																										'table' => 'sub_groups',
-																										'alias' => 'SubGroup',
-																										'conditions' => array(
-																														'Employee.subgroup_id = SubGroup.id'
-																														)
-																								 ),
-																						),
-																		'conditions' => array(
-																						),
-																		'order' => array(
-																						'Employee.employed' => 'DESC',
-																						'SubGroup.name' => 'ASC',																					
-																						'Employee.last_name' => 'ASC'
-																						)
-																						));
+        $this->set(compact('employees'));
+    }
 
-						$this->set(compact('employees'));
-		}
+    function delete($id){
+        if($this->Employee->delete($id)){
+            $this->Session->setFlash('Employee has been deleted.','success');
+            $this->redirect(array('action' => 'index'));
+        }
+    }
 
-		function delete($id){
-						if($this->Employee->delete($id)){
-										$this->Session->setFlash('Employee has been deleted.','success');
-										$this->redirect(array('action' => 'index'));
-						}
-		}
-
-		public function change_sched($id=null)
-        {
-            $this->Employee->id = $id;
-	        $weekStart =  $this->Week->getAllStart();
-		    $weekEnd =  $this->Week->getAllEnd();
-	        $this->set(compact('weekStart'));
-		    $this->set(compact('weekEnd'));
-		    $weekNum =  $this->Week->getWeekNo();
-		    $this->set(compact('weekNum'));
-		    $shifts = $this->Schedule->getShifts();
-		    $this->set(compact('shifts'));
+    public function change_sched($id=null)
+    {
+        $this->Employee->id = $id;
+        $weekStart =  $this->Week->getAllStart();
+        $weekEnd =  $this->Week->getAllEnd();
+        $this->set(compact('weekStart'));
+        $this->set(compact('weekEnd'));
+        $weekNum =  $this->Week->getWeekNo();
+        $this->set(compact('weekNum'));
+        $shifts = $this->Schedule->getShifts();
+        $this->set(compact('shifts'));
 
             $employee = $this->Employee->find('first',array(
-                                    'fields' => array(
-                                            'Employee.id',
-                                            'Employee.userinfo_id',
+            'fields' => array(
+                'Employee.id',
+                'Employee.userinfo_id',
                                             'Employee.first_name',
                                             'Employee.last_name',
 										    'Employee.employed',
@@ -510,9 +479,10 @@ class EmployeesController extends AppController{
             return $desc;
         }
         public function findDayOnWeek($date2, $emp_id){
-            $weeks = $this->Week->find('first', array('fields' => array ('week_no'),'conditions' => array('OR' => array('monday' => $date2,'tuesday' => $date2,'wednesday' => $date2,'thursday' => $date2,'friday' => $date2,'saturday' => $date2,'sunday' => $date2)), 'order' => array ('week_no ASC')));
+            $weeks = $this->Week->find('first', array('fields' => array ('week_no','year'),'conditions' => array('OR' => array('monday' => $date2,'tuesday' => $date2,'wednesday' => $date2,'thursday' => $date2,'friday' => $date2,'saturday' => $date2,'sunday' => $date2)), 'order' => array ('week_no ASC')));
             $week = ($weeks['Week']['week_no']);
-            $empScheds = $this->Employee->fecthEmployeeAndSchedOnSpecWeek($week, $emp_id);
+            $year = ($weeks['Week']['year']);
+            $empScheds = $this->EmpSched->fecthEmployeeAndSchedOnSpecWeek($week, $emp_id, $year);
             return $empScheds;
         }
         public function select_manpower(){
@@ -1103,33 +1073,36 @@ class EmployeesController extends AppController{
         }
     }
 
-    public function view_all($dateId){
-					$this->layout='view_all';
-					$employees = $this->Employee->find('all', array(
-																							 'conditions' => array(
-																											 'employed' => '1'
-                                                              ),
-																								'order' => array(
-																												'subgroup_id' => 'ASC',
-																												'last_name' => 'ASC',
-																												'first_name' => 'ASC')
-																	));
-					$this->set(compact('employees'));
-					$empCount = $this->Employee->find('count', array(
-                                               'conditions' => array(
-                                                       'employed' => '1')));	
-					$total = $this->Total->fetchEmployeesOfCutOff($dateId);
-					$this->set(compact('total'));
-					$this->set(compact('dateId'));
-					$this->set(compact('empCount'));
-					$startCut = $this->Cutoff->getCutOffPeriodStart($dateId);
-					$endCut = $this->Cutoff->getCutOffPeriodEnd($dateId);
-					   $this->set(compact('startCut'));
-         $this->set(compact('endCut'));
+    public function view_all($dateId)
+    {
+        $this->layout='view_all';
+        $employees = $this->Employee->find('all', array(
+            'conditions' => array(
+                'employed' => '1'
+                ),
+            'order' => array(
+                'subgroup_id' => 'ASC',
+                'last_name' => 'ASC',
+                'first_name' => 'ASC')
+            ));
+        $this->set(compact('employees'));
+        $empCount = $this->Employee->find('count', array(
+            'conditions' => array('employed' => '1')));	
+        $total = $this->Total->fetchEmployeesOfCutOff($dateId);
+        
+        $this->set(compact('total'));
+        $this->set(compact('dateId'));
+        $this->set(compact('empCount'));
+        
+        $startCut = $this->Cutoff->getCutOffPeriodStart($dateId);
+        $endCut = $this->Cutoff->getCutOffPeriodEnd($dateId);
+        
+        $this->set(compact('startCut'));
+        $this->set(compact('endCut'));
+    }
 
-  }
- public function view_all2($id=null,$dateId){
- #$this->layout='view_all';
+    public function view_all2($id=null, $dateId)
+    {
 			$this->set(compact('dateId'));
             $trans = $this->CompAdvanceRule->getAll();
             $this->set(compact('trans'));
@@ -1296,4 +1269,4 @@ class EmployeesController extends AppController{
 		}
                                                                                                                        
 
-}?>
+}

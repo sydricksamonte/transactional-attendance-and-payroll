@@ -171,7 +171,7 @@ if ($dw == '0')
 			
 			
 			
-			<td><?php echo $s_i2.'       '.$e['Schedule']['days'];?></td>
+			<td><?php echo $s_i2;?></td>
 			<td><?php echo $s_o2;?></td>
 			<td><?php echo $l_i2; ?></td>
 			<td><?php echo $l_o2; ?></td>

@@ -188,7 +188,6 @@ foreach($exs as $ex2):
 												for($x=0;$x<=$daydiff;$x++){
 																$temp[$start_date."-start"] = $history['Schedule']['time_in'];
 																$temp[$start_date."-end"] = $history['Schedule']['time_out'];
-																$restd=$history['Schedule']['rd'];
 																$start_date = date('M d, Y',strtotime($start_date."+1 day"));
 												}
 												endforeach;
@@ -308,6 +307,8 @@ while ($curr_date <= $yearend_date){
 				} 
 				else if($temp_cin == null or $temp_cout == null){
 								$remark = 'ERROR';
+								$late = 0;
+								$under = 0;
 				}
 				$tempOt = 0;
 				if (isset($temp[$curr_date_myd."-type_name"])){
@@ -339,6 +340,8 @@ while ($curr_date <= $yearend_date){
 								$under = 0;
 				}
 				$ddays=date('D',strtotime($curr_date_myd));
+				$restd = $this->requestAction('Employees/findDayOnWeek/' . date('Y-m-d', strtotime($curr_date_myd)) .'/'. $employee['Employee']['id'].'/'); 
+			
 				if((strstr($restd,$ddays))==true){
 								$rd='yes';
 								$fcolor = "style='color:black'";

@@ -81,5 +81,38 @@ class EmpSched extends AppModel{
         $eSched = $this->find('list', array('fields' => 'emp_id', 'conditions' => array('week_id' => $week) ));
         return ($eSched);
     }
+    public function fecthEmployeeAndSchedOnSpecWeek($week, $emp_id, $year)
+    {
+            $employee = $this->find('first',array(
+	            'fields' => array(																					
+                    'Schedule.rd'
+                ),
+                'joins' => array(
+                     array(
+                        'type' => 'inner',
+                        'table' => 'weeks',
+                        'alias' => 'W',
+                        'conditions' => array(
+                        'EmpSched.week_id = W.id'
+                        )
+                    ),
+                    array(
+                        'type' => 'inner',
+                        'table' => 'schedules',
+                        'alias' => 'Schedule',
+                        'conditions' => array(
+                        'EmpSched.sched_id=Schedule.order_schedules'
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'W.week_no' => $week,
+                    'W.year' => $year,
+                    'EmpSched.emp_id' => $emp_id
+                )
+            ));
+              
+            return $employee['Schedule']['rd'];
+    }
 }
 ?>
