@@ -388,16 +388,18 @@ class EmployeesController extends AppController{
                         if (!file_exists($dbName)) {
                         die("Could not find database file.");
                         }
-                        $db = new PDO("odbc:DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=$dbName; Uid=; Pwd=;");       
+                        $db = odbc_connect("Driver={Microsoft Access Driver (*.mdb)};Dbq=$dbName", NULL, NULL);     
                         $sql  = "SELECT TOP 1 CHECKTIME FROM CHECKINOUT WHERE  CHECKTYPE = 'O' AND USERID =".$bId." AND CHECKTIME LIKE "."'$dateAccessFormat%'"." ORDER BY CHECKTIME DESC ";
-                        $result = $db->query($sql);
-                        $lOut = $result->fetchAll(PDO::FETCH_COLUMN);
+                        $result = odbc_exec($db,$sql);
+                        $lOut = odbc_result($result,1);
                         if ($lOut != null)
                         {
-                            return($lOut[0].'');
+                            return($lOut.'');
                         }
                         else
-                        {   return NULL;}
+                        {   
+                            return NULL;
+                        }
             }
         }
         public function getLogInAccess($dateLO, $bId)
@@ -423,18 +425,17 @@ class EmployeesController extends AppController{
                 }
                 else
                 {
-                    $dbName = $this->Checkinout->findAccess();
+                        $dbName = $this->Checkinout->findAccess();
                         if (!file_exists($dbName)) {
                         die("Could not find database file.");
                         }
-                        $db = new PDO("odbc:DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=$dbName; Uid=; Pwd=;");       
+                        $db = odbc_connect("Driver={Microsoft Access Driver (*.mdb)};Dbq=$dbName", NULL, NULL);     
                         $sql  = "SELECT TOP 1 CHECKTIME FROM CHECKINOUT WHERE  CHECKTYPE = 'I' AND USERID =".$bId." AND CHECKTIME LIKE "."'$dateAccessFormat%'"." ORDER BY CHECKTIME ASC ";
-         
-                        $result = $db->query($sql);
-                        $lIn = $result->fetchAll(PDO::FETCH_COLUMN);
+                        $result = odbc_exec($db,$sql);
+                        $lIn = odbc_result($result,1);
                         if ($lIn != null)
                         {
-                            return($lIn[0].'');
+                            return($lIn.'');
                         }
                         else
                         {
