@@ -503,6 +503,44 @@ class EmployeesController extends AppController{
             $this->set(compact('day'));
             $this->set(compact('dw'));     
 		}
+        
+        public function select_manpower_range()
+        {
+            if ($this->data != null)
+            {  
+                $date = $this->data['CutOff']['cut_use'];
+                $date2 = $date['year'].'-'.$date['month'].'-'.$date['day'];
+                $dateE = $this->data['CutOff']['cut_use_end'];
+                $dateE2 = $dateE['year'].'-'.$dateE['month'].'-'.$dateE['day'];
+                $date2 = strtotime($date2);
+                $dateE2 = strtotime($dateE2);
+                $week_no = $this->Week->findDayOnWeek($date); #Model 
+                $this->redirect(array('controller' => 'Employees', 'action' => 'select_manpower_range_day', $date2, $dateE2));
+            }
+	    }
+        public function select_manpower_range_day($day_s, $day_e){
+            $this->layout='tablescroll';
+            $this->set(compact('day_s'));
+            $this->set(compact('day_e'));
+            $range = array();
+            $i = 0;
+            do {
+                $range[$i] = ($day_s);
+                $day_s = strtotime('+1 day',$day_s); 
+                $i++;
+            } while ($day_s <= $day_e); 
+
+            $this->set(compact('range'));
+            
+            $emp = $this->Employee->getEmployedStatusEmployees();
+            $this->set(compact('emp'));    
+		}
+        public function findDaySched($date, $emp_id)
+        {
+            $week_no = $this->Week->findDayOnWeek2(date('Y-m-d',$date));
+            $empScheds = $this->Employee->getSpecEmployeeAndSchedOnSpecWeek($week_no, $emp_id,date('Y',$date));
+            return $empScheds;
+        }
 		public function view_emp($id=null)
         {
             

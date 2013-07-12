@@ -24,12 +24,10 @@
                 ),
                 'order' => array(
                     'change_time' => 'DESC',
-                   
                     )
                 )
             );
             return $employees;
-            debug($employees); 
         }		
 	}
 ?>

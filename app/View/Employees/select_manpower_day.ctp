@@ -29,14 +29,24 @@ if ($dw == '0')
 	<?php $over = $this->requestAction('Scheduleoverrides/getOverride/' .$day  . '/'.  $e['Employee']['id'] .'/'); 
 		if ($over != null)
 		{		
-			if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '3' or $over['Scheduleoverride']['scheduleoverride_type_id'] == '4' or $over['Scheduleoverride']['scheduleoverride_type_id'] == '8')
+			if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '3') 
+			{
+				$s_i2 = NULL;
+				$remark = 'Vacation Leave';
+			}
+			else if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '4')
+			{
+				$s_i2 = NULL;
+				$remark = 'Sick Leave';
+			}
+			else if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '8')
 			{
 				$s_i2 = NULL;
 			}
 			else
 			{
 				$s_i = $over['Scheduleoverride']['time_in'];
-				 $s_i2 = date('H:i',strtotime($over['Scheduleoverride']['time_in'])); 
+				$s_i2 = date('H:i',strtotime($over['Scheduleoverride']['time_in'])); 
 			}
 		}
 		else
@@ -54,14 +64,24 @@ if ($dw == '0')
 		
 		if ($over != null)
 		{	
-			if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '3' or $over['Scheduleoverride']['scheduleoverride_type_id'] == '4' or $over['Scheduleoverride']['scheduleoverride_type_id'] == '8')
+			if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '3') 
 			{
-				$s_o2 = NULL;
+				$s_i2 = NULL;
+				$remark = 'Vacation Leave';
+			}
+			else if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '4')
+			{
+				$s_i2 = NULL;
+				$remark = 'Sick Leave';
+			}
+			else if ($over['Scheduleoverride']['scheduleoverride_type_id'] == '8')
+			{
+				$s_i2 = NULL;
 			}
 			else
 			{
 				$s_o = $over['Scheduleoverride']['time_out'];
-				 $s_o2 = date('H:i',strtotime($over['Scheduleoverride']['time_out'])); 
+				$s_o2 = date('H:i',strtotime($over['Scheduleoverride']['time_out'])); 
 			}
 		}
 		else
@@ -185,6 +205,10 @@ if ($dw == '0')
 				$under = 0;
 				$over = null;
 				$remark = null;
+				$l_i2 = null;
+				$l_o2 = null;
+				$s_i2 = null;
+				$s_o2 = null;
 			?>
 	</tr>
 	

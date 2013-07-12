@@ -73,9 +73,23 @@ class Week extends AppModel{
         $weeks = $this->find('list', array('fields' => array ('id'),'conditions' => array('year' => date('Y'), 'generated' => false),'order' => 'week_no ASC','limit' => $weekCount + 1));
         return($weeks);
     }
+    function findDayOnWeek2($date2){
+        $weeks = $this->find('first', array('fields' => array ('week_no'),'conditions' => array('OR' => array('monday' => $date2,'tuesday' => $date2,'wednesday' => $date2,'thursday' => $date2,'friday' => $date2,'saturday' => $date2,'sunday' => $date2)), 'order' => array ('week_no ASC')));
+        return ($weeks['Week']['week_no']);
+    }
     function findDayOnWeek($date){
         $date2 = $date['year'].'-'.$date['month'].'-'.$date['day'];
-        $weeks = $this->find('first', array('fields' => array ('week_no'),'conditions' => array('OR' => array('monday' => $date2,'tuesday' => $date2,'wednesday' => $date2,'thursday' => $date2,'friday' => $date2,'saturday' => $date2,'sunday' => $date2)), 'order' => array ('week_no ASC')));
+        $weeks = $this->find('first', array(
+            'fields' => array ('week_no'),
+            'conditions' => array('OR' =>   
+                array('monday' => $date2,
+                    'tuesday' => $date2,
+                    'wednesday' => $date2,
+                    'thursday' => $date2,
+                    'friday' => $date2,
+                    'saturday' => $date2,
+                    'sunday' => $date2))
+            ));
         return ($weeks['Week']['week_no']);
     }
     function getFollowUpWeek(){

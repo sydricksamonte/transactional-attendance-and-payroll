@@ -79,7 +79,12 @@ $cakeDescription = __d('cake_dev', 'Imperium Attendance System');
 				  <li><div style="padding:10px;"><?php echo $this->Html->image('address-book--plus.png')."  ";?><?php echo $this->Html->link('Update Logsheet',array('controller'=>'Employees','action'=>'upload'))?></div></li>
 				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('address-book.png')."  ";?><?php echo $this->Html->link('Loan', array('controller'=>'Loans', 'action'=>'emp_loan'))?></div></li>
 				  <li><div style="padding:10px;"><?php echo $this->Html->image('payslip.png')."  ";?><?php echo $this->Html->link('Payslip',array('controller' => 'Totals', 'action' => 'gotopayslip'))?></div></li>
-				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('manpower.png')."  ";?><?php echo $this->Html->link('ManPower',array('controller'=>'Employees','action' => 'select_manpower'))?></div></li>
+				  <!--li class="divider-vertical"><div style="padding:10px;"><?php #echo $this->Html->image('manpower.png')."  ";?><?php #echo $this->Html->link('ManPower',array('controller'=>'Employees','action' => 'select_manpower'))?></div></li-->
+				  <li class="divider-vertical"><div style="padding:10px;"><?php echo $this->Html->image('manpower.png')."  ";?><?php echo $this->Html->link('ManPower',array('controller' => 'Employees', 'action' => 'select_manpower'))?>
+				  <ul>
+					<li><?php echo $this->Html->link('Manpower Range',array('controller' => 'Employees','action' => 'select_manpower_range'))?></li>
+				  </ul>
+				  </div></li>
 			</ul>
 			<div style="padding:10px;" align="right"><?php echo $this->Html->image('out.png',array('url'=>array('controller' => 'Users', 'action' => 'logout')))."  ";?><?php echo $this->Html->link('Logout',array('controller' => 'Users', 'action' => 'logout'))?></div>
         </div>
