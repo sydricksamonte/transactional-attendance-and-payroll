@@ -1111,7 +1111,13 @@ class EmployeesController extends AppController{
                    }
         }
     }
-
+    public function getSpecHoliday($date)
+    {   
+        $date2 = date("Y-m-d", $date);
+        $type = $this->Holiday->getHoliday($date2);
+        return $type;
+       
+    }
     public function view_all($dateId)
     {
         $this->layout='view_all';
@@ -1148,33 +1154,10 @@ class EmployeesController extends AppController{
             $sdate = date("Y-m-d", time());
 		    $total = $this->Cutoff->getCutOffAvailable($sdate);
 		    $this->set(compact('total'));
-#		    $cutDropDown = $this->Cutoff->getCutOffRecent($sdate);
-/*			    if ($this->data['Emp']['cut_off'] == null)
-			    {
-			        $dayCutOff = date('d');
-                    if (($dayCutOff >= '11') && ($dayCutOff <= '25'))
-                    { 
-                        $sdates =  date('Y').'-'.date('m', strtotime("-1 month")).'-26';
-                        $edates =  date('Y').'-'.date('m').'-10';
-					   
-                    }
-                    else 
-                    {
-					    $sdates =  date('Y').'-'.date('m').'-11';
-                        $edates =  date('Y').'-'.date('m').'-25';
-                    }	
-                }
-				else
-				{
-#*/	#				$cutDropDown = $this->data['Emp']['cut_off']; 
-					
+
                     $sdates = $this->Cutoff->getCutOffPeriodStart($dateId);
 					$edates = $this->Cutoff->getCutOffPeriodEnd($dateId);
-                    #$sdates = '2013-06-05';
-					#$edates = '2013-06-05';
-	#			}
-						
-#            $this->set(compact('cutDropDown'));
+
 			$this->set(compact('sdates'));
             $this->set(compact('edates'));
             $weekStart =  $this->Week->getAllStart();

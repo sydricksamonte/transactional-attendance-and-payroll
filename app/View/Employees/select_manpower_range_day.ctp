@@ -14,11 +14,12 @@ $late = null;
 $under =null;
 
 ?>
- 
+
     	<div class="container_12">
         	    		<div class="grid_4" style="height:800px">
 
         	<div class="grid_4 height400" style="height:800px">
+		
         		<table class="fancyTable" id="myTable05" cellpadding="0" cellspacing="0" style="height:800px">
   <thead>
 		<tr>
@@ -77,7 +78,7 @@ $under =null;
 					}
 					else
 					{ 
-						if (strpos($emps['Schedule']['days'], $dw) !== FALSE) 
+					if (strpos($emps['Schedule']['days'], $dw) !== FALSE) 
 						{ 
 							$s_i = $emps['Schedule']['time_in']; 
 							$s_i2 = date('H:i',strtotime($emps['Schedule']['time_in'])); 
@@ -180,6 +181,17 @@ $under =null;
 								$all_abs = $all_abs + $absent;
 								$all_ut = $all_ut + $under;
 							}
+							
+						$hd = null;
+						$hd = $this->requestAction('Employees/getSpecHoliday/' .$day  . '/');
+						if ($hd != null and  ($emps['Employee']['subgroup_id'] != '3' and $emps['Employee']['subgroup_id'] != '4' and $emps['Employee']['subgroup_id'] != '16' and $emps['Employee']['subgroup_id'] != '17'))
+						{
+							$remark = $hd;
+							$late = null;
+							$under = null;
+							$hd = null; 
+						}
+						
 						} 
 						else
 						{
@@ -187,6 +199,7 @@ $under =null;
 							$s_o2 = NULL;
 							$late = null;
 							$under = null;
+							$hd = null;
 							$remark = 'RD';
 						}
 					}	
@@ -206,7 +219,8 @@ $under =null;
 			<td class="numeric"><center><div <?php echo $tdstyle;?> > <?php echo $late; ?></div></td>
 			<td class="numeric"><center><div <?php echo $tdstyle;?> > <?php echo $under; ?><div></td>
 			<td class="numeric"><center><div <?php echo $tdstyle;?> > <?php echo $remark; ?></div></td>
-			<?php 			
+			<?php
+							
 				$late = null;
 				$absent = null;
 				$under = null;
@@ -240,7 +254,45 @@ $under =null;
 		<td> <?php echo $all_error; ?></td>
 	</tr>
 </table>
-
+ <table>
+			<tr>
+			<th>Symbol</th>
+			<th>Description</th>
+			</tr>
+			<tr>
+			<td>A</td>
+			<td>Absent</td>
+			</tr>
+			<tr>
+			<td>RD</td>
+			<td>Restday</td>
+			</tr>
+			<tr>
+			<td>SL</td>
+			<td>Sick leave</td>
+			</tr>
+			<tr>
+			<td>VL</td>
+			<td>Vacation Leave</td>
+			</tr>
+			<tr>
+			<td>RH</td>
+			<td>Regular Holiday</td>
+			</tr>
+			<tr>
+			<td>SH</td>
+			<td>Special Holiday</td>
+			</tr>
+			<tr>
+			<td>NS</td>
+			<td>No Schedule</td>
+			</tr>
+			<tr>
+			<td>E</td>
+			<td>Error</td>
+			</tr>
+		</tr>
+		</table>
 
 <br>
 

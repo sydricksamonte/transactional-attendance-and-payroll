@@ -187,6 +187,15 @@ if ($dw == '0')
 			$all_ut = $all_ut + $under;
 
 		}
+		$hd = null;
+		$hd = $this->requestAction('Employees/getSpecHoliday/' .$day  . '/');
+		if ($hd != null and  ($e['Employee']['subgroup_id'] != '3' and $e['Employee']['subgroup_id'] != '4' and $e['Employee']['subgroup_id'] != '16' and $e['Employee']['subgroup_id'] != '17'))
+		{
+		$remark = $hd;
+		$late = null;
+		$under = null;
+		$hd = null; 
+		}
 		?>
 			
 			
@@ -209,6 +218,7 @@ if ($dw == '0')
 				$l_o2 = null;
 				$s_i2 = null;
 				$s_o2 = null;
+				$hd = null;
 			?>
 	</tr>
 	
