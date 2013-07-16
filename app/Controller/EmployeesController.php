@@ -48,7 +48,7 @@ class EmployeesController extends AppController{
         {
             if ($file['type'] == "application/msaccess")
             {
-                $dbName = $_SERVER["DOCUMENT_ROOT"] ."/aps/". $file['name'];
+                $dbName = $_SERVER["DOCUMENT_ROOT"] ."/taps/". $file['name'];
                 $uploading = move_uploaded_file($file['tmp_name'], $dbName);
                 if($uploading){
                     $this->Session->setFlash('Logsheet has been updated','success');
