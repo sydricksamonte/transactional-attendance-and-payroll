@@ -3,18 +3,10 @@ $userid=$employee['Employee']['id'];
 
 ?>
 <?php
-	debug($retroPay);
 $other_bonus=0;
 $other_deductions=0;
 $yesLeave=0;
 $ssLoan=0;
-$account_id="";
-$net_pay=0;
-$all_deduction=0;
-$deduct_amnt=0;
-$gov_deduct=0;
-$nd=0;
-$hd=0;
 $hmdfLoan=0;
 $dayin=0;
 $ot = 0;
@@ -52,6 +44,8 @@ else {
 <div class="sp1">
 <h3>Employee Profile</h3>
 	<div class="formstyle" style="width:68%;">
+	<table  style="background-image: linear-gradient( rgb(149, 211, 240), rgb(153, 220, 230));">
+		<tr><td>
 		Employee ID: &nbsp;&nbsp;&nbsp;
 			<b><?php echo $employee['Employee']['id']; ?></b>
 		<br><br>Name: &nbsp;&nbsp;&nbsp;
@@ -60,27 +54,43 @@ else {
 			<b><?php echo $employee['SubGroup']['name']; ?></b>
 		<br><br>Status: &nbsp;&nbsp;&nbsp;
 			<b><?php if ($empAuth == 1){echo 'Employed';} else {echo 'Resigned';}?></b>
-
-	<table style="background-image: linear-gradient(to bottom, rgb(149, 211, 240), rgb(153, 220, 230));width:38%;margin-left:600px;margin-top:-110px;">
-	<tr>
-		<td style="vertical-align:middle"><b><?php if ($empAuth == 1){ echo 'Shift Schedule:';}?></b></td>
-		<td><?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:170px">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div>";} ?></td>
-	</tr>
-	<tr>
-	  <td><b><?php if($empAuth == 1){echo 'Cut-off End Date:'; }?></b></td>
-	  <td><?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'text', 'value' => $dateId)).'</td>
-	</tr>
-	<tr>
-		<td colspan=2 style="text-align:center">'.$this->Form->end('View schedule');
-
-		?></td>
-	</tr>
-	</table>
+		</td><td>
+	<div style="width:38%;">
+	<b><?php if ($empAuth == 1){ echo '';}?></b>
+		<?php if ($empAuth == 1){ echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Add / Modify Schedule',array('action' => 'change_sched', $employee['Employee']['id']))."</div></div><br>";} ?>
+	<?php { echo '<div class="colorw"><div class="btn btn-primary" style="width:">'.$this->Html->link('Edit Employee Information',array('action' => 'edit', $employee['Employee']['id']))."</div></div>";} ?>
+	<b><?php if($empAuth == 1){echo '<br>Cut-off End Date:<br>'; }?></b>
+	  <?php echo $this->Form->create('Emp',array('method' => 'post')).$this->Form->input('cut_off',array('label' => false, 'type' => 'select', 'options' =>$total, 'value' => $dateId)).
+			$this->Form->end('View schedule');?>
+	</div>
+		</td><td>
+			<table class='table-bordered' style='width:20px'>
+				<thead>
+				<tr>
+				<th colspan=2 ><center>Consumed Leaves <?php echo "(".$yearL.")"; ?></th>
+				</tr>
+				</thead>
+				<tr>
+				<td> VL</th>
+				<td > SL</th>
+				</tr>
+				<tr>
+				<td> <?php echo $vl; ?></td>
+				<td> <?php echo $sl; ?></td>
+				</tr>
+			</table>
+		</td>
+		</tr></table>
 	</div>
 	<br>
+<div class="btn">
+<a href="javascript:window.history.back()"><b><--Back</b></a>
+</div>	
+
+
+
 <h2>Schedule</h2>
 <div class="span3" style='height:750px'>
-
 <table class='table-bordered'>
 <thead>
 <tr>
@@ -182,10 +192,11 @@ foreach($exs as $ex2):
 								if($histor[0]['Week']['start_date']!=null){
 												foreach($histor as $history):
 																$start_date = date('M d, Y', strtotime($history['Week']['start_date']));
-												$end_date = date('M d, Y', strtotime($history['Week']['end_date']));
-												$daydiff = floor( ( strtotime( $end_date ) - strtotime( $start_date ) ) / 86400 );
+																$end_date = date('M d, Y', strtotime($history['Week']['end_date']));
+																$daydiff = floor( ( strtotime( $end_date ) - strtotime( $start_date ) ) / 86400 );
 
 												for($x=0;$x<=$daydiff;$x++){
+																
 																$temp[$start_date."-start"] = $history['Schedule']['time_in'];
 																$temp[$start_date."-end"] = $history['Schedule']['time_out'];
 																$start_date = date('M d, Y',strtotime($start_date."+1 day"));
@@ -220,8 +231,8 @@ $e_day = date('d',strtotime($edates));
 $s_year = date('Y',strtotime($sdates));
 $e_year = date('Y',strtotime($edates));
 
-#$curr_date = mktime(0,0,0,3,26,date("Y"));
-#$yearend_date = mktime(23,59,59,4,10,date("Y"));
+#$curr_date = mktime(0,0,0,6,17,date("Y"));
+#$yearend_date = mktime(23,59,59,6,17,date("Y"));
 #######SYD
 $curr_date = mktime(0,0,0,$s_month,$s_day,$s_year);
 $yearend_date = mktime(23,59,59,$e_month,$e_day,$e_year);
@@ -240,8 +251,6 @@ while ($curr_date <= $yearend_date){
 						$temp_cin = date('H:i:s', strtotime($temp_cin));
 					}
 				}
-				
-				
 				$excemp = 0;
 				$remark = null;
 				$ot_remark = null;
@@ -324,12 +333,14 @@ while ($curr_date <= $yearend_date){
 								}								
 								if (isset($temp[$curr_date_myd."-type_name"])){
 												$remark = $temp[$curr_date_myd."-type_name"];
+											
 												if ($remark == "Rest Day"){
 																$temp_start = null;
 																$temp_end = null;
 																$remark = '';
 																$rd="yes";
 																$bg = "bgcolor = #D6FFC2";
+															
 												}
 								} else {
 												$remark = "Absent";
@@ -339,9 +350,9 @@ while ($curr_date <= $yearend_date){
 								$late = 0;
 								$under = 0;
 				}
-				$ddays=date('D',strtotime($curr_date_myd));
+				$ddays = date('D',strtotime($curr_date_myd));
+				
 				$restd = $this->requestAction('Employees/findDayOnWeek/' . date('Y-m-d', strtotime($curr_date_myd)) .'/'. $employee['Employee']['id'].'/'); 
-			
 				if((strstr($restd,$ddays))==true){
 								$rd='yes';
 								$fcolor = "style='color:black'";
@@ -400,6 +411,7 @@ while ($curr_date <= $yearend_date){
 				}
 				if($temp_cin != null and $temp_cout == null){
 								$remark = 'ERROR';
+								
 				}
 				if ($ot_remark != 'Y')
 				{ 
@@ -959,7 +971,6 @@ $totalsalary=$net;
 <?php
 	$addpay=0;
 	$lesspay=0;
-
 	if ($retroPay != null){
 	foreach ($retroPay as $retroPay):
 	
@@ -976,6 +987,7 @@ $totalsalary=$net;
 				}
 		echo "<tr><td>&nbsp;&nbsp;&nbsp;";
 			$addpay=$addpay+$retropay;
+			
 		echo $retroPay['Retro']['type'];
 		echo "</td><td>".formatAmount($retropay)."</td>
 			</tr>
@@ -1005,6 +1017,7 @@ $totalsalary=$net;
 
 ?>
 <!--End of Code-->
+
 <tr>
 <td>Net pay</td>
 <td><?php echo formatAmount($net_pay=($totalsalary + $attbonus - $ssLoan - $hmdfLoan)+$addpay-$lesspay);?></td>
@@ -1041,18 +1054,16 @@ $temp_cout = null;
 </table>
 </td></tr>
 </table></div>
-
-
 <?php
 
 $employeeID = $employee['Employee']['id'];
 $account_id=$emp_accnt_Id['Employee']['account_id'];
 $basic = Security::cipher($basic, 'my_key'); 
 #$net = Security::cipher($net_pay, 'my_key');
-$all_deduction=$deduct_amnt+$gov_deduct;
+$all_deduction=$deduction_amount+$gov_deductions;
 
 #$this->requestAction('Totals/saveInfo/'.$dateId . '/' .$employeeID.'/'.$basic.'/'.$account_id.'/'.$absent_total.'/'.$late_total.'/'.$all_deduction .'/'. $attbonus .'/'. $sss .'/'. $philhealth .'/'. $pagibig  .'/'. $tax .'/'. $otamount .'/'. $ndamount .'/'. $hdamount .'/'. $net_pay.'/'. $errorCount.'/'.$ssLoan. '/'.$hmdfLoan .'/'  );
-$this->requestAction('Totals/saveInfo/'.$dateId. '/' .$employeeID. '/' .$basic. '/' .$account_id. '/' .$absent_total. '/' .$late.'/'.$deduct_amnt.'/'.$attbonus. '/' . $sss. '/' . $philhealth.'/'.$pagibig.'/'.$tax.'/'.$otamount.'/'.$ndamount.'/'.$hdamount.'/'.$net_pay.'/'.$errorCount.'/'.$hmdfLoan.'/'.$ssLoan.'/'.$addpay.'/'.$lesspay.'/');
+$this->requestAction('Totals/saveInfo/'.$dateId. '/' .$employeeID. '/' .$basic. '/' .$account_id. '/' .$absent_total. '/' .$late.'/'.$deduction_amount.'/'.$attbonus. '/' . $sss. '/' . $philhealth.'/'.$pagibig.'/'.$tax.'/'.$otamount.'/'.$ndamount.'/'.$hdamount.'/'.$net_pay.'/'.$errorCount.'/'.$hmdfLoan.'/'.$ssLoan.'/'.$addpay.'/'.$lesspay.'/');
 #echo ("starthere".$dateId.'<br>'.$employeeID.'<br>'.$basic.'<br>'.$account_id.'<br>'.$absent_total.'<br>'.$late.'<br>'.$deduc.'<br>'.$attbonus.'<br>'. $sss.'<br>'. $philhealth.'<br>'.$pagibig.'<br>'.$tax.'<br>'.$ot.'<br>'.$nd.'<br>'.$hd.'<br>'.$net.'<br>'.$errorCount.'<br>'.$hmdfLoan.'<br>'.$ssLoan);
 
 		debug($net_pay);

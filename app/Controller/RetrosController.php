@@ -90,7 +90,7 @@ class RetrosController extends AppController{
 													$this->Retro->set('cutoff_id',$cutoff);
 													if ($this->Retro->save($this->request->data)) {
 																	$this->Session->setFlash('Employee\' Additional Pay has been saved.','success');
-																	$this->redirect(array('controller'=>'Retros','action' => 'view_pays',$id,$cutoff));
+																	$this->redirect(array('controller'=>'Employees','action' => 'view_emp',$id));
 													} else {
 																	$this->Session->setFlash('Unable to Save.','failed');
 													}
@@ -364,7 +364,7 @@ $this->layout='view_all';
 																	
 																	$this->Session->setFlash('Employee\' Deduction Pay has been Saved.','success');
 																	#$this->redirect(array('action' => 'view_pays/1/1'));
-																	$this->redirect(array('controller'=>'Retros','action' => 'view_pays',$id,$cutoff));
+																	$this->redirect(array('controller'=>'Employees','action' => 'view_emp',$id));
 																	
 													} else {
 																	$this->Session->setFlash('Unable to Save.','failed');

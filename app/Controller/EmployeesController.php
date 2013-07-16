@@ -1158,7 +1158,9 @@ class EmployeesController extends AppController{
                     $sdates = $this->Cutoff->getCutOffPeriodStart($dateId);
 					$edates = $this->Cutoff->getCutOffPeriodEnd($dateId);
 
-			$this->set(compact('sdates'));
+            $retroPay=$this->Retro->find('all',array('conditions'=>array('Retro.emp_id'=>$id, 'Retro.cutoff_id'=>$dateId),'order'=>'Retro.id DESC'));
+			$this->set(compact('retroPay'));
+            $this->set(compact('sdates'));
             $this->set(compact('edates'));
             $weekStart =  $this->Week->getAllStart();
             $weekEnd =  $this->Week->getAllEnd();
@@ -1171,6 +1173,13 @@ class EmployeesController extends AppController{
             $this->set(compact('cutoffLoan'));
             $histor = $this->Employee->getHistor($id);
             $this->set(compact('histor'));
+            
+            $sl = $this->Scheduleoverride->countCredit(4, $id, $sdates);
+            $vl = $this->Scheduleoverride->countCredit(3, $id, $sdates);
+            $this->set(compact('sl'));
+            $this->set(compact('vl'));
+            $yearL = substr($sdates,0,4);
+            $this->set(compact('yearL'));
 
             $empLoans = $this->Loan->find('all',array(
                 'joins'=>array(
@@ -1239,10 +1248,7 @@ class EmployeesController extends AppController{
         $this->set(compact('shiftOrder'));
         $res=$this->data;
         $this->set(compact('res'));
-#########account_id
-		$emp_accnt_Id=$this->Employee->find('first',array('fields'=>array('Employee.account_id'),'conditions'=>array('Employee.id'=>$employee['Employee']['id'])));
-		$this->set(compact('emp_accnt_Id'));
-		
+
         $emplosched = $this->EmpSched->find('all',array(
             'fields' => array(
                 'Schedule.time_in',
@@ -1288,6 +1294,11 @@ class EmployeesController extends AppController{
             $this->set(compact('exs'));
             $govDeduc = $this->Govdeduction->getGovTax($employee['Employee']['tax_status'], Security::cipher($employee['Employee']['monthly'], 'my_key')); /*$employee['Employee']['monthly']*/
             $this->set(compact('govDeduc'));
+			
+#########account_id
+		$emp_accnt_Id=$this->Employee->find('first',array('fields'=>array('Employee.account_id'),'conditions'=>array('Employee.id'=>$employee['Employee']['id'])));
+		$this->set(compact('emp_accnt_Id'));
+		
 		}
                                                                                                                        
 
