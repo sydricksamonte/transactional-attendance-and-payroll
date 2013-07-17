@@ -11,10 +11,19 @@ foreach($employees as $data):{
 ?>
 </td></tr><tr><td>
 <table>
+	<?php if ($redir_in == '1'){ ?> 
 	<tr>
-  <?=$tr;
-$all = "<tr><td colspan=16><iframe frameborder=0  height=2048 width=1750 src=/tapp/Totals/index/$dateId>test</iframe> <td></tr>";
-echo $all;
-?>
+	
+	<?=$tr;
+		$all = "<tr><td colspan=16><iframe frameborder=0  height=2048 width=1750 src=/tapp/Totals/index/$dateId>test</iframe> <td></tr>";
+		echo $all;
+	?>
+	<?php } 
+	else { ?>
+	<?=$tr;
+		$all = "<tr><td colspan=16><iframe frameborder=0  height=2048 width=1750 src=/tapp/Totals/payslip/$dateId>test</iframe> <td></tr>";
+		echo $all;
+	?>
+	<?php } ?>
 </table>
 </td></tr></table>

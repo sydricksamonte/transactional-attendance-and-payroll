@@ -1118,7 +1118,7 @@ class EmployeesController extends AppController{
         return $type;
        
     }
-    public function view_all($dateId)
+    public function view_all($dateId, $redir_in)
     {
         $this->layout='view_all';
         $employees = $this->Employee->find('all', array(
@@ -1144,6 +1144,7 @@ class EmployeesController extends AppController{
         
         $this->set(compact('startCut'));
         $this->set(compact('endCut'));
+        $this->set(compact('redir_in'));
     }
 
     public function view_all2($id=null, $dateId)

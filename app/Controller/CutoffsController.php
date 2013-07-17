@@ -54,14 +54,13 @@ class CutoffsController extends AppController{
 	}  
 
 	public function view(){
-					$sdate = Date('Y-m-d', strtotime("+15 days"));
-					$total = $this->Cutoff->getCutOffAvailable($sdate);
-					$this->set(compact('total'));
-					if ($this->data != null)
-					{
-									$this->redirect(array('controller' => 'Employees', 'action' => 'view_all',null,	$this->data['CutOff']['cut_use']));
-					}
-
+        $sdate = Date('Y-m-d', strtotime("+15 days"));
+        $total = $this->Cutoff->getCutOffAvailable($sdate);
+        $this->set(compact('total'));
+        if ($this->data != null)
+        {
+            $this->redirect(array('controller' => 'Employees', 'action' => 'view_all', null, $this->data['CutOff']['cut_use'], '1'));
+        }
 	}
 
 }
