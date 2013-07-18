@@ -517,6 +517,7 @@ class EmployeesController extends AppController{
             }
 	    }
         public function select_manpower_range_day($day_s, $day_e){
+            set_time_limit(100);
             $this->layout='tablescroll';
             $this->set(compact('day_s'));
             $this->set(compact('day_e'));
