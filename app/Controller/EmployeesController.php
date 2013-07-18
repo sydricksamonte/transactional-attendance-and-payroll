@@ -1,6 +1,5 @@
 <?php
 class EmployeesController extends AppController{
-#public $components = array('RequestHandler');	
 	public $components=array('Session','RequestHandler');
 	
 	var $sTime;
@@ -344,9 +343,7 @@ class EmployeesController extends AppController{
                     {
                         $this->request->data['history_type_id'] = '2';
                     }
-                    //$schedId =  $this->Schedule->getLastInsertID();
                     if ($this->Schedule->save($this->data)){
-                        //$schedId =  $this->Schedule->getLastInsertID();
                         $this->request->data['start_date']  = $reqSDate;
                         $this->request->data['end_date']  = $reqEDate;
                         $this->Schedule->save($this->request->data);

@@ -25,7 +25,7 @@ class TotalsController extends AppController{
 		'Loan'
   );
     
-    function saveInfo($dateId,$employeeID,$basic,$account_id,$absent_total,$late,$deduct_amnt,$attbonus,$sss,$philhealth,$pagibig,$tax,$otamount,$ndamount,$hdamount,$net_pay,$errorCount,$hmdfLoan,$ssLoan,$addpay,$lesspay)
+    function saveInfo($dateId,$employeeID,$basic,$account_id,$absent_total,$late,$deduction_amount,$attbonus,$sss,$philhealth,$pagibig,$tax,$otamount,$ndamount,$hdamount,$net_pay,$errorCount,$hmdfLoan,$ssLoan,$addpay,$lesspay)
     {
         if ($this->Total->findCutOff($dateId, $employeeID) == null)
         {
@@ -48,7 +48,7 @@ class TotalsController extends AppController{
         $Total['account_number'] = $account_id;
         $Total['absents'] = $absent_total;
         $Total['lates'] = $late;
-        $Total['deductions'] = $deduct_amnt;
+        $Total['deductions'] = $deduction_amount;
         $Total['att_bonus'] = $attbonus;
         $Total['sss'] = $sss;
         $Total['phil_health'] = $philhealth;
