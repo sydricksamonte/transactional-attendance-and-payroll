@@ -1,3 +1,4 @@
+<div class="formstyle">
 <?php
 $taxval=false;
 $vals=false;
@@ -24,3 +25,5 @@ echo $this->Form->input('percent',array('type'=>'text','label'=>'Percentage','va
 echo $this->Form->input('status',array('type'=>'checkbox','label'=>'Valid','checked'=>$vals));
 echo $this->Form->end("Save");
 ?>
+<div class="btn"><a href="javascript:window.history.back()"><b>Back</b></a></div>
+</div>

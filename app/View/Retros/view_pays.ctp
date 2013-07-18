@@ -4,10 +4,11 @@
 			return number_format($amount, 2, '.', ',');  
 		}
 ?>
-<h4>
-<?php echo $employee['Employee']['last_name'].', '.$employee['Employee']['first_name']; ?>
-</h4>
-<br>
+<div class="btn"><h4>
+<?php #echo $employee['Employee']['last_name'].', '.$employee['Employee']['first_name']; ?>
+<?php echo $this->Html->link( $employee['Employee']['last_name'].', '.$employee['Employee']['first_name'], array('controller'=>'Employees','action' => 'view_emp', $employee['Employee']['id'])) ?>
+</h4></div>
+<br><br>
 <table style="width:98%">
 <thead>
 <tr>

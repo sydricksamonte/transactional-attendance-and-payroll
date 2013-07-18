@@ -14,4 +14,5 @@ echo $this->Form->input('status',array('type'=>'checkbox','label'=>'Valid'));
 echo "<br><br>";
 echo $this->Form->end("Save");
 ?>
+<div class="btn"><a href="javascript:window.history.back()"><b>Back</b></a></div>
 </div>
