@@ -35,7 +35,7 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 	</tr>
 	<tr >
 		<td style="border:1px solid black;background-color:rgb(187, 180, 180)">Name: <?php echo $empS['Emp']['last_name'].', '.$empS['Emp']['first_name']?></td>
-		<td style="border:1px solid black;background-color:rgb(187, 180, 180)">Position: </td>
+		<td style="border:1px solid black;background-color:rgb(187, 180, 180)">Position: <?php echo $empS['Emp']['position'] ?></td>
 	</tr>
 	<tr>
 		<td style="border-right:1px solid black">Tax Code: <?php echo $empS['Gov']['name']?></td>

@@ -17,7 +17,7 @@ $statuslist=array('','Single','Married');
   echo $this->Form->input('tax_status',array('label'=> 'Tax type', 'type'=>'select', 'options'=> array('S-M-NO', 'S1-M1', 'S2-M2', 'S4-M4')));
 
   echo $this->Form->input('account_id',array('label'=> 'AUB account', 'type'=>'text'));
-
+  echo $this->Form->input('position',array('label'=> 'Position', 'type'=>'text'));
   echo $this->Form->input('employed', array('label' => 'Employed'));
   echo "<br><br><center>";
   echo $this->Form->end('Save');

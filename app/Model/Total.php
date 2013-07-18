@@ -58,6 +58,7 @@ class Total extends AppModel{
                 'Emp.first_name',
                 'Emp.last_name',
 				'Emp.monthly',
+                'Emp.position',
 				'Emp.subgroup_id',
 				'Emp.tax_status',
 				'Gov.id',
