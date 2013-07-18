@@ -68,10 +68,10 @@ class TotalsController extends AppController{
     
     public function payslip($cutoff_id)
     {
-        $this->layout='view_all';
+        $this->layout='pays';
         $empSal = $this->Total->fetchEmployeeSalary($cutoff_id);
         $this->set(compact('empSal'));
-        $others= $this->Retro->find('all',array('conditions'=>array('Retro.cutoff_id'=>$cutoff_id)));
+        $others = $this->Retro->find('all',array('conditions'=>array('Retro.cutoff_id'=>$cutoff_id)));
         $this->set(compact('others'));
     }
     
