@@ -1066,5 +1066,5 @@ $all_deduction=$deduction_amount+$gov_deductions;
 $this->requestAction('Totals/saveInfo/'.$dateId. '/' .$employeeID. '/' .$basic. '/' .$account_id. '/' .$absent_total. '/' .$late.'/'.$deduction_amount.'/'.$attbonus. '/' . $sss. '/' . $philhealth.'/'.$pagibig.'/'.$tax.'/'.$otamount.'/'.$ndamount.'/'.$hdamount.'/'.$net_pay.'/'.$errorCount.'/'.$hmdfLoan.'/'.$ssLoan.'/'.$addpay.'/'.$lesspay.'/');
 #echo ("starthere".$dateId.'<br>'.$employeeID.'<br>'.$basic.'<br>'.$account_id.'<br>'.$absent_total.'<br>'.$late.'<br>'.$deduc.'<br>'.$attbonus.'<br>'. $sss.'<br>'. $philhealth.'<br>'.$pagibig.'<br>'.$tax.'<br>'.$ot.'<br>'.$nd.'<br>'.$hd.'<br>'.$net.'<br>'.$errorCount.'<br>'.$hmdfLoan.'<br>'.$ssLoan);
 
-		debug($net_pay);
+		debug($deduction_amount);
 ?>

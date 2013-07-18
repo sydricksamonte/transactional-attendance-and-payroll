@@ -67,12 +67,12 @@ function formatAmount($amount)
 				
 	<?php echo "<td $bg width=100>". $t['Total']['absents']."</td>" ?>
 	<?php echo "<td $bg width=100>". $t['Total']['lates']."</td>" ?>
-	<?php echo "<td $bg width=100>".  formatAmount(($t['Total']['deductions'])*-1)."</td>" ?>
+	<?php echo "<td $bg width=100>". formatAmount(($t['Total']['deductions'])*-1)."</td>" ?>
 
 	<?php echo "<td $bg width=100>". formatAmount($t['Total']['att_bonus'])."</td>" ?>
 	<?php echo "<td $bg width=100>". formatAmount($t['Total']['sss'])."</td>" ?>
 
-	<?php echo "<td $bg width=100>".  formatAmount($t['Total']['phil_health'])."</td>" ?>
+	<?php echo "<td $bg width=100>". formatAmount($t['Total']['phil_health'])."</td>" ?>
 	<?php echo "<td $bg width=100>". formatAmount($t['Total']['pagibig'])."</td>" ?>
 
 	<?php echo "<td $bg width=100>". formatAmount($t['Total']['tax'])."</td>" ?>

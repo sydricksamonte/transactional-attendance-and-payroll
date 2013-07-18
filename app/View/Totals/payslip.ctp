@@ -5,43 +5,44 @@
 <?php
 function formatAmount($amount)
 {
-	return number_format($amount, 2, '.', '');
+	return number_format($amount, 2, '.', ',');
 }
 ?>
-<?php foreach($empSal as $empS):?>
+<?php foreach($empSal as $empS): ?>
 <?php
-$mth= date('n', strtotime( $empS['Cutoff']['end_date']));
-$yr= date('Y', strtotime( $empS['Cutoff']['end_date']));
-$d= date('j', strtotime( $empS['Cutoff']['end_date']));
+
+$mth= date('n', strtotime( $empS['CO']['end_date']));
+$yr= date('Y', strtotime( $empS['CO']['end_date']));
+$d= date('j', strtotime( $empS['CO']['end_date']));
 $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr); 
 	if ($d == 25){
-		echo date('F', strtotime( $empS['Cutoff']['end_date'])).' 15-'.$num.' '.date('Y', strtotime( $empS['Cutoff']['end_date']));
+		echo date('F', strtotime( $empS['CO']['end_date'])).' 15-'.$num.' '.date('Y', strtotime( $empS['CO']['end_date']));
 		}
 	else{
-		echo date('F', strtotime( $empS['Cutoff']['end_date'])).' 1-15 '.date('Y', strtotime( $empS['Cutoff']['end_date']));
+		echo date('F', strtotime( $empS['CO']['end_date'])).' 1-15 '.date('Y', strtotime( $empS['CO']['end_date']));
 		}
-#echo date('F j',strtotime($empS['Cutoff']['start_date'])).date('-j Y', strtotime($empS['Cutoff']['end_date']));
+#echo date('F j',strtotime($empS['CO']['start_date'])).date('-j Y', strtotime($empS['CO']['end_date']));
 ?>
 <table>
 <tr><td valign="top">
 	<table >
 <tr><hr>
 	<td>Name</td>
-	<td><?php echo $empS['Employee']['last_name'].', '.$empS['Employee']['first_name']?></td>
+	<td><?php echo $empS['Emp']['last_name'].', '.$empS['Emp']['first_name']?></td>
 </tr>
 <tr>
 	<td>Position</td>
-	<td><?php echo $empS['Group']['name']?></td>
+	<td><?php echo $empS['Grp']['name']?></td>
 </tr>
 <tr>
 	<td>Tax Code</td>
-	<td><?php echo $empS['Govstat']['name']?></td>
+	<td><?php echo $empS['Gov']['name']?></td>
 </tr>
 <tr>
 	<td colspan=2><center> Salary Details</td>
 </tr>
 <tr>
-	<td>Basic Salary</td><td><?php $basics= Security::cipher($empS['Employee']['monthly'], 'my_key'); echo formatAmount($basics/2);?></td>
+	<td>Basic Salary</td><td><?php $basics= Security::cipher($empS['Emp']['monthly'], 'my_key'); echo formatAmount($basics/2);?></td>
 </tr>
 <tr>
 	<td>Night Differential</td><td><?php echo formatAmount($empS['Total']['night_diff']);?></td>
@@ -59,14 +60,10 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 </td><td valign="top">
 	<table >
 <tr><hr>
-	<td>Deduction</td><td><?php echo  formatAmount($empS['Total']['deductions'])?></td>
+	<td>Deduction</td><td><?php echo  formatAmount($empS['Total']['deductions']+$empS['Total']['sss']+$empS['Total']['phil_health']+$empS['Total']['pagibig']+$empS['Total']['tax'])?></td>
 </tr>
 <tr>
-	<td>Absences / Tardiness</td><td><?php
-$tard1= $empS['Total']['absents'];
-$tard2= $empS['Total']['lates'];
-echo  formatAmount($tard1 + $tard2);
-?></td>
+	<td>Absences / Tardiness</td><td><?php echo  formatAmount($empS['Total']['deductions']);?></td>
 </tr>
 <tr>
 	<td>Company Advances</td><td><?php echo  formatAmount($empS['Total']['att_bonus'])?></td>
@@ -95,12 +92,22 @@ echo  formatAmount($tard1 + $tard2);
 		foreach ($others as $other):
 		if ($other['Retro']['status']==1){
 		echo "<tr>";
-			if ($empS['Employee']['id'] == $other['Retro']['emp_id']){
+			if ($empS['Emp']['id'] == $other['Retro']['emp_id']){
 				echo "<td>".$other['Retro']['type']."</td>";
 				if ($other['Retro']['pay_type']=='deduct'){
 					echo "<td>-".$other['Retro']['retropay']."</td>";
 				}else{
-					echo "<td>".$other['Retro']['retropay']."</td>";
+				$taxa= $other['Retro']['taxable'];
+				
+					if (strtolower($taxa) == 1){
+						$perc='.'.$other['Retro']['percent'];
+						$retropay=$other['Retro']['retropay'];
+						$retropay=$retropay-($retropay * ($perc));
+					}else{
+						$retropay=$other['Retro']['retropay'];
+					}
+					
+					echo "<td>".$retropay."</td>";
 				}
 			}
 		echo "</tr>";

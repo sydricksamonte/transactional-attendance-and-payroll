@@ -53,86 +53,50 @@ class Total extends AppModel{
     function fetchEmployeeSalary($cutoff_id)
     {
         $empSal = $this->find('all',array(
-            'fields' => array(
-				'Total.id',
-				'Total.emp_id',
-				'Total.cutoff_id',
-				'Cutoff.start_date',
-				'Cutoff.end_date',
-				'Employee.id',
-				'Employee.first_name',
-				'Employee.last_name',
-				'Employee.monthly',
-				'Employee.tax_status',
-				'Govstat.name',
-				'Employee.subgroup_id',
-				'Group.name',
-				'Total.night_diff',
-				'Total.OT',
-				'Total.holiday',
-				'Total.deductions',
-				'Total.absents',
-				'Total.lates',
-				'Total.att_bonus',
-				'Total.sss',
-				'Total.pagibig',
-				'Total.phil_health',
-				'Total.net_pay',
-				'Total.tax',
-				'Loan.loan_type',
-				'Loan.amount',
-				'Total.sss_loan',
-				'Total.hmdf_loan'
-			),
-		    'joins' => array(
+            'fields' => array('Total.*',
+				'Emp.id',
+                'Emp.first_name',
+                'Emp.last_name',
+				'Emp.monthly',
+				'Emp.subgroup_id',
+				'Emp.tax_status',
+				'Gov.id',
+				'Gov.name',
+                'CO.start_date',
+                'CO.end_date'),
+            'joins' => array(
                 array(
-                'type' => 'left',
+                'type' => 'inner',
                 'table' => 'employees',
-                'alias' => 'Employee',
+                'alias' => 'Emp',
                 'conditions' => array(
-                    'Employee.id=Total.emp_id'
+                    'Emp.id = Total.emp_id'
                     )
                 ),
                 array(
-                'type' => 'left',
-                'table' => 'loans',
-                'alias' => 'Loan',
-                'conditions' => array(
-                    'Employee.id = Loan.emp_id'
-                    )
-                ),
-                array(
-                'type' => 'left',
+                'type' => 'inner',
                 'table' => 'cutoffs',
-                'alias' => 'Cutoff',
+                'alias' => 'CO',
                 'conditions' => array(
-                    'Cutoff.id = Total.cutoff_id'
+                    'CO.id = Total.cutoff_id'
                     )
                 ),
-                array(
-                'type' => 'left',
-                'table' => 'groups',
-                'alias' => 'Group',
-                'conditions' => array(
-                    'Group.id = Employee.subgroup_id'
-                    )
-                ),
-                array(
-                'type' => 'left',
+				array(
+                'type' => 'inner',
                 'table' => 'govstats',
-                'alias' => 'Govstat',
+                'alias' => 'Gov',
                 'conditions' => array(
-                    'Govstat.id = Employee.tax_status'
+                    'Gov.id = Emp.tax_status'
                     )
                 ),
             ),
             'conditions' => array(
-                'Total.cutoff_id'=>$cutoff_id
-            ),
+                'cutoff_id' => $cutoff_id,
+                ),
             'order' => array(
-                'Employee.last_name' => 'ASC'
-            )
-        ));
+                'Emp.last_name' => 'ASC',
+                'Emp.first_name' => 'ASC'
+            )));
         
         return $empSal;
     }
