@@ -28,7 +28,7 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 
 <table class='tablei'>
 <tr><td>
-<div class="bar" style="margin-top:0;text-align:left"><?php echo $this->Html->image('logo.jpg',array('alt'=>'CAKEPHP'))?></div>
+<div class="bar" style="margin-top:0;text-align:left"><?php echo $this->Html->image('nameimper.png',array('alt'=>'CAKEPHP'))?></div>
 	<table cellpadding=3 class='tableinfo'>
 	<tr>
 		<td colspan=2 style="border:1px solid black; background-color:rgb(187, 180, 180)">Date: <?php echo $cutoffdate;?></td>
@@ -76,7 +76,7 @@ $num = cal_days_in_month(CAL_GREGORIAN, $mth, $yr);
 	/*Code for additional pays and deductions*/
 		foreach ($others as $other):
 		if ($other['Retro']['status']==1){
-		echo "<tr>";
+		echo "";
 			if ($empS['Emp']['id'] == $other['Retro']['emp_id']){
 				echo "<td></td><td style='border-left:1px solid black;border-bottom:1px solid black'>".$other['Retro']['type'].": ";
 				if ($other['Retro']['pay_type']=='deduct'){
