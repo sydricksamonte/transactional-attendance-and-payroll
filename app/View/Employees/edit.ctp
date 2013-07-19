@@ -22,5 +22,6 @@ $statuslist=array('','Single','Married');
   echo "<br><br><center>";
   echo $this->Form->end('Save');
 ?>
-</div>
+</div><br>
+<div class="btn"><a href="javascript:window.history.back()"><b>Back</b></a></div>
 

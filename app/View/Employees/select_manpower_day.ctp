@@ -8,24 +8,36 @@ if ($dw == '0')
 	{$dw = '7';}
 ?>
  
-<table>
+<table style="width:90%">
+<tr>
+<td>
+<table width=1183>
+<thead>
+<tr>
+			<th style="width:150px;">Last Name</th>
+			<th style="width:150px;">First Name</th>
+			<th style="width:150px;">Scheduled In</th>
+			<th style="width:150px;">Scheduled Out</th>
+			<th style="width:150px;">LogIn</th>
+			<th style="width:150px;">LogOut</th>
+			<th style="width:150px;">Late (In minutes)</th>
+			<th style="width:150px;">Undertime (In minutes)</th>
+			<th style="width:150px;">Absent</th>
+			<th style="width:150px;">Remark</th>
+</tr>
+</thead>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<div class="span3">
+<table width=1183>
 		<tr>
-			<th>Last Name</th>
-			<th>First Name</th>
-			<th>Scheduled In</th>
-			<th>Scheduled Out</th>
-			<th>LogIn</th>
-			<th>LogOut</th>
-			<th>Late (In minutes)</th>
-			<th>Undertime (In minutes)</th>
-			<th>Absent</th>
-			<th>Remark</th>
-			
-		</tr>
-		<tr>
+		<tbody class="sp1">
 <?php foreach ($empScheds as $e): ?>
-	<td> <?php echo $this->Html->link($e['Employee']['last_name'],array('action' => 'view_emp', $e['Employee']['id'])); ?></td>
-	<td> <?php echo $this->Html->link($e['Employee']['first_name'],array('action' => 'view_emp', $e['Employee']['id'])); ?></td>
+	<td  style="width:150px;"> <?php echo $this->Html->link($e['Employee']['last_name'],array('action' => 'view_emp', $e['Employee']['id'])); ?></td>
+	<td style="width:150px;"> <?php echo $this->Html->link($e['Employee']['first_name'],array('action' => 'view_emp', $e['Employee']['id'])); ?></td>
 	<?php $over = $this->requestAction('Scheduleoverrides/getOverride/' .$day  . '/'.  $e['Employee']['id'] .'/'); 
 		if ($over != null)
 		{		
@@ -200,14 +212,14 @@ if ($dw == '0')
 			
 			
 			
-			<td><?php echo $s_i2;?></td>
-			<td><?php echo $s_o2;?></td>
-			<td><?php echo $l_i2; ?></td>
-			<td><?php echo $l_o2; ?></td>
-			<td><?php echo $late; ?></td>
-			<td><?php echo $under; ?></td>
-			<td><?php if($absent == '1'){ echo 'Yes';} ?></td>
-			<td><?php echo $remark; ?></td>
+			<td style="width:150px;"><?php echo $s_i2;?></td>
+			<td style="width:150px;"><?php echo $s_o2;?></td>
+			<td style="width:100px;"><?php echo $l_i2; ?></td>
+			<td style="width:150px;"><center><?php echo $l_o2; ?></td>
+			<td style="width:150px;"><center><?php echo $late; ?></td>
+			<td style="width:150px;"><center><?php echo $under; ?></td>
+			<td style="width:150px;"><center><?php if($absent == '1'){ echo 'Yes';} ?></td>
+			<td style="width:150px;"><center><?php echo $remark; ?></td>
 			<?php 			
 				$late = 0;
 				$absent = 0;
@@ -225,6 +237,7 @@ if ($dw == '0')
 		
 <?php endforeach; ?>
 </table>
+</div></div><br><br>
 <table>
 	<tr>
 		<th>Total Lates(In minutes, excluding errors)</th>
