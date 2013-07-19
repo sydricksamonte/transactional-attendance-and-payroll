@@ -18,3 +18,5 @@
 	?>
 	<?php echo $this->Form->end('Save', array('controller' => 'Groups', 'action' => 'edit') );?>
 </div>
+<br>
+<div class="btn"><a href="javascript:window.history.back()"><b>Back</b></a></div>
