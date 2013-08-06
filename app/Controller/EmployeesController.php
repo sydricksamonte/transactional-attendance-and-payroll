@@ -546,7 +546,7 @@ class EmployeesController extends AppController{
             $trans = $this->CompAdvanceRule->getAll();
             $this->set(compact('trans'));
             $sdate = date("Y-m-d", time());
-		    $total = $this->Cutoff->getCutOffAvailable($sdate);
+		    $total = $this->Cutoff->getCutOffAvailable2($sdate);
 		    $this->set(compact('total'));
 		    $cutDropDown = $this->Cutoff->getCutOffRecent($sdate);
 			    if ($this->data['Emp']['cut_off'] == null)

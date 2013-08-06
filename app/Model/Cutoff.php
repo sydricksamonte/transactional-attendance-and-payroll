@@ -9,6 +9,15 @@ class Cutoff extends AppModel{
 										'order' => array('end_date' => 'DESC')));
 								return $cond;
 		}
+		function getCutOffAvailable2($edate)
+		{ 
+            $edate = Date('Y-m-d', strtotime("+10 days"));
+								$cond = $this->find('list',array(
+										'fields' => array('end_date'),
+										'conditions' => array('end_date <= ' => $edate),
+										'order' => array('end_date' => 'DESC')));
+								return $cond;
+		}
 		
         function getCutOffPeriodStart($id)
         {
